@@ -5,6 +5,11 @@ import com.codecool.roguelike.ui.GameUI;
 public class ConsoleUI implements GameUI {
     @Override
     public void displayBoard(char[][] board) {
-        throw new RuntimeException("method displayBoard not implemented");
+        for (char[] charArray: board) {
+            for (char c: charArray) {
+                System.out.print(c);
+            }
+            System.out.print("\n");
+        }
     }
 }
