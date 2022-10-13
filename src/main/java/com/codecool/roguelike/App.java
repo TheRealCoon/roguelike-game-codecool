@@ -39,8 +39,22 @@ public class App {
             if (key == 'q') {
                 isRunning = false;
             } else {
-                // Implement moving on board below
-
+                switch (key) {
+                    case 'w' :
+                        player.moveUp(board);
+                        break;
+                    case 's' :
+                        player.moveDown(board);
+                        break;
+                    case 'a' :
+                        player.moveLeft(board);
+                        break;
+                    case 'd' :
+                        player.moveRight(board);
+                        break;
+                    default :
+                        System.out.println("That is not a valid key to move");
+                }
             }
         }
     }
