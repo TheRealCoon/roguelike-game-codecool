@@ -1,5 +1,7 @@
 package com.codecool.roguelike;
 
+import com.codecool.roguelike.exceptions.TooManyGatesException;
+
 import java.util.Random;
 
 public class Engine {
@@ -18,9 +20,13 @@ public class Engine {
      * @param gateIconVertical   Vertical gate icon
      */
     public static char[][] createBoard(int width, int height, char wallIcon, int numberOfGates,
-                                       char gateIconHorizontal, char gateIconVertical) {
-        char[][] board = createBorder(width, height, wallIcon);
-        placeRandomGatesOnBorder(board,gateIconHorizontal,gateIconVertical);
+                                       char gateIconHorizontal, char gateIconVertical) throws TooManyGatesException {
+        if (2 * (width + height) - 4 < numberOfGates) throw new TooManyGatesException("There are way too many gates!");
+        char[][] board = new char[height][width];
+        createBorder(board, wallIcon);
+        for (int i = 0; i < numberOfGates; i++) {
+            placeRandomGateOnBorder(board, gateIconHorizontal, gateIconVertical);
+        }
         return board;
     }
 
@@ -28,8 +34,9 @@ public class Engine {
         return (RANDOM.nextInt(2) == 0) ? "Horizontal" : "Vertical";
     }
 
-    private static char[][] createBorder(int width, int height, char wallIcon) {
-        char[][] board = new char[height][width];
+    private static void createBorder(char[][] board, char wallIcon) {
+        int height = board.length;
+        int width = board[0].length;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
@@ -39,7 +46,6 @@ public class Engine {
                 }
             }
         }
-        return board;
     }
 
     /**
@@ -48,11 +54,11 @@ public class Engine {
      * @param gateIconHorizontal Horizontal gate icon
      * @param gateIconVertical   Vertical gate icon
      */
-    private static void placeRandomGatesOnBorder(char[][] board, char gateIconHorizontal, char gateIconVertical) {
+    private static void placeRandomGateOnBorder(char[][] board, char gateIconHorizontal, char gateIconVertical) {
         int gateIndex;
         final int MIN_GATE_INDEX = 1;
-        final int MAX_VERTICAL_GATE_INDEX = board[0].length - 1;
-        final int MAX_HORIZONTAL_GATE_INDEX = board.length - 1;
+        final int MAX_VERTICAL_GATE_INDEX = board.length - 1;
+        final int MAX_HORIZONTAL_GATE_INDEX = board[0].length - 1;
         switch (RANDOM.nextInt(NUMBER_OF_SIDEWALLS)) {
             case 0:
                 gateIndex = randomizeIndexOfGate(MIN_GATE_INDEX, MAX_HORIZONTAL_GATE_INDEX, gateIconHorizontal);
@@ -60,11 +66,11 @@ public class Engine {
                 break;
             case 1:
                 gateIndex = randomizeIndexOfGate(MIN_GATE_INDEX, MAX_VERTICAL_GATE_INDEX, gateIconVertical);
-                board[gateIndex][MAX_VERTICAL_GATE_INDEX] = gateIconVertical;
+                board[gateIndex][MAX_HORIZONTAL_GATE_INDEX] = gateIconVertical;
                 break;
             case 2:
                 gateIndex = randomizeIndexOfGate(MIN_GATE_INDEX, MAX_HORIZONTAL_GATE_INDEX, gateIconHorizontal);
-                board[MAX_HORIZONTAL_GATE_INDEX][gateIndex] = gateIconHorizontal;
+                board[MAX_VERTICAL_GATE_INDEX][gateIndex] = gateIconHorizontal;
                 break;
             case 3:
                 gateIndex = randomizeIndexOfGate(MIN_GATE_INDEX, MAX_VERTICAL_GATE_INDEX, gateIconVertical);
