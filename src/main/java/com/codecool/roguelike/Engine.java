@@ -26,6 +26,8 @@ public class Engine {
         createBorder(board, wallIcon);
         for (int i = 0; i < numberOfGates; i++) {
             placeRandomGateOnBorder(board, gateIconHorizontal, gateIconVertical);
+            //TODO add walls
+            //TODO clean code maybe
         }
         return board;
     }
@@ -50,7 +52,7 @@ public class Engine {
 
     /**
      * Places a number of random gates on the edge of the board.
-     *
+     * @param board The board of the game (empty, walls around it)
      * @param gateIconHorizontal Horizontal gate icon
      * @param gateIconVertical   Vertical gate icon
      */
@@ -80,6 +82,7 @@ public class Engine {
     }
 
     private static int randomizeIndexOfGate(int minIndexInclusive, int maxIndexExclusive, char c) {
+        //TODO infinite cycle could happen if there are more gates than board.length-2
         int gateIndex;
         do {
             gateIndex = RANDOM.nextInt(minIndexInclusive, maxIndexExclusive);
