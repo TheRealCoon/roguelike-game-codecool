@@ -7,7 +7,7 @@ public class ConsoleUI implements GameUI {
     public void displayBoard(char[][] board) {
         for (char[] charArray: board) {
             for (char c: charArray) {
-                System.out.print(c);
+                System.out.print(" " + c + " ");
             }
             System.out.print("\n");
         }

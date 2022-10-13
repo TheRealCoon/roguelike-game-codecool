@@ -13,7 +13,7 @@ public class App {
         final int boardWidth = 40;
         final int boardHeight = 20;
         final char wallIcon = '#';
-        final int numberOfGates = 1;
+        final int numberOfGates = 5;
         final char gateIconHorizontal = '=';
         final char gateIconVertical = '"';
         final int playerStartX = 3;
