@@ -50,9 +50,18 @@ public class Engine {
         }
     }
 
+    private static void createRandomWall(char[][] board, char wallIcon) {
+        int height = board.length;
+        int width = board[0].length;
+
+        int lengthOfWall = RANDOM.nextInt(1, RANDOM.nextInt(2) == 0 ? width - 2 : height - 2);
+
+    }
+
     /**
      * Places a number of random gates on the edge of the board.
-     * @param board The board of the game (empty, walls around it)
+     *
+     * @param board              The board of the game (empty, walls around it)
      * @param gateIconHorizontal Horizontal gate icon
      * @param gateIconVertical   Vertical gate icon
      */
