@@ -1,5 +1,6 @@
 package com.codecool.roguelike;
 
+import com.codecool.roguelike.exceptions.TooManyGatesException;
 import com.codecool.roguelike.ui.GameInputReader;
 import com.codecool.roguelike.ui.GameUI;
 import com.codecool.roguelike.ui.console.ConsoleGameInputReader;
@@ -13,12 +14,13 @@ public class App {
         final int boardWidth = 40;
         final int boardHeight = 20;
         final char wallIcon = '#';
-        final int numberOfGates = 1;
+        final int numberOfGates = 5;
         final char gateIconHorizontal = '=';
         final char gateIconVertical = '"';
         final int playerStartX = 3;
         final int playerStartY = 3;
         final char playerIcon = '@';
+
 
         System.out.println("Choose a name for your hero!");
         String playerName = Util.getInputString();
@@ -27,8 +29,14 @@ public class App {
 
         Player player = new Player(playerName, playerStartingCoordinates);
 
-        char[][] board = Engine.createBoard(boardWidth, boardHeight, wallIcon, numberOfGates, gateIconHorizontal,
-                gateIconVertical);
+        char[][] board;
+        try {
+            board = Engine.createBoard(boardWidth, boardHeight, wallIcon, numberOfGates, gateIconHorizontal,
+                    gateIconVertical);
+        } catch (TooManyGatesException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
         Util.clearScreen();
 
