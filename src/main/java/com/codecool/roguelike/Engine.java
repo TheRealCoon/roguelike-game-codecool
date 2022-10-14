@@ -28,9 +28,11 @@ public class Engine {
         createBorder(board, wallIcon);
         for (int i = 0; i < numberOfGates; i++) {
             placeRandomGateOnBorder(board, gateIconHorizontal, gateIconVertical);
-            //TODO add walls
-            //TODO clean code maybe
         }
+        for (int i = 0; i < 5; i++) {
+            createRandomWall(board, wallIcon);
+        }
+        //TODO clean code maybe
         return board;
     }
 
@@ -55,9 +57,34 @@ public class Engine {
     private static void createRandomWall(char[][] board, char wallIcon) {
         int height = board.length;
         int width = board[0].length;
-        Integer[] beginningCoordinate = RANDOM.nextInt(getListOfWallCoordinates(board, wallIcon).size();
-        int lengthOfWall = RANDOM.nextInt(1, RANDOM.nextInt(2) == 0 ? width - 2 : height - 2);
+        int lengthOfWall;
+        List<Integer[]> wallCoordinates = getListOfWallCoordinates(board, wallIcon);
+        Integer[] beginningCoordinate = wallCoordinates.get(RANDOM.nextInt(wallCoordinates.size()));
 
+        if (isThereWallHorizontally(board, wallIcon, beginningCoordinate)) {
+            //then vertical wall
+            lengthOfWall = RANDOM.nextInt(height - beginningCoordinate[0] - 2);
+            for (int i = beginningCoordinate[0]; i < beginningCoordinate[0] + lengthOfWall; i++) {
+                board[i][beginningCoordinate[1]] = wallIcon;
+            }
+        } else if (isThereWallVertically(board, wallIcon, beginningCoordinate)) {
+            //then horizontal wall
+            lengthOfWall = RANDOM.nextInt(width - beginningCoordinate[1] - 2);
+            for (int i = beginningCoordinate[1]; i < beginningCoordinate[1] + lengthOfWall; i++) {
+                board[beginningCoordinate[0]][i] = wallIcon;
+            }
+        }
+
+    }
+
+    private static boolean isThereWallHorizontally(char[][] board, char wallIcon, Integer[] coordinate) {
+        return (board[coordinate[0]][coordinate[1] + 1] == wallIcon) ||
+                (board[coordinate[0]][coordinate[1] - 1] == wallIcon);
+    }
+
+    private static boolean isThereWallVertically(char[][] board, char wallIcon, Integer[] coordinate) {
+        return (board[coordinate[0] + 1][coordinate[1]] == wallIcon) ||
+                (board[coordinate[0] - 1][coordinate[1]] == wallIcon);
     }
 
     private static List<Integer[]> getListOfWallCoordinates(char[][] board, char wallIcon) {
