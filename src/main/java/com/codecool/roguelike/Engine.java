@@ -1,6 +1,7 @@
 package com.codecool.roguelike;
 
 import com.codecool.roguelike.exceptions.TooManyGatesException;
+import com.codecool.roguelike.ui.console.ConsoleUI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,36 +58,75 @@ public class Engine {
     private static void createRandomWall(char[][] board, char wallIcon) {
         int height = board.length;
         int width = board[0].length;
-        int lengthOfWall;
-        int increment = 1;
+        int lengthOfWall = 1;
+        int increment;
         List<Integer[]> wallCoordinates = getListOfWallCoordinates(board, wallIcon);
         Integer[] beginningCoordinate = wallCoordinates.get(RANDOM.nextInt(wallCoordinates.size()));
-
+        int y = beginningCoordinate[0];
+        int x = beginningCoordinate[1];
+        if (y == height - 1 || x == width - 1) {
+            //if beginningCoordinate is part of right or bottom wall:
+            increment = -1;
+        } else if (y == 0 || x == 0) {
+            //if beginningCoordinate is part of top or left wall:
+            increment = 1;
+        } else {
+            //if beginningCoordinate is an inner-wall, then direction of the wall is random
+            increment = RANDOM.nextInt(2) == 1 ? 1 : -1;
+        }
         if (isThereWallHorizontally(board, wallIcon, beginningCoordinate)) {
             //then vertical wall
-            lengthOfWall = RANDOM.nextInt(height - beginningCoordinate[0] - 2);
-            if (beginningCoordinate[0] + lengthOfWall >= height - 2) increment = -1;
-            for (int i = beginningCoordinate[0]; i < beginningCoordinate[0] + lengthOfWall || i >= 2; i += increment) {
-                board[i][beginningCoordinate[1]] = wallIcon;
+            try {
+                lengthOfWall = increment == 1 ? RANDOM.nextInt(1, height - y - 2) :
+                        RANDOM.nextInt(1, y - 2);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            for (int i = y; i != y + increment * lengthOfWall; i += increment) {
+                board[i][x] = wallIcon;
             }
         } else if (isThereWallVertically(board, wallIcon, beginningCoordinate)) {
             //then horizontal wall
-            lengthOfWall = RANDOM.nextInt(width - beginningCoordinate[1] - 2);
-            for (int i = beginningCoordinate[1]; i < beginningCoordinate[1] + lengthOfWall; i++) {
-                board[beginningCoordinate[0]][i] = wallIcon;
+            try {
+                lengthOfWall = increment == 1 ? RANDOM.nextInt(1, width - x - 2) :
+                        RANDOM.nextInt(1, x - 2 );
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+
+            }
+            for (int i = x; i != x + increment * lengthOfWall; i += increment) {
+                board[y][i] = wallIcon;
             }
         }
+        //for testing
+//        System.out.println("increment: " + increment);
+//        System.out.println("beginningCoordinate: " + y + ", " + x);
+//        System.out.println("length of wall: " + lengthOfWall);
+//        System.out.println("board:");
+//        new ConsoleUI().displayBoard(board);
 
     }
 
     private static boolean isThereWallHorizontally(char[][] board, char wallIcon, Integer[] coordinate) {
-        return (board[coordinate[0]][coordinate[1] + 1] == wallIcon) ||
-                (board[coordinate[0]][coordinate[1] - 1] == wallIcon);
+        int y = coordinate[0];
+        int x = coordinate[1];
+        if (y == 0 || y == board.length - 1) return true;
+        if (x != 0 && x != board[0].length - 1) {
+            return (board[y][x + 1] == wallIcon) ||
+                    (board[y][x - 1] == wallIcon);
+        }
+        return false;
     }
 
     private static boolean isThereWallVertically(char[][] board, char wallIcon, Integer[] coordinate) {
-        return (board[coordinate[0] + 1][coordinate[1]] == wallIcon) ||
-                (board[coordinate[0] - 1][coordinate[1]] == wallIcon);
+        int y = coordinate[0];
+        int x = coordinate[1];
+        if (x == 0 || x == board[0].length - 1) return true;
+        if (y != 0 && y != board.length - 1) {
+            return (board[x + 1][y] == wallIcon) ||
+                    (board[x - 1][y] == wallIcon);
+        }
+        return false;
     }
 
     private static List<Integer[]> getListOfWallCoordinates(char[][] board, char wallIcon) {
@@ -95,7 +135,7 @@ public class Engine {
         List<Integer[]> wallCoordinates = new ArrayList<>();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if (board[i][j] == wallIcon && ((i != 0 || i != height - 1) && (j != 0 || j != width - 1)))
+                if (board[i][j] == wallIcon && ((i != 0 && i != height - 1) || (j != 0 && j != width - 1)))
                     wallCoordinates.add(new Integer[]{i, j});
             }
         }

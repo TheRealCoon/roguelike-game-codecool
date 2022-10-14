@@ -11,8 +11,8 @@ import java.io.IOException;
 public class App {
 
     public static void main(String[] args) throws IOException {
-        final int boardWidth = 40;
-        final int boardHeight = 20;
+        final int boardWidth = 20;
+        final int boardHeight = 10;
         final char wallIcon = '#';
         final int numberOfGates = 5;
         final char gateIconHorizontal = '=';
