@@ -2,6 +2,8 @@ package com.codecool.roguelike;
 
 import com.codecool.roguelike.exceptions.TooManyGatesException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Engine {
@@ -53,9 +55,22 @@ public class Engine {
     private static void createRandomWall(char[][] board, char wallIcon) {
         int height = board.length;
         int width = board[0].length;
-
+        Integer[] beginningCoordinate = RANDOM.nextInt(getListOfWallCoordinates(board, wallIcon).size();
         int lengthOfWall = RANDOM.nextInt(1, RANDOM.nextInt(2) == 0 ? width - 2 : height - 2);
 
+    }
+
+    private static List<Integer[]> getListOfWallCoordinates(char[][] board, char wallIcon) {
+        int height = board.length;
+        int width = board[0].length;
+        List<Integer[]> wallCoordinates = new ArrayList<>();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if (board[i][j] == wallIcon && ((i != 0 || i != height - 1) && (j != 0 || j != width - 1)))
+                    wallCoordinates.add(new Integer[]{i, j});
+            }
+        }
+        return wallCoordinates;
     }
 
     /**
