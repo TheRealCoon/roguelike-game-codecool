@@ -20,7 +20,13 @@ public class App {
         final int playerStartY = 3;
         final char playerIcon = '@';
 
-        Player player = new Player();
+        System.out.println("Choose a name for your hero!");
+        String playerName = Util.getInputString();
+
+        Coordinates playerStartingCoordinates = new Coordinates(playerStartX, playerStartY);
+
+        Player player = new Player(playerName, playerStartingCoordinates);
+
         char[][] board = Engine.createBoard(boardWidth, boardHeight, wallIcon, numberOfGates, gateIconHorizontal,
                 gateIconVertical);
 
