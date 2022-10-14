@@ -21,7 +21,14 @@ public class App {
         final int playerStartY = 3;
         final char playerIcon = '@';
 
-        Player player = new Player();
+
+        System.out.println("Choose a name for your hero!");
+        String playerName = Util.getInputString();
+
+        Coordinates playerStartingCoordinates = new Coordinates(playerStartX, playerStartY);
+
+        Player player = new Player(playerName, playerStartingCoordinates);
+
         char[][] board;
         try {
             board = Engine.createBoard(boardWidth, boardHeight, wallIcon, numberOfGates, gateIconHorizontal,
@@ -46,8 +53,13 @@ public class App {
             if (key == 'q') {
                 isRunning = false;
             } else {
-                // Implement moving on board below
-
+                switch (key) {
+                    case 'w' -> player.moveUp();
+                    case 's' -> player.moveDown();
+                    case 'a' -> player.moveLeft();
+                    case 'd' -> player.moveRight();
+                    default -> System.out.println("That is not a valid key to move");
+                }
             }
         }
     }
