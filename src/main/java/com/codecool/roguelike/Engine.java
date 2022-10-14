@@ -58,13 +58,15 @@ public class Engine {
         int height = board.length;
         int width = board[0].length;
         int lengthOfWall;
+        int increment = 1;
         List<Integer[]> wallCoordinates = getListOfWallCoordinates(board, wallIcon);
         Integer[] beginningCoordinate = wallCoordinates.get(RANDOM.nextInt(wallCoordinates.size()));
 
         if (isThereWallHorizontally(board, wallIcon, beginningCoordinate)) {
             //then vertical wall
             lengthOfWall = RANDOM.nextInt(height - beginningCoordinate[0] - 2);
-            for (int i = beginningCoordinate[0]; i < beginningCoordinate[0] + lengthOfWall; i++) {
+            if (beginningCoordinate[0] + lengthOfWall >= height - 2) increment = -1;
+            for (int i = beginningCoordinate[0]; i < beginningCoordinate[0] + lengthOfWall || i >= 2; i += increment) {
                 board[i][beginningCoordinate[1]] = wallIcon;
             }
         } else if (isThereWallVertically(board, wallIcon, beginningCoordinate)) {
