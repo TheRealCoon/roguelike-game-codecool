@@ -46,20 +46,11 @@ public class App {
                 isRunning = false;
             } else {
                 switch (key) {
-                    case 'w' :
-                        player.moveUp(board);
-                        break;
-                    case 's' :
-                        player.moveDown(board);
-                        break;
-                    case 'a' :
-                        player.moveLeft(board);
-                        break;
-                    case 'd' :
-                        player.moveRight(board);
-                        break;
-                    default :
-                        System.out.println("That is not a valid key to move");
+                    case 'w' -> player.moveUp();
+                    case 's' -> player.moveDown();
+                    case 'a' -> player.moveLeft();
+                    case 'd' -> player.moveRight();
+                    default -> System.out.println("That is not a valid key to move");
                 }
             }
         }
