@@ -220,6 +220,10 @@ public class Engine {
      * @param player The player information containing the coordinates
      */
     public static void removePlayerFromBoard(char[][] board, Player player) {
-        throw new RuntimeException("method removePlayerFromBoard not implemented");
+        int y = player.getCoordinates().getVerticalCoordinate();
+        int x = player.getCoordinates().getHorizontalCoordinate();
+        if (board[y][x] == player.getIcon()) {
+            board[y][x] = ' ';
+        }
     }
 }
