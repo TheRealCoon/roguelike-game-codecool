@@ -1,5 +1,6 @@
 package com.codecool.roguelike;
 
+import com.codecool.roguelike.exceptions.CoordinateIsAlreadyOccupiedException;
 import com.codecool.roguelike.exceptions.TooManyGatesException;
 import com.codecool.roguelike.ui.console.ConsoleUI;
 
@@ -184,7 +185,7 @@ public class Engine {
     }
 
     private static int randomizeIndexOfGate(int minIndexInclusive, int maxIndexExclusive, char c) {
-        //TODO infinite cycle could happen if there are more gates than board.length-2
+        //TODO infinite cycle could happen if there are more gates than board.length-2 or board.
         int gateIndex;
         do {
             gateIndex = RANDOM.nextInt(minIndexInclusive, maxIndexExclusive);
@@ -203,7 +204,13 @@ public class Engine {
      * @param player The player information containing the icon and coordinates
      */
     public static void putPlayerOnBoard(char[][] board, Player player) {
-        //throw new RuntimeException("method putPlayerOnBoard not implemented");
+        int y = player.getCoordinates().getVerticalCoordinate();
+        int x = player.getCoordinates().getHorizontalCoordinate();
+        if (board[y][x] == ' ') {
+            board[y][x] = player.getIcon();
+        } else {
+            throw new CoordinateIsAlreadyOccupiedException("There is already a(n) '" + board[y][x] + "' on that coordinate!");
+        }
     }
 
     /**

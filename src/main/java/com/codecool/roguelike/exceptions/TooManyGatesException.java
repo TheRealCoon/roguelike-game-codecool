@@ -1,6 +1,6 @@
 package com.codecool.roguelike.exceptions;
 
-public class TooManyGatesException extends Exception {
+public class TooManyGatesException extends RuntimeException {
     public TooManyGatesException(String msg) {
         super(msg);
     }
