@@ -19,6 +19,7 @@ public class Engine {
      * @param height             The height of the board
      * @param wallIcon           The icon for the wall
      * @param numberOfGates      Amount of gates present on the map
+     * @param numberOfInnerWalls Amount of inner-walls on the map
      * @param gateIconHorizontal Horizontal gate icon
      * @param gateIconVertical   Vertical gate icon
      */
@@ -31,7 +32,8 @@ public class Engine {
             placeRandomGateOnBorder(board, gateIconHorizontal, gateIconVertical);
         }
         for (int i = 0; i < numberOfInnerWalls; i++) {
-            createRandomWall(board, wallIcon);
+            List<Integer[]> wallCoordinates = getListOfWallCoordinates(board, wallIcon);
+            createRandomWall(board, wallIcon, wallCoordinates);
         }
         return board;
     }
@@ -50,13 +52,12 @@ public class Engine {
         }
     }
 
-    private static void createRandomWall(char[][] board, char wallIcon) {
+    private static void createRandomWall(char[][] board, char wallIcon, List<Integer[]> wallCoordinates) {
         int height = board.length;
         int width = board[0].length;
-        int lengthOfWall = 1;
+        int lengthOfWall;
         int maxWallLength;
-        int increment = 1;
-        List<Integer[]> wallCoordinates = getListOfWallCoordinates(board, wallIcon);
+        int increment;
         Integer[] beginningCoordinate = wallCoordinates.get(RANDOM.nextInt(wallCoordinates.size()));
         int y = beginningCoordinate[0];
         int x = beginningCoordinate[1];
@@ -65,25 +66,30 @@ public class Engine {
             increment = getIncrement(height, y);
             maxWallLength = getMaxWallLength(height, increment, y);
             lengthOfWall = RANDOM.nextInt(1, maxWallLength);
-            for (int i = y; i != y + increment * (lengthOfWall + 1); i += increment) {
-                board[i][x] = wallIcon;
-            }
+            placeVerticalWallOnBoard(board, wallIcon, lengthOfWall, increment, y, x);
         } else if (isThereWallVertically(board, wallIcon, beginningCoordinate)) {
             increment = getIncrement(width, x);
             maxWallLength = getMaxWallLength(width, increment, x);
             lengthOfWall = RANDOM.nextInt(1, maxWallLength);
-            for (int i = x; i != x + increment * (lengthOfWall + 1); i += increment) {
+            placeHorizontalWallOnBoard(board, wallIcon, lengthOfWall, increment, y, x);
+        }
+        wallCoordinates.remove(beginningCoordinate);
+    }
+
+    private static void placeVerticalWallOnBoard(char[][] board, char wallIcon, int lengthOfWall, int increment, int y, int x) {
+        for (int i = y; i != y + increment * (lengthOfWall + 1); i += increment) {
+            if (board[i + increment][x] == ' ' && board[i + increment][x + 1] == ' ' && board[i + increment][x - 1] == ' ') {
+                board[i][x] = wallIcon;
+            }
+        }
+    }
+
+    private static void placeHorizontalWallOnBoard(char[][] board, char wallIcon, int lengthOfWall, int increment, int y, int x) {
+        for (int i = x; i != x + increment * (lengthOfWall + 1); i += increment) {
+            if (board[y][i + increment] == ' ' && board[y + 1][i + increment] == ' ' && board[y - 1][i + increment] == ' ') {
                 board[y][i] = wallIcon;
             }
         }
-        wallCoordinates.remove(beginningCoordinate);
-        //for testing
-        System.out.println("increment: " + increment);
-        System.out.println("beginningCoordinate: " + y + ", " + x);
-        System.out.println("length of wall: " + lengthOfWall);
-        System.out.println("board:");
-        new ConsoleUI().displayBoard(board);
-
     }
 
     private static int getMaxWallLength(int lengthOfSide, int verticalIncrement, int index) {
@@ -138,7 +144,7 @@ public class Engine {
         List<Integer[]> wallCoordinates = new ArrayList<>();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if (board[i][j] == wallIcon && ((i != 0 && i != height - 1) || (j != 0 && j != width - 1)))
+                if (board[i][j] == wallIcon && ((i > 1 && i < height - 2) || (j > 1 && j < width - 2)))
                     wallCoordinates.add(new Integer[]{i, j});
             }
         }
