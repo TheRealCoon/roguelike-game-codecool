@@ -22,7 +22,7 @@ public class Engine {
      * @param gateIconHorizontal Horizontal gate icon
      * @param gateIconVertical   Vertical gate icon
      */
-    public static char[][] createBoard(int width, int height, char wallIcon, int numberOfGates,
+    public static char[][] createBoard(int width, int height, char wallIcon, int numberOfGates, int numberOfInnerWalls,
                                        char gateIconHorizontal, char gateIconVertical) throws TooManyGatesException {
         if (2 * (width + height) - 4 < numberOfGates) throw new TooManyGatesException("There are way too many gates!");
         char[][] board = new char[height][width];
@@ -30,15 +30,10 @@ public class Engine {
         for (int i = 0; i < numberOfGates; i++) {
             placeRandomGateOnBorder(board, gateIconHorizontal, gateIconVertical);
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < numberOfInnerWalls; i++) {
             createRandomWall(board, wallIcon);
         }
-        //TODO clean code maybe
         return board;
-    }
-
-    private static String randomizeGateOrientation() {
-        return (RANDOM.nextInt(2) == 0) ? "Horizontal" : "Vertical";
     }
 
     private static void createBorder(char[][] board, char wallIcon) {
@@ -59,52 +54,60 @@ public class Engine {
         int height = board.length;
         int width = board[0].length;
         int lengthOfWall = 1;
-        int increment;
+        int maxWallLength;
+        int increment = 1;
         List<Integer[]> wallCoordinates = getListOfWallCoordinates(board, wallIcon);
         Integer[] beginningCoordinate = wallCoordinates.get(RANDOM.nextInt(wallCoordinates.size()));
         int y = beginningCoordinate[0];
         int x = beginningCoordinate[1];
-        if (y == height - 1 || x == width - 1) {
-            //if beginningCoordinate is part of right or bottom wall:
-            increment = -1;
-        } else if (y == 0 || x == 0) {
-            //if beginningCoordinate is part of top or left wall:
-            increment = 1;
-        } else {
-            //if beginningCoordinate is an inner-wall, then direction of the wall is random
-            increment = RANDOM.nextInt(2) == 1 ? 1 : -1;
-        }
+
         if (isThereWallHorizontally(board, wallIcon, beginningCoordinate)) {
-            //then vertical wall
-            try {
-                lengthOfWall = increment == 1 ? RANDOM.nextInt(1, height - y - 2) :
-                        RANDOM.nextInt(1, y - 2);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-            for (int i = y; i != y + increment * lengthOfWall; i += increment) {
+            increment = getIncrement(height, y);
+            maxWallLength = getMaxWallLength(height, increment, y);
+            lengthOfWall = RANDOM.nextInt(1, maxWallLength);
+            for (int i = y; i != y + increment * (lengthOfWall + 1); i += increment) {
                 board[i][x] = wallIcon;
             }
         } else if (isThereWallVertically(board, wallIcon, beginningCoordinate)) {
-            //then horizontal wall
-            try {
-                lengthOfWall = increment == 1 ? RANDOM.nextInt(1, width - x - 2) :
-                        RANDOM.nextInt(1, x - 2 );
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-
-            }
-            for (int i = x; i != x + increment * lengthOfWall; i += increment) {
+            increment = getIncrement(width, x);
+            maxWallLength = getMaxWallLength(width, increment, x);
+            lengthOfWall = RANDOM.nextInt(1, maxWallLength);
+            for (int i = x; i != x + increment * (lengthOfWall + 1); i += increment) {
                 board[y][i] = wallIcon;
             }
         }
+        wallCoordinates.remove(beginningCoordinate);
         //for testing
-//        System.out.println("increment: " + increment);
-//        System.out.println("beginningCoordinate: " + y + ", " + x);
-//        System.out.println("length of wall: " + lengthOfWall);
-//        System.out.println("board:");
-//        new ConsoleUI().displayBoard(board);
+        System.out.println("increment: " + increment);
+        System.out.println("beginningCoordinate: " + y + ", " + x);
+        System.out.println("length of wall: " + lengthOfWall);
+        System.out.println("board:");
+        new ConsoleUI().displayBoard(board);
 
+    }
+
+    private static int getMaxWallLength(int lengthOfSide, int verticalIncrement, int index) {
+        int maxWallLength;
+        if (index <= 1) {
+            maxWallLength = lengthOfSide - index - 3;
+        } else if (index >= lengthOfSide - 2) {
+            maxWallLength = lengthOfSide - 3;
+        } else {
+            maxWallLength = (verticalIncrement == 1) ? lengthOfSide - index - 1 : index;
+        }
+        return maxWallLength;
+    }
+
+    private static int getIncrement(int lengthOfSide, int index) {
+        int increment;
+        if (index <= 1) {
+            increment = 1;
+        } else if (index >= lengthOfSide - 2) {
+            increment = -1;
+        } else {
+            increment = RANDOM.nextInt(2) == 1 ? 1 : -1;
+        }
+        return increment;
     }
 
     private static boolean isThereWallHorizontally(char[][] board, char wallIcon, Integer[] coordinate) {
