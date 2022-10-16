@@ -39,7 +39,7 @@ public class Engine {
         return board;
     }
 
-    private static void createBorder(char[][] board, char wallIcon) {
+    static void createBorder(char[][] board, char wallIcon) {
         int height = board.length;
         int width = board[0].length;
         for (int i = 0; i < height; i++) {
@@ -117,7 +117,7 @@ public class Engine {
         return increment;
     }
 
-    private static boolean isThereWallHorizontally(char[][] board, char wallIcon, Integer[] coordinate) {
+    static boolean isThereWallHorizontally(char[][] board, char wallIcon, Integer[] coordinate) {
         int y = coordinate[0];
         int x = coordinate[1];
         if (y == 0 || y == board.length - 1) return true;
@@ -128,7 +128,7 @@ public class Engine {
         return false;
     }
 
-    private static boolean isThereWallVertically(char[][] board, char wallIcon, Integer[] coordinate) {
+    static boolean isThereWallVertically(char[][] board, char wallIcon, Integer[] coordinate) {
         int y = coordinate[0];
         int x = coordinate[1];
         if (x == 0 || x == board[0].length - 1) return true;
