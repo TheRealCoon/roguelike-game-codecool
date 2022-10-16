@@ -1,5 +1,6 @@
 package com.codecool.roguelike.ui.console;
 
+import com.codecool.roguelike.Player;
 import com.codecool.roguelike.ui.GameUI;
 
 public class ConsoleUI implements GameUI {
@@ -11,5 +12,8 @@ public class ConsoleUI implements GameUI {
             }
             System.out.print("\n");
         }
+    }
+    public void displayCharacterStats(Player player){
+        System.out.println(player.toString());
     }
 }

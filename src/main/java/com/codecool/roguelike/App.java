@@ -57,6 +57,7 @@ public class App {
             }
 
             ui.displayBoard(board);
+            ((ConsoleUI) ui).displayCharacterStats(player);
 
             char key = Util.getKeyStroke(reader, 1500);
             //char key = Util.getInputChar();
