@@ -12,6 +12,7 @@ public class Player {
     private int damage;
     private int damageTaken;
     private Coordinates coordinates;
+    private final char playerIcon;
 
     public Player(String name, Coordinates coordinates) {
         this.NAME = name;
@@ -20,6 +21,7 @@ public class Player {
         damage = 10;
         damageTaken = 10;
         this.coordinates = coordinates;
+        playerIcon = '@';
     }
 
     public void moveUp() {
@@ -82,5 +84,9 @@ public class Player {
     }
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public char getIcon() {
+        return playerIcon;
     }
 }
