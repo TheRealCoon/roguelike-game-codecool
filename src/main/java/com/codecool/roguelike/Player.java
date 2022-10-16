@@ -77,4 +77,10 @@ public class Player {
     public void setDamageTaken(int damageTaken) {
         this.damageTaken = damageTaken;
     }
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
 }
