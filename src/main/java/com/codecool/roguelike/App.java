@@ -56,10 +56,10 @@ public class App {
                 isRunning = false;
             } else {
                 switch (key) {
-                    case 'w' -> player.moveUp();
-                    case 's' -> player.moveDown();
-                    case 'a' -> player.moveLeft();
-                    case 'd' -> player.moveRight();
+                    case 'w' -> {Engine.removePlayerFromBoard(board,player); player.moveUp();}
+                    case 's' -> {Engine.removePlayerFromBoard(board,player); player.moveDown();}
+                    case 'a' -> {Engine.removePlayerFromBoard(board,player); player.moveLeft();}
+                    case 'd' -> {Engine.removePlayerFromBoard(board,player); player.moveRight();}
                     default -> System.out.println("That is not a valid key to move");
                 }
             }

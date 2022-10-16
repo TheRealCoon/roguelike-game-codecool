@@ -25,11 +25,11 @@ public class Player {
     }
 
     public void moveUp() {
-        coordinates.setVerticalCoordinate(coordinates.getVerticalCoordinate() + 1);
+        coordinates.setVerticalCoordinate(coordinates.getVerticalCoordinate() - 1);
     }
 
     public void moveDown() {
-        coordinates.setVerticalCoordinate(coordinates.getVerticalCoordinate() - 1);
+        coordinates.setVerticalCoordinate(coordinates.getVerticalCoordinate() + 1);
     }
 
     public void moveLeft() {
