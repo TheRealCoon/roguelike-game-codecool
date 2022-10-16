@@ -133,8 +133,8 @@ public class Engine {
         int x = coordinate[1];
         if (x == 0 || x == board[0].length - 1) return true;
         if (y != 0 && y != board.length - 1) {
-            return (board[x + 1][y] == wallIcon) ||
-                    (board[x - 1][y] == wallIcon);
+            return (board[y + 1][x] == wallIcon) ||
+                    (board[y - 1][x] == wallIcon);
         }
         return false;
     }
