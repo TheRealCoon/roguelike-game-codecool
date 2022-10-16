@@ -1,12 +1,13 @@
 package com.codecool.roguelike;
 
-import com.codecool.roguelike.exceptions.CoordinateIsAlreadyOccupiedException;
 import com.codecool.roguelike.exceptions.TooManyGatesException;
 import com.codecool.roguelike.ui.GameInputReader;
 import com.codecool.roguelike.ui.GameUI;
 import com.codecool.roguelike.ui.console.ConsoleGameInputReader;
 import com.codecool.roguelike.ui.console.ConsoleUI;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 public class App {
@@ -51,26 +52,39 @@ public class App {
         while (isRunning) {
             if (isGameStarting) {
                 Engine.putPlayerOnBoardRandomly(board, player);
-            }else{
+            } else {
                 Engine.putPlayerOnBoard(board, player);
             }
 
             ui.displayBoard(board);
-            char key = reader.getInputChar();
+
+            char key = Util.getKeyStroke(reader, 1500);
+            //char key = Util.getInputChar();
 
             if (key == 'q') {
                 isRunning = false;
             } else {
                 switch (key) {
-                    case 'w' -> {Engine.removePlayerFromBoard(board,player); player.moveUp();}
-                    case 's' -> {Engine.removePlayerFromBoard(board,player); player.moveDown();}
-                    case 'a' -> {Engine.removePlayerFromBoard(board,player); player.moveLeft();}
-                    case 'd' -> {Engine.removePlayerFromBoard(board,player); player.moveRight();}
-                    default -> System.out.println("That is not a valid key to move");
+                    case 'w' -> {
+                        Engine.removePlayerFromBoard(board, player);
+                        player.moveUp();
+                    }
+                    case 's' -> {
+                        Engine.removePlayerFromBoard(board, player);
+                        player.moveDown();
+                    }
+                    case 'a' -> {
+                        Engine.removePlayerFromBoard(board, player);
+                        player.moveLeft();
+                    }
+                    case 'd' -> {
+                        Engine.removePlayerFromBoard(board, player);
+                        player.moveRight();
+                    }
+                    default -> System.out.println("Move with W,A,S,D, open inventory with I, or quit with Q!");
                 }
             }
             isGameStarting = false;
         }
     }
-
 }
