@@ -1,5 +1,6 @@
 package com.codecool.roguelike;
 
+import com.codecool.roguelike.exceptions.CoordinateIsAlreadyOccupiedException;
 import com.codecool.roguelike.exceptions.TooManyGatesException;
 import com.codecool.roguelike.ui.GameInputReader;
 import com.codecool.roguelike.ui.GameUI;
@@ -46,9 +47,14 @@ public class App {
         GameInputReader reader = new ConsoleGameInputReader();
 
         boolean isRunning = true;
-
+        boolean isGameStarting = true;
         while (isRunning) {
-            Engine.putPlayerOnBoard(board, player);
+            if (isGameStarting) {
+                Engine.putPlayerOnBoardRandomly(board, player);
+            }else{
+                Engine.putPlayerOnBoard(board, player);
+            }
+
             ui.displayBoard(board);
             char key = reader.getInputChar();
 
@@ -63,6 +69,7 @@ public class App {
                     default -> System.out.println("That is not a valid key to move");
                 }
             }
+            isGameStarting = false;
         }
     }
 

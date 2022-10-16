@@ -213,6 +213,17 @@ public class Engine {
         }
     }
 
+    public static void putPlayerOnBoardRandomly(char[][] board, Player player) {
+        int x,y;
+        do {
+            y = RANDOM.nextInt(1, board.length - 2);
+            x = RANDOM.nextInt(1, board[0].length - 2);
+        }while(board[y][x]!= ' ');
+        Coordinates randomCoordinates = new Coordinates(x, y);
+        player.setCoordinates(randomCoordinates);
+        putPlayerOnBoard(board, player);
+    }
+
     /**
      * Modifies the game board by removing the player icon from its coordinates
      *
