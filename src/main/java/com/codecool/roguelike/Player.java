@@ -27,12 +27,15 @@ public class Player {
     }
 
     public void moveDown() {
+        coordinates.setVerticalCoordinate(coordinates.getVerticalCoordinate() - 1);
     }
 
     public void moveLeft() {
+        coordinates.setHorizontalCoordinate(coordinates.getHorizontalCoordinate() - 1);
     }
 
     public void moveRight() {
+        coordinates.setHorizontalCoordinate(coordinates.getHorizontalCoordinate() + 1);
     }
 
     public String getPlayerName() {
