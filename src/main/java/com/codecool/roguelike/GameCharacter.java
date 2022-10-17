@@ -1,5 +1,6 @@
 package com.codecool.roguelike;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GameCharacter {
@@ -11,12 +12,13 @@ public abstract class GameCharacter {
     protected int hitChance = 50;
     protected Coordinates coordinates;
     protected char characterIcon;
-    protected List<Item> Inventory;
+    protected List<Item> inventory;
 
     public GameCharacter(String name, Coordinates coordinates, char characterIcon) {
         this.name = name;
         this.coordinates = coordinates;
         this.characterIcon = characterIcon;
+        inventory = new ArrayList<>();
     }
 
     public String getName() {
@@ -76,10 +78,14 @@ public abstract class GameCharacter {
     }
 
     public List<Item> getInventory() {
-        return Inventory;
+        return inventory;
+    }
+
+    public void addToInventory(Item item) {
+        inventory.add(item);
     }
 
     public void setInventory(List<Item> inventory) {
-        Inventory = inventory;
+        this.inventory = inventory;
     }
 }
