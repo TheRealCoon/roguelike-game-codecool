@@ -31,4 +31,18 @@ public class Util {
         }
         return userInput;
     }
+
+    public static int getInputInt() {
+        int userInput = 0;
+        while (userInput < 1 || userInput > 3) {
+            try {
+                Scanner scanner = new Scanner(System.in);
+                userInput = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("That was not a correct choice, try again");
+                userInput = 0;
+            }
+        }
+        return userInput;
+    }
 }
