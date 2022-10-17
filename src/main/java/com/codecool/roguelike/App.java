@@ -49,7 +49,7 @@ public class App {
 
         Coordinates playerStartingCoordinates = new Coordinates(playerStartX, playerStartY);
 
-        Player player = new Player(playerName, playerStartingCoordinates);
+        Player player = new Player(playerName, playerRace, playerStartingCoordinates);
 
         char[][] board;
         try {
