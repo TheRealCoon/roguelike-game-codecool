@@ -7,8 +7,10 @@ public class Npc extends GameCharacter{
     private String message;
     private List<Quest> questList;
 
+    private static final char icon = 'N';
+
     public Npc(String name, Coordinates coordinates) {
-        super(name, coordinates, 'N');
+        super(name, coordinates, icon);
     }
 
     private void fillQuestList(){
