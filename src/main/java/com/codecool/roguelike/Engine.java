@@ -39,7 +39,7 @@ public class Engine {
         return board;
     }
 
-    private static void createBorder(char[][] board, char wallIcon) {
+    static void createBorder(char[][] board, char wallIcon) {
         int height = board.length;
         int width = board[0].length;
         for (int i = 0; i < height; i++) {
@@ -117,7 +117,7 @@ public class Engine {
         return increment;
     }
 
-    private static boolean isThereWallHorizontally(char[][] board, char wallIcon, Integer[] coordinate) {
+    static boolean isThereWallHorizontally(char[][] board, char wallIcon, Integer[] coordinate) {
         int y = coordinate[0];
         int x = coordinate[1];
         if (y == 0 || y == board.length - 1) return true;
@@ -128,13 +128,13 @@ public class Engine {
         return false;
     }
 
-    private static boolean isThereWallVertically(char[][] board, char wallIcon, Integer[] coordinate) {
+    static boolean isThereWallVertically(char[][] board, char wallIcon, Integer[] coordinate) {
         int y = coordinate[0];
         int x = coordinate[1];
         if (x == 0 || x == board[0].length - 1) return true;
         if (y != 0 && y != board.length - 1) {
-            return (board[x + 1][y] == wallIcon) ||
-                    (board[x - 1][y] == wallIcon);
+            return (board[y + 1][x] == wallIcon) ||
+                    (board[y - 1][x] == wallIcon);
         }
         return false;
     }
@@ -206,11 +206,22 @@ public class Engine {
     public static void putPlayerOnBoard(char[][] board, Player player) {
         int y = player.getCoordinates().getVerticalCoordinate();
         int x = player.getCoordinates().getHorizontalCoordinate();
-        if (board[y][x] == ' ') {
+        if (board[y][x] == ' ' || board[y][x] == player.getIcon()) {
             board[y][x] = player.getIcon();
         } else {
             throw new CoordinateIsAlreadyOccupiedException("There is already a(n) '" + board[y][x] + "' on that coordinate!");
         }
+    }
+
+    public static void putPlayerOnBoardRandomly(char[][] board, Player player) {
+        int x, y;
+        do {
+            y = RANDOM.nextInt(1, board.length - 2);
+            x = RANDOM.nextInt(1, board[0].length - 2);
+        } while (board[y][x] != ' ');
+        Coordinates randomCoordinates = new Coordinates(x, y);
+        player.setCoordinates(randomCoordinates);
+        putPlayerOnBoard(board, player);
     }
 
     /**

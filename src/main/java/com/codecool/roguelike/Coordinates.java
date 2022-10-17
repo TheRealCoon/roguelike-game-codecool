@@ -24,4 +24,11 @@ public class Coordinates {
     public void setVerticalCoordinate(int verticalCoordinate) {
         this.verticalCoordinate = verticalCoordinate;
     }
+
+    @Override
+    public String toString() {
+        return "[" + horizontalCoordinate +
+                ", " + verticalCoordinate +
+                ']';
+    }
 }
