@@ -14,9 +14,9 @@ public class Player {
     private Coordinates coordinates;
     private final char playerIcon;
 
-    public Player(String name, Coordinates coordinates) {
+    public Player(String name, Race race, Coordinates coordinates) {
         this.NAME = name;
-        RACE = Race.HUMAN;
+        this.RACE = race;
         health = 100;
         damage = 10;
         damageTaken = 10;
