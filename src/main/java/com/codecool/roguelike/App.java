@@ -22,9 +22,30 @@ public class App {
         final int playerStartY = 3;
         final char playerIcon = '@';
 
-
         System.out.println("Choose a name for your hero!");
         String playerName = Util.getInputString();
+
+        System.out.println("Choose the race of your hero!");
+        System.out.println("1 - Human");
+        System.out.println("2 - Elf");
+        System.out.println("3 - Dwarf");
+        Race playerRace = Race.HUMAN;
+        int userRaceChoice = Util.getInputInt();
+
+        switch (userRaceChoice) {
+            case 1 -> {
+                System.out.println("You will play as a human");
+                playerRace = Race.HUMAN;
+            }
+            case 2 -> {
+                System.out.println("You will play as an elf");
+                playerRace = Race.ELF;
+            }
+            case 3 -> {
+                System.out.println("You will play as a dwarf");
+                playerRace = Race.DWARF;
+            }
+        }
 
         Coordinates playerStartingCoordinates = new Coordinates(playerStartX, playerStartY);
 
