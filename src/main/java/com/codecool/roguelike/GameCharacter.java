@@ -4,14 +4,14 @@ import java.util.List;
 
 public abstract class GameCharacter {
 
-    private String name;
-    private int health = 100;
-    private int damage = 10;
-    private int damageTaken = 10;
-    private int hitChance = 50;
-    private Coordinates coordinates;
-    private char characterIcon;
-    private List<Item> Inventory;
+    protected String name;
+    protected int health = 100;
+    protected int damage = 10;
+    protected int damageTaken = 10;
+    protected int hitChance = 50;
+    protected Coordinates coordinates;
+    protected char characterIcon;
+    protected List<Item> Inventory;
 
     public GameCharacter(String name, Coordinates coordinates, char characterIcon) {
         this.name = name;
