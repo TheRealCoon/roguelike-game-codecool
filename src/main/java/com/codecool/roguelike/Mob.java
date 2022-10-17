@@ -2,7 +2,7 @@ package com.codecool.roguelike;
 
 import java.util.Random;
 
-public class Mob extends GameCharacter{
+public class Mob extends GameCharacter {
 
     private MobType type;
     private final double modifier = type.getStatMultiplier();
@@ -20,14 +20,19 @@ public class Mob extends GameCharacter{
         return MobType.values()[RANDOM.nextInt(SIZE)];
     }
 
-    private void modifyBaseStats(){
-        setDamage((int)(getDamage() *  modifier));
-        setHealth((int)(getHealth() *  modifier));
-        setDamageTaken((int)(getDamageTaken() / modifier));
+    private void modifyBaseStats() {
+        damage = (int) (damage * modifier);
+        health = (int) (health * modifier);
+        damageTaken = (int) (damageTaken / modifier);
     }
 
-    private void moveRandom(){}
-    private void moveToPlayer(){}
-    private void addRandomItem(){}
+    private void moveRandom() {
+    }//TODO
+
+    private void moveToPlayer() {
+    }//TODO
+
+    private void addRandomItem() {
+    }//TODO
 
 }
