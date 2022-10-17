@@ -113,4 +113,10 @@ public class Player {
                 " / Coords " + coordinates +
                 " / Inventory [" + inventory.size() + "]";
     }
+
+    public void displayInventory() {
+        for (Item item : inventory) {
+            System.out.println(item);
+        }
+    }
 }
