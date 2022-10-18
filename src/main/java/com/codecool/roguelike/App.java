@@ -17,7 +17,7 @@ public class App {
         final int boardWidth = 20;
         final int boardHeight = 10;
         final char wallIcon = '#';
-        final int numberOfGates = 2;
+        final int numberOfGates = 10;
         final int numberOfInnerWalls = 5;
         final char gateIconHorizontal = '=';
         final char gateIconVertical = '"';
