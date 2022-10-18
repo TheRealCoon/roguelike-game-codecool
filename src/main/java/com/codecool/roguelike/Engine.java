@@ -12,6 +12,7 @@ public class Engine {
 
     private static final List<Interactable> interactables = new ArrayList<>();
     private static Board board;
+    private static Npc npc;
 
     /**
      * Creates a new game board based on input parameters
@@ -58,7 +59,7 @@ public class Engine {
     }
 
     public static void createNpc(char[][] board) {
-        Npc npc = new Npc("Elvis", new Coordinates(0, 0));
+        npc = new Npc("Elvis", new Coordinates(0, 0));
 
         putCharacterOnBoardRandomly(board, npc);
 
@@ -129,11 +130,17 @@ public class Engine {
         }
     }
 
-    public static void tryToInterract(Player player, Coordinates coordinates) {
+    public static void tryToInteract(Player player, Coordinates coordinates) {
         for (Interactable i : interactables) {
             if (i.getCoordinates().equals(coordinates))
                 i.interact(player);
         }
+    }
+
+    public static void checkIfQuestDone(){
+        if(npc.getActiveQuest().equals(null))
+            return;
+
     }
 
     public static boolean isEmpty(Coordinates coordinates) {
