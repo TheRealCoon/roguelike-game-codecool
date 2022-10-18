@@ -1,5 +1,6 @@
 package com.codecool.roguelike;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GameCharacter {
@@ -7,16 +8,17 @@ public abstract class GameCharacter {
     protected String name;
     protected int health = 100;
     protected int damage = 10;
-    protected int damageTaken = 10;
+    protected int armor = 10;
     protected int hitChance = 50;
     protected Coordinates coordinates;
     protected char characterIcon;
-    protected List<Item> Inventory;
+    protected List<Item> inventory;
 
     public GameCharacter(String name, Coordinates coordinates, char characterIcon) {
         this.name = name;
         this.coordinates = coordinates;
         this.characterIcon = characterIcon;
+        inventory = new ArrayList<>();
     }
 
     public String getName() {
@@ -43,12 +45,12 @@ public abstract class GameCharacter {
         this.damage = damage;
     }
 
-    public int getDamageTaken() {
-        return damageTaken;
+    public int getArmor() {
+        return armor;
     }
 
-    public void setDamageTaken(int damageTaken) {
-        this.damageTaken = damageTaken;
+    public void setArmor(int armor) {
+        this.armor = armor;
     }
 
     public int getHitChance() {
@@ -67,6 +69,11 @@ public abstract class GameCharacter {
         this.coordinates = coordinates;
     }
 
+    public void setCoordinates(int horizontal, int vertical) {
+        this.coordinates.setHorizontalCoordinate(horizontal);
+        this.coordinates.setVerticalCoordinate(vertical);
+    }
+
     public char getCharacterIcon() {
         return characterIcon;
     }
@@ -76,10 +83,14 @@ public abstract class GameCharacter {
     }
 
     public List<Item> getInventory() {
-        return Inventory;
+        return inventory;
+    }
+
+    public void addToInventory(Item item) {
+        inventory.add(item);
     }
 
     public void setInventory(List<Item> inventory) {
-        Inventory = inventory;
+        this.inventory = inventory;
     }
 }
