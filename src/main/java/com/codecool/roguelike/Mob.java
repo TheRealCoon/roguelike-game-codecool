@@ -2,7 +2,7 @@ package com.codecool.roguelike;
 
 import java.util.Random;
 
-public class Mob extends GameCharacter {
+public class Mob extends GameCharacter implements  Interactable{
 
     private MobType type;
     private final double modifier = type.getStatMultiplier();
@@ -67,5 +67,10 @@ public class Mob extends GameCharacter {
     }//TODO test, also it doesn't move, until it "sees" the player
 
     private void addRandomItem() {}//TODO
+
+    public void interact(Player player){
+        Engine.fighting(player, this);
+    }
+    
 
 }
