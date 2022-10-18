@@ -73,7 +73,7 @@ public class App {
         while (isRunning) {
             if (isGameStarting) {
                 Engine.placePlayerNextToAGate(board,player);
-                //Engine.putPlayerOnBoardRandomly(board, player);
+                Engine.createNpc(board.getCharBoard());
             } else {
                 Engine.putCharacterOnBoard(board.getCharBoard(), player);
             }
