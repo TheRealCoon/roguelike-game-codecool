@@ -7,8 +7,6 @@ import com.codecool.roguelike.ui.GameUI;
 import com.codecool.roguelike.ui.console.ConsoleGameInputReader;
 import com.codecool.roguelike.ui.console.ConsoleUI;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -77,7 +75,7 @@ public class App {
                 Engine.placePlayerNextToAGate(board,player);
                 //Engine.putPlayerOnBoardRandomly(board, player);
             } else {
-                Engine.putPlayerOnBoard(board.getCharBoard(), player);
+                Engine.putCharacterOnBoard(board.getCharBoard(), player);
             }
 
             ui.displayBoard(board.getCharBoard());
