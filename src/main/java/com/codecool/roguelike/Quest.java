@@ -7,12 +7,18 @@ public class Quest {// TODO a container to all killed enemies given to quest
     private String objective;//TODO what type shall it be?
     private Item reward;
     private String progress;//TODO what type shall it be?
+    private boolean isActive; //TODO to be cleared
 
     public Quest(String name, String description, String objective, Item reward) {
         this.name = name;
         this.description = description;
         this.objective = objective;
         this.reward = reward;
+    }
+
+    @Override
+    public String toString() {
+        return "           " + name + "\n" + description;
     }
 
     public String getName() {
@@ -53,5 +59,13 @@ public class Quest {// TODO a container to all killed enemies given to quest
 
     public void setProgress(String progress) {
         this.progress = progress;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }
