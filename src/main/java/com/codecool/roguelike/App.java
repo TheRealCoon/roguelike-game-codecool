@@ -24,6 +24,7 @@ public class App {
         final int playerStartY = 3;
         final char playerIcon = '@';
 
+
         System.out.println("Choose a name for your hero!");
         String playerName = Util.getInputString();
 
@@ -50,8 +51,14 @@ public class App {
         }
 
         Coordinates playerStartingCoordinates = new Coordinates(playerStartX, playerStartY);
+        Coordinates itemRandomCoordinates = new Coordinates((int)Coordinates.generateRandomHorizontal(), (int)Coordinates.generateRandomVertical());
 
         Player player = new Player(playerName, playerRace, playerStartingCoordinates);
+        Item armor = new Armor("Shield", ItemType.ARMOR, itemRandomCoordinates, 'A');
+        Item food = new Food("Bread", ItemType.FOOD, itemRandomCoordinates, 'F');
+        Item weapon = new Weapon("Sword", ItemType.WEAPON, itemRandomCoordinates, 'W');
+        Item key = new Key("Key", ItemType.KEY, itemRandomCoordinates, 'K');
+
 
         char[][] board;
         try {
@@ -73,6 +80,10 @@ public class App {
         while (isRunning) {
             if (isGameStarting) {
                 Engine.putPlayerOnBoardRandomly(board, player);
+                Engine.putItemsOnBoardRandomly(board, armor);
+                Engine.putItemsOnBoardRandomly(board, key);
+                Engine.putItemsOnBoardRandomly(board, weapon);
+
             } else {
                 Engine.putPlayerOnBoard(board, player);
             }

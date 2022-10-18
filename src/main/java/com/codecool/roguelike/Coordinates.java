@@ -31,4 +31,24 @@ public class Coordinates {
                 ", " + verticalCoordinate +
                 ']';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Coordinates coordinates = (Coordinates) o;
+        return horizontalCoordinate == coordinates.horizontalCoordinate &&
+                verticalCoordinate == coordinates.verticalCoordinate;
+    }
+
+
+    public static double generateRandomHorizontal(){
+        return Math.random() * (20 - 1) + 1;
+    }
+
+    public static double generateRandomVertical(){
+        return Math.random() * (10 - 1) + 1;
+    }
+
+
 }
