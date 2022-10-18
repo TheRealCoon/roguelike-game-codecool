@@ -62,4 +62,24 @@ public class Engine {
             board[y][x] = ' ';
         }
     }
+
+    public static void putItemsOnBoard(char[][] board, Item item) {
+        int y = item.getCoordinates().getVerticalCoordinate();
+        int x = item.getCoordinates().getHorizontalCoordinate();
+        if (board[y][x] == ' ' || board[y][x] == item.getItemIcon()) {
+            board[y][x] = item.getItemIcon();
+        } else {
+            throw new CoordinateIsAlreadyOccupiedException("There is already a(n) '" + board[y][x] + "' on that coordinate!");
+        }
+    }
+
+    public static void putItemsOnBoardRandomly(char[][] board, Item item) {
+        int x, y;
+        do {
+            y = Util.getRandomIntFromRange(1, board.length - 2);
+            x = Util.getRandomIntFromRange(1, board[0].length - 2);
+        } while (board[y][x] != ' ');
+        item.setCoordinates(new Coordinates(x, y));
+        putItemsOnBoard(board, item);
+    }
 }
