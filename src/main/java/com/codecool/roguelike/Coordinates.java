@@ -31,4 +31,13 @@ public class Coordinates {
                 ", " + verticalCoordinate +
                 ']';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Coordinates coordinates = (Coordinates) o;
+        return horizontalCoordinate == coordinates.horizontalCoordinate &&
+                verticalCoordinate == coordinates.verticalCoordinate;
+    }
 }

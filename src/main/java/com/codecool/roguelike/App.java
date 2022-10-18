@@ -1,5 +1,6 @@
 package com.codecool.roguelike;
 
+import com.codecool.roguelike.boardElements.Board;
 import com.codecool.roguelike.exceptions.TooManyGatesException;
 import com.codecool.roguelike.ui.GameInputReader;
 import com.codecool.roguelike.ui.GameUI;
@@ -54,7 +55,7 @@ public class App {
 
         Player player = new Player(playerName, playerRace, playerStartingCoordinates);
 
-        char[][] board;
+        Board board;
         try {
             board = Engine.createBoard(boardWidth, boardHeight, wallIcon, numberOfGates, numberOfInnerWalls,
                     gateIconHorizontal,
@@ -73,12 +74,13 @@ public class App {
         boolean isGameStarting = true;
         while (isRunning) {
             if (isGameStarting) {
-                Engine.putPlayerOnBoardRandomly(board, player);
+                Engine.placePlayerNextToAGate(board,player);
+                //Engine.putPlayerOnBoardRandomly(board, player);
             } else {
-                Engine.putPlayerOnBoard(board, player);
+                Engine.putPlayerOnBoard(board.getCharBoard(), player);
             }
 
-            ui.displayBoard(board);
+            ui.displayBoard(board.getCharBoard());
             ((ConsoleUI) ui).displayCharacterStats(player);
 
             char key = Util.getKeyStroke(reader, 1500);
@@ -89,19 +91,19 @@ public class App {
             } else {
                 switch (key) {
                     case 'w' -> {
-                        Engine.removePlayerFromBoard(board, player);
+                        Engine.removePlayerFromBoard(board.getCharBoard(), player);
                         player.moveUp();
                     }
                     case 's' -> {
-                        Engine.removePlayerFromBoard(board, player);
+                        Engine.removePlayerFromBoard(board.getCharBoard(), player);
                         player.moveDown();
                     }
                     case 'a' -> {
-                        Engine.removePlayerFromBoard(board, player);
+                        Engine.removePlayerFromBoard(board.getCharBoard(), player);
                         player.moveLeft();
                     }
                     case 'd' -> {
-                        Engine.removePlayerFromBoard(board, player);
+                        Engine.removePlayerFromBoard(board.getCharBoard(), player);
                         player.moveRight();
                     }
                     case 'i' -> {

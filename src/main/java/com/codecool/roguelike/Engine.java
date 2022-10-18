@@ -1,17 +1,11 @@
 package com.codecool.roguelike;
 
+import com.codecool.roguelike.boardElements.Board;
+import com.codecool.roguelike.boardElements.Gate;
 import com.codecool.roguelike.exceptions.CoordinateIsAlreadyOccupiedException;
 import com.codecool.roguelike.exceptions.TooManyGatesException;
-import com.codecool.roguelike.ui.console.ConsoleUI;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class Engine {
-
-    private static final int NUMBER_OF_SIDEWALLS = 4;
-    private static final Random RANDOM = new Random();
 
     /**
      * Creates a new game board based on input parameters
@@ -24,177 +18,10 @@ public class Engine {
      * @param gateIconHorizontal Horizontal gate icon
      * @param gateIconVertical   Vertical gate icon
      */
-    public static char[][] createBoard(int width, int height, char wallIcon, int numberOfGates, int numberOfInnerWalls,
+    public static Board createBoard(int width, int height, char wallIcon, int numberOfGates, int numberOfInnerWalls,
                                        char gateIconHorizontal, char gateIconVertical) throws TooManyGatesException {
-        if (2 * (width + height) - 4 < numberOfGates) throw new TooManyGatesException("There are way too many gates!");
-        char[][] board = new char[height][width];
-        createBorder(board, wallIcon);
-        for (int i = 0; i < numberOfGates; i++) {
-            placeRandomGateOnBorder(board, gateIconHorizontal, gateIconVertical);
-        }
-        for (int i = 0; i < numberOfInnerWalls; i++) {
-            List<Integer[]> wallCoordinates = getListOfWallCoordinates(board, wallIcon);
-            createRandomWall(board, wallIcon, wallCoordinates);
-        }
+        Board board = new Board(width, height, wallIcon, numberOfGates, numberOfInnerWalls, gateIconHorizontal, gateIconVertical);
         return board;
-    }
-
-    static void createBorder(char[][] board, char wallIcon) {
-        int height = board.length;
-        int width = board[0].length;
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
-                    board[i][j] = wallIcon;
-                } else {
-                    board[i][j] = ' ';
-                }
-            }
-        }
-    }
-
-    private static void createRandomWall(char[][] board, char wallIcon, List<Integer[]> wallCoordinates) {
-        int height = board.length;
-        int width = board[0].length;
-        int lengthOfWall;
-        int maxWallLength;
-        int increment;
-        Integer[] beginningCoordinate = wallCoordinates.get(RANDOM.nextInt(wallCoordinates.size()));
-        int y = beginningCoordinate[0];
-        int x = beginningCoordinate[1];
-
-        if (isThereWallHorizontally(board, wallIcon, beginningCoordinate)) {
-            increment = getIncrement(height, y);
-            maxWallLength = getMaxWallLength(height, increment, y);
-            lengthOfWall = RANDOM.nextInt(1, maxWallLength);
-            placeVerticalWallOnBoard(board, wallIcon, lengthOfWall, increment, y, x);
-        } else if (isThereWallVertically(board, wallIcon, beginningCoordinate)) {
-            increment = getIncrement(width, x);
-            maxWallLength = getMaxWallLength(width, increment, x);
-            lengthOfWall = RANDOM.nextInt(1, maxWallLength);
-            placeHorizontalWallOnBoard(board, wallIcon, lengthOfWall, increment, y, x);
-        }
-        wallCoordinates.remove(beginningCoordinate);
-    }
-
-    private static void placeVerticalWallOnBoard(char[][] board, char wallIcon, int lengthOfWall, int increment, int y, int x) {
-        for (int i = y; i != y + increment * (lengthOfWall + 1); i += increment) {
-            if (board[i + increment][x] == ' ' && board[i + increment][x + 1] == ' ' && board[i + increment][x - 1] == ' ') {
-                board[i][x] = wallIcon;
-            }
-        }
-    }
-
-    private static void placeHorizontalWallOnBoard(char[][] board, char wallIcon, int lengthOfWall, int increment, int y, int x) {
-        for (int i = x; i != x + increment * (lengthOfWall + 1); i += increment) {
-            if (board[y][i + increment] == ' ' && board[y + 1][i + increment] == ' ' && board[y - 1][i + increment] == ' ') {
-                board[y][i] = wallIcon;
-            }
-        }
-    }
-
-    private static int getMaxWallLength(int lengthOfSide, int verticalIncrement, int index) {
-        int maxWallLength;
-        if (index <= 1) {
-            maxWallLength = lengthOfSide - index - 3;
-        } else if (index >= lengthOfSide - 2) {
-            maxWallLength = lengthOfSide - 3;
-        } else {
-            maxWallLength = (verticalIncrement == 1) ? lengthOfSide - index - 1 : index;
-        }
-        return maxWallLength;
-    }
-
-    private static int getIncrement(int lengthOfSide, int index) {
-        int increment;
-        if (index <= 1) {
-            increment = 1;
-        } else if (index >= lengthOfSide - 2) {
-            increment = -1;
-        } else {
-            increment = RANDOM.nextInt(2) == 1 ? 1 : -1;
-        }
-        return increment;
-    }
-
-    static boolean isThereWallHorizontally(char[][] board, char wallIcon, Integer[] coordinate) {
-        int y = coordinate[0];
-        int x = coordinate[1];
-        if (y == 0 || y == board.length - 1) return true;
-        if (x != 0 && x != board[0].length - 1) {
-            return (board[y][x + 1] == wallIcon) ||
-                    (board[y][x - 1] == wallIcon);
-        }
-        return false;
-    }
-
-    static boolean isThereWallVertically(char[][] board, char wallIcon, Integer[] coordinate) {
-        int y = coordinate[0];
-        int x = coordinate[1];
-        if (x == 0 || x == board[0].length - 1) return true;
-        if (y != 0 && y != board.length - 1) {
-            return (board[y + 1][x] == wallIcon) ||
-                    (board[y - 1][x] == wallIcon);
-        }
-        return false;
-    }
-
-    private static List<Integer[]> getListOfWallCoordinates(char[][] board, char wallIcon) {
-        int height = board.length;
-        int width = board[0].length;
-        List<Integer[]> wallCoordinates = new ArrayList<>();
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (board[i][j] == wallIcon && ((i > 1 && i < height - 2) || (j > 1 && j < width - 2)))
-                    wallCoordinates.add(new Integer[]{i, j});
-            }
-        }
-        return wallCoordinates;
-    }
-
-    /**
-     * Places a number of random gates on the edge of the board.
-     *
-     * @param board              The board of the game (empty, walls around it)
-     * @param gateIconHorizontal Horizontal gate icon
-     * @param gateIconVertical   Vertical gate icon
-     */
-    private static void placeRandomGateOnBorder(char[][] board, char gateIconHorizontal, char gateIconVertical) {
-        int gateIndex;
-        final int MIN_GATE_INDEX = 1;
-        final int MAX_VERTICAL_GATE_INDEX = board.length - 1;
-        final int MAX_HORIZONTAL_GATE_INDEX = board[0].length - 1;
-        switch (RANDOM.nextInt(NUMBER_OF_SIDEWALLS)) {
-            case 0:
-                gateIndex = randomizeIndexOfGate(MIN_GATE_INDEX, MAX_HORIZONTAL_GATE_INDEX, gateIconHorizontal);
-                board[0][gateIndex] = gateIconHorizontal;
-                break;
-            case 1:
-                gateIndex = randomizeIndexOfGate(MIN_GATE_INDEX, MAX_VERTICAL_GATE_INDEX, gateIconVertical);
-                board[gateIndex][MAX_HORIZONTAL_GATE_INDEX] = gateIconVertical;
-                break;
-            case 2:
-                gateIndex = randomizeIndexOfGate(MIN_GATE_INDEX, MAX_HORIZONTAL_GATE_INDEX, gateIconHorizontal);
-                board[MAX_VERTICAL_GATE_INDEX][gateIndex] = gateIconHorizontal;
-                break;
-            case 3:
-                gateIndex = randomizeIndexOfGate(MIN_GATE_INDEX, MAX_VERTICAL_GATE_INDEX, gateIconVertical);
-                board[gateIndex][0] = gateIconVertical;
-                break;
-        }
-    }
-
-    private static int randomizeIndexOfGate(int minIndexInclusive, int maxIndexExclusive, char c) {
-        //TODO infinite cycle could happen if there are more gates than board.length-2 or board.
-        int gateIndex;
-        do {
-            gateIndex = RANDOM.nextInt(minIndexInclusive, maxIndexExclusive);
-        } while (!isGate(c));
-        return gateIndex;
-    }
-
-    private static boolean isGate(char c) {
-        return c == '=' || c == '"';
     }
 
     /**
@@ -216,12 +43,30 @@ public class Engine {
     public static void putPlayerOnBoardRandomly(char[][] board, Player player) {
         int x, y;
         do {
-            y = RANDOM.nextInt(1, board.length - 2);
-            x = RANDOM.nextInt(1, board[0].length - 2);
+            y = Util.getRandomIntFromRange(1, board.length - 2);
+            x = Util.getRandomIntFromRange(1, board[0].length - 2);
         } while (board[y][x] != ' ');
-        Coordinates randomCoordinates = new Coordinates(x, y);
-        player.setCoordinates(randomCoordinates);
+        player.setCoordinates(new Coordinates(x, y));
         putPlayerOnBoard(board, player);
+    }
+
+    public static void placePlayerNextToAGate(Board board, Player player) {
+        char[][] charBoard = board.getCharBoard();
+        Gate gate = board.getGates().get(0);
+        if (gate.getGateIcon() == Gate.getDefaultHorizontalIcon()) {
+            if (gate.getCoordinates().getVerticalCoordinate() == 0) {
+                player.setCoordinates(gate.getCoordinates().getHorizontalCoordinate(), gate.getCoordinates().getVerticalCoordinate() + 1);
+            } else {
+                player.setCoordinates(gate.getCoordinates().getHorizontalCoordinate(), gate.getCoordinates().getVerticalCoordinate() - 1);
+            }
+        } else {
+            if (gate.getCoordinates().getHorizontalCoordinate() == 0) {
+                player.setCoordinates(gate.getCoordinates().getHorizontalCoordinate() + 1, gate.getCoordinates().getVerticalCoordinate());
+            } else {
+                player.setCoordinates(gate.getCoordinates().getHorizontalCoordinate() - 1, gate.getCoordinates().getVerticalCoordinate());
+            }
+        }
+       putPlayerOnBoard(charBoard, player);
     }
 
     /**
