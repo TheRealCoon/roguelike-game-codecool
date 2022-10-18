@@ -1,5 +1,6 @@
 package com.codecool.roguelike;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +56,25 @@ public class Player extends GameCharacter {
     public void displayInventory() {
         for (Item item : inventory) {
             System.out.println(item);
+        }
+    }
+    public void pickUp(Item item) {
+        inventory.add(item);
+        if (item instanceof Key) {
+            hasKey = true;
+        } else if (item instanceof Weapon weapon) {
+            if (damage < weapon.getDamage()) {
+                damage = weapon.getDamage();
+                System.out.println("You equipped the " + item.getName + "!");
+            }
+        } else if (item instanceof Armor armor) {
+            if (armor < armor.getArmor()) {
+                armor = armor.getArmor();
+                System.out.println("You equipped the " + item.getName + "!");
+            }
+        } else if (item instanceof Food food) {
+            health += food.getHealth();
+            inventory.remove(item);
         }
     }
 }
