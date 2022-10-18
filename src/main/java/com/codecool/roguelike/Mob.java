@@ -9,9 +9,14 @@ public class Mob extends GameCharacter {
     private final int SIZE = MobType.values().length;
     private final Random RANDOM = new Random();
 
+    private static final char ICON = 'E';
 
-    public Mob(String name, Coordinates startCoordinates, char characterIcon) {
-        super(name, startCoordinates, characterIcon);
+    private final MoveType moveType;
+
+
+    public Mob(String name, Coordinates startCoordinates, MoveType moveType) {
+        super(name, startCoordinates, ICON);
+        this.moveType = moveType;
         this.type = randomType();
         modifyBaseStats();
     }
@@ -26,13 +31,41 @@ public class Mob extends GameCharacter {
         armor = (int) (armor * modifier);
     }
 
+    private void move(){
+        if(moveType.equals(MoveType.TOPLAYER)){
+            moveToPlayer();
+        }else{
+            moveRandom();
+        }
+
+    }
     private void moveRandom() {
-    }//TODO
+        int distanceToMove = RANDOM.nextInt(-1, 1);
+        int newHorizonCord = coordinates.getHorizontalCoordinate() + distanceToMove;
+        int newVerticalCord = coordinates.getVerticalCoordinate() + distanceToMove;
+        Coordinates newCoordinates = new Coordinates(newHorizonCord,newVerticalCord);
+
+        if(Engine.isEmpty(newCoordinates)) {
+            setCoordinates(newCoordinates);
+        }else{
+            moveRandom();
+        }
+    }//TODO test
 
     private void moveToPlayer() {
-    }//TODO
+       Coordinates targetCoordinates = Engine.getPlayerCoordinates();
+       int distanceHorizontal = coordinates.getHorizontalCoordinate()- (targetCoordinates.getHorizontalCoordinate() - coordinates.getHorizontalCoordinate());
+       int distanceVertical = coordinates.getVerticalCoordinate() - (targetCoordinates.getVerticalCoordinate() - coordinates.getVerticalCoordinate());
+       int directionHorizontal = distanceHorizontal / Math.abs(distanceHorizontal);
+       int directionVertical = distanceVertical / Math.abs(distanceVertical);
+       Coordinates newCoordinates = new Coordinates(directionHorizontal, directionVertical);
 
-    private void addRandomItem() {
-    }//TODO
+       if(Engine.isEmpty(newCoordinates)){
+           setCoordinates(newCoordinates);
+       }
+
+    }//TODO test, also it doesn't move, until it "sees" the player
+
+    private void addRandomItem() {}//TODO
 
 }
