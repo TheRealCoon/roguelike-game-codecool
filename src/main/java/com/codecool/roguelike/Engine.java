@@ -1,6 +1,7 @@
 package com.codecool.roguelike;
 
 import com.codecool.roguelike.boardElements.Board;
+import com.codecool.roguelike.boardElements.Gate;
 import com.codecool.roguelike.exceptions.CoordinateIsAlreadyOccupiedException;
 import com.codecool.roguelike.exceptions.TooManyGatesException;
 
@@ -17,10 +18,10 @@ public class Engine {
      * @param gateIconHorizontal Horizontal gate icon
      * @param gateIconVertical   Vertical gate icon
      */
-    public static char[][] createBoard(int width, int height, char wallIcon, int numberOfGates, int numberOfInnerWalls,
+    public static Board createBoard(int width, int height, char wallIcon, int numberOfGates, int numberOfInnerWalls,
                                        char gateIconHorizontal, char gateIconVertical) throws TooManyGatesException {
         Board board = new Board(width, height, wallIcon, numberOfGates, numberOfInnerWalls, gateIconHorizontal, gateIconVertical);
-        return board.getCharBoard();
+        return board;
     }
 
     /**
@@ -47,6 +48,25 @@ public class Engine {
         } while (board[y][x] != ' ');
         player.setCoordinates(new Coordinates(x, y));
         putPlayerOnBoard(board, player);
+    }
+
+    public static void placePlayerNextToAGate(Board board, Player player) {
+        char[][] charBoard = board.getCharBoard();
+        Gate gate = board.getGates().get(0);
+        if (gate.getGateIcon() == Gate.getDefaultHorizontalIcon()) {
+            if (gate.getCoordinates().getVerticalCoordinate() == 0) {
+                player.setCoordinates(gate.getCoordinates().getHorizontalCoordinate(), gate.getCoordinates().getVerticalCoordinate() + 1);
+            } else {
+                player.setCoordinates(gate.getCoordinates().getHorizontalCoordinate(), gate.getCoordinates().getVerticalCoordinate() - 1);
+            }
+        } else {
+            if (gate.getCoordinates().getHorizontalCoordinate() == 0) {
+                player.setCoordinates(gate.getCoordinates().getHorizontalCoordinate() + 1, gate.getCoordinates().getVerticalCoordinate());
+            } else {
+                player.setCoordinates(gate.getCoordinates().getHorizontalCoordinate() - 1, gate.getCoordinates().getVerticalCoordinate());
+            }
+        }
+       putPlayerOnBoard(charBoard, player);
     }
 
     /**

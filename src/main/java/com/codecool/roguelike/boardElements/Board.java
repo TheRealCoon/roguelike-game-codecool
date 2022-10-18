@@ -17,8 +17,10 @@ public class Board {
 
     private char[][] charBoard;
 
-    List<Wall> walls = new ArrayList<>();
-    List<Gate> gates = new ArrayList<>();
+
+    private List<Wall> walls = new ArrayList<>();
+
+    private List<Gate> gates = new ArrayList<>();
 
 
     public Board(int width, int height, char wallIcon) {
@@ -218,6 +220,10 @@ public class Board {
 
     public int getHeight() {
         return height;
+    }
+
+    public List<Gate> getGates() {
+        return gates;
     }
 }
 

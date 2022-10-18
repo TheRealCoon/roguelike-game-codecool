@@ -16,15 +16,8 @@ public class Wall {
         walls.add(this);
     }
 
-    public static void setWalls(List<Wall> walls) {
-        Wall.walls = walls;
-    }
     public Coordinates getCoordinates() {
         return coordinates;
-    }
-
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
     }
 
     public char getWallIcon() {

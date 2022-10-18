@@ -69,6 +69,11 @@ public abstract class GameCharacter {
         this.coordinates = coordinates;
     }
 
+    public void setCoordinates(int horizontal, int vertical) {
+        this.coordinates.setHorizontalCoordinate(horizontal);
+        this.coordinates.setVerticalCoordinate(vertical);
+    }
+
     public char getCharacterIcon() {
         return characterIcon;
     }
