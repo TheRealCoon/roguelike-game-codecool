@@ -57,6 +57,14 @@ public class Engine {
         interactables.add(mob2);
     }
 
+    public static void createNpc(char[][] board) {
+        Npc npc = new Npc("Elvis", new Coordinates(0, 0));
+
+        putCharacterOnBoardRandomly(board, npc);
+
+        interactables.add(npc);
+    }
+
     public static void putCharacterOnBoardRandomly(char[][] board, GameCharacter gameCharacter) {
         int x, y;
         do {
