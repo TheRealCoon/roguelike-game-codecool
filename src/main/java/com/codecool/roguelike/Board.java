@@ -12,10 +12,11 @@ public class Board {
     final char wallIcon;
     char gateIconHorizontal;
     char gateIconVertical;
+
     char[][] charBoard;
+
     List<Coordinates> wallCoordinates = new ArrayList<>();
     List<Coordinates> possibleGateCoordinates = new ArrayList<>();
-
     public Board(int width, int height, char wallIcon) {
         this.width = width;
         this.height = height;
@@ -181,6 +182,18 @@ public class Board {
                     wallCoordinates.add(new Integer[]{i, j});
             }
         }
+    }
+
+    public char[][] getCharBoard() {
+        return charBoard;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }
 
