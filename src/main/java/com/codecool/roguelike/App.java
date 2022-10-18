@@ -9,6 +9,7 @@ import com.codecool.roguelike.ui.console.ConsoleUI;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class App {
 
@@ -105,6 +106,8 @@ public class App {
                     }
                     default -> System.out.println("Move with W,A,S,D, open inventory with I, or quit with Q!");
                 }
+
+                if(Arrays.asList('w','a','s','d').contains(key)){}//TODO move mobs
             }
             isGameStarting = false;
         }
