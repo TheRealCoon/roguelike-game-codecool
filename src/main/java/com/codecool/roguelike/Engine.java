@@ -238,10 +238,32 @@ public class Engine {
         }
     }
 
-    public static void fight(Player player, GameCharacter enemy){//TODO single key press, also add boss with weakpoint, also add loot or maybe just drop loot?
-        if(enemy.getHitChance() <= RANDOM.nextInt(100))
-            enemy.setHealth(player.getDamage() - enemy.getArmor());
-        if(player.getHitChance() <= RANDOM.nextInt(100))
-            player.setHealth(enemy.getDamage() - player.getArmor());
+    public static void fighting(Player player, GameCharacter enemy){//TODO single key press, also add boss with weakpoint which isn't a single press fight, also add loot to player or maybe just drop loot?
+        while (player.getHealth() > 0 && enemy.getHealth() > 0) {
+
+            if (player.getHitChance() <= RANDOM.nextInt(100)) { //player hits enemy
+                int damage = player.getDamage() - enemy.getArmor();
+                enemy.setHealth(enemy.getHealth() - damage);
+                Util.messageWithWaitTime(String.format("You hit %s with %d damage, enemy now has %d health!",enemy.getName(), damage, enemy.getHealth()));
+            }else{
+                Util.messageWithWaitTime("You missed!");
+            }
+
+            if (enemy.getHitChance() <= RANDOM.nextInt(100)) { //enemy hits player
+                int damage = player.getDamage() - enemy.getArmor();
+                player.setHealth(player.getHealth() - damage);
+                Util.messageWithWaitTime(String.format("%s hit you with %d damage, you now have %d health!",enemy.getName(), damage, player.getHealth()));
+            }else{
+                Util.messageWithWaitTime("Enemy has missed!");
+            }
+        }
+    }
+
+    public static boolean isEmpty(Coordinates coordinates){
+        return false; //TODO maybe already done by Ádám
+    }
+
+    public static Coordinates getPlayerCoordinates() {
+        return new Coordinates(0,0); //TODO
     }
 }
