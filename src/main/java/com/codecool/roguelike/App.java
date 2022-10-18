@@ -104,6 +104,9 @@ public class App {
                         Engine.removePlayerFromBoard(board, player);
                         player.moveRight();
                     }
+                    case 'i' -> {
+                        player.displayInventory();
+                    }
                     default -> System.out.println("Move with W,A,S,D, open inventory with I, or quit with Q!");
                 }
 

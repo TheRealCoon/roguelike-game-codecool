@@ -206,8 +206,8 @@ public class Engine {
     public static void putPlayerOnBoard(char[][] board, Player player) {
         int y = player.getCoordinates().getVerticalCoordinate();
         int x = player.getCoordinates().getHorizontalCoordinate();
-        if (board[y][x] == ' ' || board[y][x] == player.getIcon()) {
-            board[y][x] = player.getIcon();
+        if (board[y][x] == ' ' || board[y][x] == player.getCharacterIcon()) {
+            board[y][x] = player.getCharacterIcon();
         } else {
             throw new CoordinateIsAlreadyOccupiedException("There is already a(n) '" + board[y][x] + "' on that coordinate!");
         }
@@ -233,7 +233,7 @@ public class Engine {
     public static void removePlayerFromBoard(char[][] board, Player player) {
         int y = player.getCoordinates().getVerticalCoordinate();
         int x = player.getCoordinates().getHorizontalCoordinate();
-        if (board[y][x] == player.getIcon()) {
+        if (board[y][x] == player.getCharacterIcon()) {
             board[y][x] = ' ';
         }
     }

@@ -23,7 +23,7 @@ public class Mob extends GameCharacter {
     private void modifyBaseStats() {
         damage = (int) (damage * modifier);
         health = (int) (health * modifier);
-        damageTaken = (int) (damageTaken / modifier);
+        armor = (int) (armor * modifier);
     }
 
     private void moveRandom() {
