@@ -237,4 +237,11 @@ public class Engine {
             board[y][x] = ' ';
         }
     }
+
+    public static void fight(Player player, GameCharacter enemy){//TODO single key press, also add boss with weakpoint, also add loot or maybe just drop loot?
+        if(enemy.getHitChance() <= RANDOM.nextInt(100))
+            enemy.setHealth(player.getDamage() - enemy.getArmor());
+        if(player.getHitChance() <= RANDOM.nextInt(100))
+            player.setHealth(enemy.getDamage() - player.getArmor());
+    }
 }
