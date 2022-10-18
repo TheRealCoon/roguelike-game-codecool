@@ -1,4 +1,4 @@
-import com.codecool.roguelike.Coordinates;
+package com.codecool.roguelike;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,5 +49,13 @@ public class Wall {
         walls.remove(wall);
         wall.coordinates = null;
         wall = null;
+    }
+    public static Wall getWallByCoordinates(Coordinates coordinates){
+        for (Wall wall: walls) {
+            if(coordinates.equals(wall.coordinates)){
+                return wall;
+            }
+        }
+        return null;
     }
 }

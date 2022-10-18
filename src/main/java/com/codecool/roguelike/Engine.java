@@ -78,7 +78,7 @@ public class Engine {
     }
 
     private static void placeVerticalWallOnBoard(char[][] board, char wallIcon, int lengthOfWall, int increment, int y, int x) {
-        for (int i = y; i != y + increment * (lengthOfWall + 1); i += increment) {
+        for (int i = y+increment; i != y + increment * (lengthOfWall + 1); i += increment) {
             if (board[i + increment][x] == ' ' && board[i + increment][x + 1] == ' ' && board[i + increment][x - 1] == ' ') {
                 board[i][x] = wallIcon;
             }
@@ -86,7 +86,7 @@ public class Engine {
     }
 
     private static void placeHorizontalWallOnBoard(char[][] board, char wallIcon, int lengthOfWall, int increment, int y, int x) {
-        for (int i = x; i != x + increment * (lengthOfWall + 1); i += increment) {
+        for (int i = x+increment; i != x + increment * (lengthOfWall + 1); i += increment) {
             if (board[y][i + increment] == ' ' && board[y + 1][i + increment] == ' ' && board[y - 1][i + increment] == ' ') {
                 board[y][i] = wallIcon;
             }

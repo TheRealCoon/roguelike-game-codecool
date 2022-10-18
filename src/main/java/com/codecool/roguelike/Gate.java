@@ -1,5 +1,4 @@
-import com.codecool.roguelike.Board;
-import com.codecool.roguelike.Coordinates;
+package com.codecool.roguelike;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +9,12 @@ public class Gate {
     private static List<Gate> gates = new ArrayList<>();
     private char gateIcon;
     private Coordinates coordinates;
+    private Board board;
 
-    public Gate(Coordinates coordinates, int heightOfBoard) {
+    public Gate(Coordinates coordinates, Board board) {
         this.coordinates = coordinates;
         int y = coordinates.getVerticalCoordinate();
-        if (y == 0 || y == heightOfBoard - 1) {
+        if (y == 0 || y == board.getHeight() - 1) {
             gateIcon = defaultHorizontalIcon;
         } else{
             gateIcon = defaultVerticalIcon;

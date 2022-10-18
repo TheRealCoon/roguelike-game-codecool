@@ -8,24 +8,25 @@ import java.util.List;
 public class Board {
     private static final int NUMBER_OF_SIDEWALLS = 4;
     private static List<Board> boards = new ArrayList<>();
-    final int width, height;
-    final char wallIcon;
-    char gateIconHorizontal;
-    char gateIconVertical;
+    final private int width, height;
+    final private char wallIcon;
+    private char gateIconHorizontal;
+    private char gateIconVertical;
 
-    char[][] charBoard;
+    private char[][] charBoard;
 
-    List<Coordinates> wallCoordinates = new ArrayList<>();
-    List<Coordinates> possibleGateCoordinates = new ArrayList<>();
+    List<Wall> walls = new ArrayList<>();
+    List<Gate> gates = new ArrayList<>();
+
+
     public Board(int width, int height, char wallIcon) {
         this.width = width;
         this.height = height;
         this.wallIcon = wallIcon;
-        this.gateIconHorizontal = '=';//set them to final and create setter
+        this.gateIconHorizontal = '=';
         this.gateIconVertical = '"';
         this.charBoard = new char[height][width];
         createBorder();
-        updateListOfWallCoordinates();
         boards.add(this);
     }
 
@@ -39,7 +40,6 @@ public class Board {
             placeRandomGateOnBorder();
         }
         for (int i = 0; i < numberOfInnerWalls; i++) {
-            updateListOfWallCoordinates();
             placeRandomWall();
         }
     }
@@ -48,19 +48,21 @@ public class Board {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
+                    walls.add(new Wall(new Coordinates(j, i)));
                     charBoard[i][j] = wallIcon;
                 } else {
                     charBoard[i][j] = ' ';
                 }
             }
         }
+
     }
 
     private void placeRandomWall() {
         int lengthOfWall;
         int maxWallLength;
         int increment;
-        Coordinates beginningCoordinate = wallCoordinates.get(Util.getRandomIntFromRange(0, wallCoordinates.size()));
+        Coordinates beginningCoordinate = walls.get(Util.getRandomIntFromRange(0, getBorderWallsNoCorners().size())).getCoordinates();
         int y = beginningCoordinate.getVerticalCoordinate();
         int x = beginningCoordinate.getHorizontalCoordinate();
 
@@ -75,21 +77,23 @@ public class Board {
             lengthOfWall = Util.getRandomIntFromRange(1, maxWallLength);
             placeHorizontalWallOnBoard(lengthOfWall, increment, y, x);
         }
-        wallCoordinates.remove(beginningCoordinate);
+        walls.remove(Wall.getWallByCoordinates(beginningCoordinate));
     }
 
     private void placeVerticalWallOnBoard(int lengthOfWall, int increment, int y, int x) {
-        for (int i = y; i != y + increment * (lengthOfWall + 1); i += increment) {
+        for (int i = y + increment; i != y + increment * (lengthOfWall + 1); i += increment) {
             if (charBoard[i + increment][x] == ' ' && charBoard[i + increment][x + 1] == ' ' && charBoard[i + increment][x - 1] == ' ') {
                 charBoard[i][x] = wallIcon;
+                walls.add(new Wall(new Coordinates(x, i)));
             }
         }
     }
 
     private void placeHorizontalWallOnBoard(int lengthOfWall, int increment, int y, int x) {
-        for (int i = x; i != x + increment * (lengthOfWall + 1); i += increment) {
+        for (int i = x + increment; i != x + increment * (lengthOfWall + 1); i += increment) {
             if (charBoard[y][i + increment] == ' ' && charBoard[y + 1][i + increment] == ' ' && charBoard[y - 1][i + increment] == ' ') {
                 charBoard[y][i] = wallIcon;
+                walls.add(new Wall(new Coordinates(i, y)));
             }
         }
     }
@@ -142,24 +146,38 @@ public class Board {
 
     private void placeRandomGateOnBorder() {
         int gateIndex;
+        int y = -1, x = -1;
+        char gateIcon = '¤';
         switch (Util.getRandomIntFromRange(0, NUMBER_OF_SIDEWALLS)) {
             case 0 -> {
                 gateIndex = randomizeIndexOfGate(width - 1, gateIconHorizontal);
-                charBoard[0][gateIndex] = gateIconHorizontal;
+                y = 0;
+                x = gateIndex;
+                gateIcon = gateIconHorizontal;
             }
             case 1 -> {
                 gateIndex = randomizeIndexOfGate(height - 1, gateIconVertical);
-                charBoard[gateIndex][width - 1] = gateIconVertical;
+                y = gateIndex;
+                x = width - 1;
+                gateIcon = gateIconVertical;
             }
             case 2 -> {
                 gateIndex = randomizeIndexOfGate(width - 1, gateIconHorizontal);
-                charBoard[height - 1][gateIndex] = gateIconHorizontal;
+                y = height - 1;
+                x = gateIndex;
+                gateIcon = gateIconHorizontal;
             }
             case 3 -> {
                 gateIndex = randomizeIndexOfGate(height - 1, gateIconVertical);
+                y = gateIndex;
+                x = 0;
+                gateIcon = gateIconVertical;
                 charBoard[gateIndex][0] = gateIconVertical;
             }
         }
+        charBoard[y][x] = gateIcon;
+        Gate gate = new Gate(new Coordinates(x, y), this);
+        gates.add(gate);
     }
 
     private int randomizeIndexOfGate(int maxIndexExclusive, char c) {
@@ -172,16 +190,20 @@ public class Board {
     }
 
     private boolean isGate(char c) {
-        return c == '=' || c == '"';
+        return c == Gate.getDefaultHorizontalIcon() || c == Gate.getDefaultVerticalIcon();
     }
 
-    private void updateListOfWallCoordinates() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (charBoard[i][j] == wallIcon && ((i > 1 && i < height - 2) || (j > 1 && j < width - 2)))
-                    wallCoordinates.add(new Integer[]{i, j});
+    private List<Wall> getBorderWallsNoCorners() {
+        List<Wall> borderWallsNoCorners = new ArrayList<>();
+        for (Wall wall : walls) {
+            int x = wall.getCoordinates().getHorizontalCoordinate();
+            int y = wall.getCoordinates().getVerticalCoordinate();
+            if ((y > 1 && y < height - 2) && (x == 0 || x == width - 1) ||
+                    (x > 1 && x < width - 2) && (y == 0 || y == height - 1)) {
+                borderWallsNoCorners.add(wall);
             }
         }
+        return borderWallsNoCorners;
     }
 
     public char[][] getCharBoard() {
