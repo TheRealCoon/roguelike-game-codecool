@@ -10,10 +10,12 @@ import java.util.List;
 public class Player extends GameCharacter {
     private Race RACE;
     private static final char playerIcon = '@';
+    private boolean hasKey;
 
     public Player(String name, Race race, Coordinates coordinates) {
         super(name, coordinates, playerIcon);
         this.RACE = race;
+        hasKey = false;
     }
 
     public void moveUp() {
