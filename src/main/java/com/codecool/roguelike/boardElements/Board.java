@@ -1,5 +1,7 @@
-package com.codecool.roguelike;
+package com.codecool.roguelike.boardElements;
 
+import com.codecool.roguelike.Coordinates;
+import com.codecool.roguelike.Util;
 import com.codecool.roguelike.exceptions.TooManyGatesException;
 
 import java.util.ArrayList;
