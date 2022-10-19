@@ -2,6 +2,7 @@ package com.codecool.roguelike;
 
 import com.codecool.roguelike.boardElements.Board;
 import com.codecool.roguelike.boardElements.Gate;
+import com.codecool.roguelike.boardElements.Wall;
 import com.codecool.roguelike.exceptions.CoordinateIsAlreadyOccupiedException;
 import com.codecool.roguelike.exceptions.TooManyGatesException;
 
@@ -15,6 +16,9 @@ public class Engine {
     private static final List<GameCharacter> characters = new ArrayList<>();
     private static Board board;
     private static Npc npc;
+
+    private static Player player;
+
 
     /**
      * Creates a new game board based on input parameters
@@ -31,6 +35,12 @@ public class Engine {
                                     char gateIconHorizontal, char gateIconVertical) throws TooManyGatesException {
         board = new Board(width, height, wallIcon, numberOfGates, numberOfInnerWalls, gateIconHorizontal, gateIconVertical);
         return board;
+    }
+
+    public static Player createPlayer(String playerName, Race playerRace, Coordinates playerStartingCoordinates) {
+        Player player = new Player(playerName, playerRace, playerStartingCoordinates);
+        Engine.player = player;
+        return  player;
     }
 
     /**
@@ -177,6 +187,9 @@ public class Engine {
     }
 
     public static void moveToNextBord() {
-
+//        width, height, wallIcon, numberOfGates, numberOfInnerWalls, gateIconHorizontal, gateIconVertical
+        board = new Board(board.getWidth(), board.getHeight(), Wall.getDefaultIcon(),
+                2, 20, Gate.getDefaultHorizontalIcon(), Gate.getDefaultVerticalIcon());
+        Engine.placePlayerNextToAGate(board, player);
     }
 }

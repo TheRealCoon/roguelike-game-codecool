@@ -50,9 +50,7 @@ public class App {
         }
 
         Coordinates playerStartingCoordinates = new Coordinates(playerStartX, playerStartY);
-
-        Player player = new Player(playerName, playerRace, playerStartingCoordinates);
-
+        Player player = Engine.createPlayer(playerName, playerRace, playerStartingCoordinates);
         Board board;
         try {
             board = Engine.createBoard(boardWidth, boardHeight, wallIcon, numberOfGates, numberOfInnerWalls,
