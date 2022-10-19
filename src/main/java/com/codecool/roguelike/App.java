@@ -84,11 +84,11 @@ public class App {
                 Engine.putItemsOnBoardRandomly(board.getCharBoard(), itemKey);
                 Engine.putItemsOnBoardRandomly(board.getCharBoard(), weapon);
             } else {
-                Engine.putCharacterOnBoard(board.getCharBoard(), player);
+                Engine.putCharacterOnBoard(player);
                 Engine.putCharactersOnBoard(board.getCharBoard());
             }
 
-            ui.displayBoard(board.getCharBoard());
+            ui.displayBoard(Engine.actualBoard.getCharBoard());
             ((ConsoleUI) ui).displayCharacterStats(player);
 
             //char key = Util.getKeyStroke(reader, 1500);
@@ -97,21 +97,18 @@ public class App {
             if (key == 'q') {
                 isRunning = false;
             } else {
+                Engine.removeCharacterFromBoard(player);
                 switch (key) {
                     case 'w' -> {
-                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveUp();
                     }
                     case 's' -> {
-                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveDown();
                     }
                     case 'a' -> {
-                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveLeft();
                     }
                     case 'd' -> {
-                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveRight();
                     }
                     case 'i' -> {
@@ -121,7 +118,7 @@ public class App {
                 }
 
                 if (Arrays.asList('w', 'a', 's', 'd').contains(key)) {
-                    Engine.removeCharactersFromBoard(board.getCharBoard());
+                    Engine.removeCharactersFromBoard();
                     Engine.moveMobs(player);
                 }//TODO move mobs
             }

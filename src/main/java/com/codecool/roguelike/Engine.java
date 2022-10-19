@@ -14,9 +14,8 @@ public class Engine {
     public static final List<Interactable> interactables = new ArrayList<>();
     private static final List<Mob> mobs = new ArrayList<>();
     private static final List<GameCharacter> characters = new ArrayList<>();
-    private static Board board;
+    public static Board actualBoard;
     private static Npc npc;
-
     private static Player player;
 
 
@@ -33,8 +32,8 @@ public class Engine {
      */
     public static Board createBoard(int width, int height, char wallIcon, int numberOfGates, int numberOfInnerWalls,
                                     char gateIconHorizontal, char gateIconVertical) throws TooManyGatesException {
-        board = new Board(width, height, wallIcon, numberOfGates, numberOfInnerWalls, gateIconHorizontal, gateIconVertical);
-        return board;
+        actualBoard = new Board(width, height, wallIcon, numberOfGates, numberOfInnerWalls, gateIconHorizontal, gateIconVertical);
+        return actualBoard;
     }
 
     public static Player createPlayer(String playerName, Race playerRace, Coordinates playerStartingCoordinates) {
@@ -46,22 +45,21 @@ public class Engine {
     /**
      * Modifies the game board by placing the player icon at its coordinates
      *
-     * @param board         The game board
      * @param gameCharacter The player information containing the icon and coordinates
      */
-    public static void putCharacterOnBoard(char[][] board, GameCharacter gameCharacter) {
+    public static void putCharacterOnBoard(GameCharacter gameCharacter) {
         int y = gameCharacter.getCoordinates().getVerticalCoordinate();
         int x = gameCharacter.getCoordinates().getHorizontalCoordinate();
-        if (board[y][x] == ' ' || board[y][x] == gameCharacter.getCharacterIcon()) {
-            board[y][x] = gameCharacter.getCharacterIcon();
+        if (actualBoard.getCharBoard()[y][x] == ' ' || actualBoard.getCharBoard()[y][x] == gameCharacter.getCharacterIcon()) {
+            actualBoard.getCharBoard()[y][x] = gameCharacter.getCharacterIcon();
         } else {
-            throw new CoordinateIsAlreadyOccupiedException("There is already a(n) '" + board[y][x] + "' on that coordinate (x= " + x + ", y= " + y + "!");
+           throw new CoordinateIsAlreadyOccupiedException(gameCharacter.getClass().getSimpleName()+ " \n" + actualBoard.getCharBoard()[y][x] + "' on that coordinate (x= " + x + ", y= " + y + ")!", actualBoard.getCharBoard());
         }
     }
 
     public static void putCharactersOnBoard(char[][] board) {
         for (GameCharacter gc : characters) {
-            putCharacterOnBoard(board, gc);
+            putCharacterOnBoard(gc);
         }
     }
 
@@ -96,7 +94,7 @@ public class Engine {
             x = Util.getRandomIntFromRange(1, board[0].length - 2);
         } while (board[y][x] != ' ');
         gameCharacter.setCoordinates(new Coordinates(x, y));
-        putCharacterOnBoard(board, gameCharacter);
+        putCharacterOnBoard(gameCharacter);
     }
 
     public static void placePlayerNextToAGate(Board board, Player player) {
@@ -115,26 +113,25 @@ public class Engine {
                 player.setCoordinates(gate.getCoordinates().getHorizontalCoordinate() - 1, gate.getCoordinates().getVerticalCoordinate());
             }
         }
-        putCharacterOnBoard(charBoard, player);
+        putCharacterOnBoard(player);
     }
 
     /**
      * Modifies the game board by removing the player icon from its coordinates
      *
-     * @param board         The game board
      * @param gameCharacter The player information containing the coordinates
      */
-    public static void removeCharacterFromBoard(char[][] board, GameCharacter gameCharacter) {
+    public static void removeCharacterFromBoard(GameCharacter gameCharacter) {
         int y = gameCharacter.getCoordinates().getVerticalCoordinate();
         int x = gameCharacter.getCoordinates().getHorizontalCoordinate();
-        if (board[y][x] == gameCharacter.getCharacterIcon()) {
-            board[y][x] = ' ';
+        if (actualBoard.getCharBoard()[y][x] == gameCharacter.getCharacterIcon()) {
+            actualBoard.getCharBoard()[y][x] = ' ';
         }
     }
 
-    public static void removeCharactersFromBoard(char[][] board) {
+    public static void removeCharactersFromBoard() {
         for (GameCharacter gc : mobs) {
-            removeCharacterFromBoard(board, gc);
+            removeCharacterFromBoard(gc);
         }
     }
 
@@ -146,17 +143,17 @@ public class Engine {
                 int damage = player.getDamage() - enemy.getArmor() > 0 ? player.getDamage() - enemy.getArmor() : 1;
                 damage *= isWeakPointHit ? 2 : 1;
                 enemy.setHealth(enemy.getHealth() - damage);
-                // Util.messageWithWaitTime(String.format("You hit %s with %d damage, enemy now has %d health!", enemy.getName(), damage, enemy.getHealth()));
+                Util.messageWithWaitTime(String.format("You hit %s with %d damage, enemy now has %d health!", enemy.getName(), damage, enemy.getHealth()));
             } else {
-                // Util.messageWithWaitTime("You missed!");
+                Util.messageWithWaitTime("You missed!");
             }
 
             if (enemy.getHitChance() <= Util.getRandomIntFromRange(0, 100)) { //enemy hits player
                 int damage = enemy.getDamage() - player.getArmor() > 0 ? enemy.getDamage() - player.getArmor() : 1;
                 player.setHealth(player.getHealth() - damage);
-                // Util.messageWithWaitTime(String.format("%s hit you with %d damage, you now have %d health!", enemy.getName(), damage, player.getHealth()));
+                Util.messageWithWaitTime(String.format("%s hit you with %d damage, you now have %d health!", enemy.getName(), damage, player.getHealth()));
             } else {
-                // Util.messageWithWaitTime("Enemy has missed!");
+                Util.messageWithWaitTime("Enemy has missed!");
             }
         } while (player.getHealth() > 0 && enemy.getHealth() > 0 && enemy instanceof Mob);
     }
@@ -179,7 +176,7 @@ public class Engine {
         int y = coordinates.getVerticalCoordinate();
         int x = coordinates.getHorizontalCoordinate();
 
-        return board.getCharBoard()[y][x] == ' ' && !interactables.stream().anyMatch(i -> i.getCoordinates().equals(coordinates));
+        return actualBoard.getCharBoard()[y][x] == ' ' && !interactables.stream().anyMatch(i -> i.getCoordinates().equals(coordinates)) && !player.getCoordinates().equals(coordinates);
     }
 
     public static void moveMobs(Player player) {
@@ -192,9 +189,9 @@ public class Engine {
     public static void moveToNextBord() {
 //        width, height, wallIcon, numberOfGates, numberOfInnerWalls, gateIconHorizontal, gateIconVertical
         //Board.getBoards().get(0) == starting board
-        board = new Board(board.getWidth(), board.getHeight(), Wall.getDefaultIcon(),
+        actualBoard = new Board(actualBoard.getWidth(), actualBoard.getHeight(), Wall.getDefaultIcon(),
                 2, 20, Gate.getDefaultHorizontalIcon(), Gate.getDefaultVerticalIcon());
-        Engine.placePlayerNextToAGate(board, player);
+        Engine.placePlayerNextToAGate(actualBoard, player);
     }
 
     public static void putItemsOnBoard(char[][] board, Item item) {
@@ -203,7 +200,7 @@ public class Engine {
         if (board[y][x] == ' ' || board[y][x] == item.getItemIcon()) {
             board[y][x] = item.getItemIcon();
         } else {
-            throw new CoordinateIsAlreadyOccupiedException("There is already a(n) '" + board[y][x] + "' on that coordinate!");
+            throw new CoordinateIsAlreadyOccupiedException("There is already a(n) '" + board[y][x] + "' on that coordinate (x= " + x + ", y= " + y + ")!", board);
         }
     }
 

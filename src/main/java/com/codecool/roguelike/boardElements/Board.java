@@ -218,6 +218,7 @@ public class Board {
         return c == Gate.getDefaultHorizontalIcon() || c == Gate.getDefaultVerticalIcon();
     }
 
+    //todo fix, wrong walls
     private List<Wall> getWallsNoCorners() {
         List<Wall> wallsNoCorners = new ArrayList<>();
         for (Wall wall : walls) {
