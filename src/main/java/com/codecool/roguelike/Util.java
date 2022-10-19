@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public class Util {
 
@@ -79,15 +80,12 @@ public class Util {
     }
 
     public static void messageWithWaitTime(String message){
-        long waitTime = 1000;
-        Thread thread = new Thread(() -> {
-            try {
-                Thread.sleep(waitTime);
-                System.out.print(message);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        thread.start();
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println(message);
     }
 }

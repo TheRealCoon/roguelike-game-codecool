@@ -39,8 +39,10 @@ public class Mob extends GameCharacter implements Interactable {
     }
 
     private void moveRandom() {
+        int counter = 0;
         int distanceHorizontal = Util.getRandomIntFromRange(-1, 2);
         int distanceVertical = Util.getRandomIntFromRange(-1, 2);
+        System.out.println("distanceHorizontal: " + distanceHorizontal + "  |distanceVertical: " + distanceVertical);
         int newHorizonCord = coordinates.getHorizontalCoordinate() + distanceHorizontal;
         int newVerticalCord = coordinates.getVerticalCoordinate() + distanceVertical;
         Coordinates newCoordinates = new Coordinates(newHorizonCord, newVerticalCord); //TODO too much garbage?
@@ -74,6 +76,5 @@ public class Mob extends GameCharacter implements Interactable {
     public void interact(Player player) {
         Engine.fight(player, this);
     }
-
 
 }

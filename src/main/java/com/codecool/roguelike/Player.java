@@ -16,6 +16,8 @@ public class Player extends GameCharacter {
         super(name, coordinates, playerIcon);
         this.RACE = race;
         hasKey = false;
+        this.armor += 40;
+        this.damage += 50;
     }
 
     public void moveUp() {
@@ -90,16 +92,21 @@ public class Player extends GameCharacter {
             if (damage < weapon.getAddedDamage()) {
                 damage += weapon.getAddedDamage();
                 System.out.println("You equipped the " + item.getName() + "!");
+
             }
         } else if (item instanceof Armor armor) {
             if (this.armor < armor.getAddedArmor()) {
                 this.armor += armor.getAddedArmor();
                 System.out.println("You equipped the " + item.getName() + "!");
+
+
             }
         } else if (item instanceof Food food) {
-            health += food.getAddedHealth();
+            health = health + food.getAddedHealth() > 100 ? 100 : health + food.getAddedHealth();
             inventory.remove(item);
+            System.out.println("You ate an " + item.getName() + "!");
         }
+        Engine.deleteItem(item);
     }
 
     public boolean isDead() {

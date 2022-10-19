@@ -1,16 +1,19 @@
 package com.codecool.roguelike;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Npc extends GameCharacter implements Interactable {
 
     private String message;
-    private List<Quest> quests;
+    private List<Quest> quests = new ArrayList<>();
 
     private static final char icon = 'N';
 
     public Npc(String name, Coordinates coordinates) {
         super(name, coordinates, icon);
+        fillQuestList();
     }
 
     private void fillQuestList() {
@@ -22,7 +25,15 @@ public class Npc extends GameCharacter implements Interactable {
 
     public void interact(Player player) {
         Quest quest = quests.get(0);
-        quest.toString(); //TODO display to player
+        System.out.println("You meet with " + this.name + ". He has a special quest for you!");
+        System.out.println(quest.toString());
+        System.out.println("Press Enter to continue!");
+        try {
+            Util.getInputChar();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Engine.deleteCharacter(this);
         quest.setActive(true);
     }
 

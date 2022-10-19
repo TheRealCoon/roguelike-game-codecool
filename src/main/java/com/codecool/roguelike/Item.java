@@ -1,6 +1,6 @@
 package com.codecool.roguelike;
 
-public class Item{
+public class Item implements Interactable{
     public String name;
     public ItemType itemType;
     public int horizontalCoordinate;
@@ -63,6 +63,11 @@ public class Item{
     public String toString() {
         //todo
         return "Not implemented";
+    }
+
+    @Override
+    public void interact(Player player) {
+        player.pickUp(this);
     }
 
     public Coordinates getCoordinates() {

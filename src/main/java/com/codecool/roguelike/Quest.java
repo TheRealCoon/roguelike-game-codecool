@@ -19,7 +19,8 @@ public class Quest {// TODO a container to all killed enemies given to quest
 
     @Override
     public String toString() {
-        return "           " + name + "\n" + description;
+        String space = " ";
+        return description + "\n" + "Objective: " + objective + space.repeat(10) + "Reward: " + reward.getType();
     }
 
     public String getName() {
