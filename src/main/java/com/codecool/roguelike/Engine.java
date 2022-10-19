@@ -57,7 +57,7 @@ public class Engine {
         }
     }
 
-    public static void putCharactersOnBoard(char[][] board) {
+    public static void putCharactersOnBoard() {
         for (GameCharacter gc : characters) {
             putCharacterOnBoard(gc);
         }

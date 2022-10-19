@@ -85,7 +85,7 @@ public class App {
                 Engine.putItemsOnBoardRandomly(board.getCharBoard(), weapon);
             } else {
                 Engine.putCharacterOnBoard(player);
-                Engine.putCharactersOnBoard(board.getCharBoard());
+                Engine.putCharactersOnBoard();
             }
 
             ui.displayBoard(Engine.actualBoard.getCharBoard());
