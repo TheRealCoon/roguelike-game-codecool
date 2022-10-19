@@ -4,6 +4,7 @@ import com.codecool.roguelike.Coordinates;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class Wall {
     private static char defaultIcon = '#';
@@ -16,15 +17,8 @@ public class Wall {
         walls.add(this);
     }
 
-    public static void setWalls(List<Wall> walls) {
-        Wall.walls = walls;
-    }
     public Coordinates getCoordinates() {
         return coordinates;
-    }
-
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
     }
 
     public char getWallIcon() {
@@ -48,9 +42,8 @@ public class Wall {
     }
 
     public static void deleteWall(Wall wall){
-        walls.remove(wall);
         wall.coordinates = null;
-        wall = null;
+        walls.remove(wall);
     }
     public static Wall getWallByCoordinates(Coordinates coordinates){
         for (Wall wall: walls) {
@@ -58,6 +51,6 @@ public class Wall {
                 return wall;
             }
         }
-        return null;
+        throw new NoSuchElementException("Couldn't find wall on coordinate:" + coordinates);
     }
 }

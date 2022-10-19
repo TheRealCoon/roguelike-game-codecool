@@ -27,8 +27,8 @@ public class Coordinates {
 
     @Override
     public String toString() {
-        return "[" + horizontalCoordinate +
-                ", " + verticalCoordinate +
+        return "[x= " + horizontalCoordinate +
+                ", y= " + verticalCoordinate +
                 ']';
     }
 

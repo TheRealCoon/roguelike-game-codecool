@@ -1,17 +1,14 @@
 package com.codecool.roguelike;
 
+import com.codecool.roguelike.boardElements.Board;
 import com.codecool.roguelike.exceptions.TooManyGatesException;
 import com.codecool.roguelike.ui.GameInputReader;
 import com.codecool.roguelike.ui.GameUI;
 import com.codecool.roguelike.ui.console.ConsoleGameInputReader;
 import com.codecool.roguelike.ui.console.ConsoleUI;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Arrays;
 
 public class App {
 
@@ -20,13 +17,12 @@ public class App {
         final int boardHeight = 10;
         final char wallIcon = '#';
         final int numberOfGates = 2;
-        final int numberOfInnerWalls = 5;
+        final int numberOfInnerWalls = 20;
         final char gateIconHorizontal = '=';
         final char gateIconVertical = '"';
         final int playerStartX = 3;
         final int playerStartY = 3;
         final char playerIcon = '@';
-
 
         System.out.println("Choose a name for your hero!");
         String playerName = Util.getInputString();
@@ -54,17 +50,14 @@ public class App {
         }
 
         Coordinates playerStartingCoordinates = new Coordinates(playerStartX, playerStartY);
-        Coordinates itemRandomCoordinates = new Coordinates((int)Coordinates.generateRandomHorizontal(), (int)Coordinates.generateRandomVertical());
 
         Player player = new Player(playerName, playerRace, playerStartingCoordinates);
-        Item armor = new Armor("Shield", ItemType.ARMOR, itemRandomCoordinates, 'A');
-        Item food = new Food("Bread", ItemType.FOOD, itemRandomCoordinates, 'F');
-        Item weapon = new Weapon("Sword", ItemType.WEAPON, itemRandomCoordinates, 'W');
-        Item keyy = new Key("Key", ItemType.KEY, itemRandomCoordinates, 'K');
+        Item armor = new Armor("Shield", ItemType.ARMOR, new Coordinates(0, 0), 'A');
+        Item food = new Food("Bread", ItemType.FOOD, new Coordinates(0, 0), 'F');
+        Item weapon = new Weapon("Sword", ItemType.WEAPON, new Coordinates(0, 0), 'W');
+        Item itemKey = new Key("Key", ItemType.KEY, new Coordinates(0, 0), 'K');
 
-        Map<Coordinates, Item> itemMap = new HashMap<>();
-
-        char[][] board;
+        Board board;
         try {
             board = Engine.createBoard(boardWidth, boardHeight, wallIcon, numberOfGates, numberOfInnerWalls,
                     gateIconHorizontal,
@@ -83,16 +76,18 @@ public class App {
         boolean isGameStarting = true;
         while (isRunning) {
             if (isGameStarting) {
-                Engine.putPlayerOnBoardRandomly(board, player);
-                Engine.putItemsOnBoardRandomly(board, armor);
-                Engine.putItemsOnBoardRandomly(board, keyy);
-                Engine.putItemsOnBoardRandomly(board, weapon);
-
+                Engine.placePlayerNextToAGate(board, player);
+                Engine.createNpc(board.getCharBoard());
+                Engine.createMobs(board.getCharBoard());
+                Engine.putItemsOnBoardRandomly(board.getCharBoard(), armor);
+                Engine.putItemsOnBoardRandomly(board.getCharBoard(), itemKey);
+                Engine.putItemsOnBoardRandomly(board.getCharBoard(), weapon);
             } else {
-                Engine.putPlayerOnBoard(board, player);
+                Engine.putCharacterOnBoard(board.getCharBoard(), player);
+                Engine.putCharactersOnBoard(board.getCharBoard());
             }
 
-            ui.displayBoard(board);
+            ui.displayBoard(board.getCharBoard());
             ((ConsoleUI) ui).displayCharacterStats(player);
 
             char key = Util.getKeyStroke(reader, 1500);
@@ -103,45 +98,33 @@ public class App {
             } else {
                 switch (key) {
                     case 'w' -> {
-                        Engine.removePlayerFromBoard(board, player);
+                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveUp();
-
-                        hasThisSpaceAnItem(itemMap, player);
                     }
                     case 's' -> {
-                        Engine.removePlayerFromBoard(board, player);
+                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveDown();
-
-                        hasThisSpaceAnItem(itemMap, player);
                     }
                     case 'a' -> {
-                        Engine.removePlayerFromBoard(board, player);
+                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveLeft();
-
-                        hasThisSpaceAnItem(itemMap, player);
                     }
                     case 'd' -> {
-                        Engine.removePlayerFromBoard(board, player);
+                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveRight();
-
-                        hasThisSpaceAnItem(itemMap, player);
                     }
                     case 'i' -> {
-                        //call inventory
+                        player.displayInventory();
                     }
                     default -> System.out.println("Move with W,A,S,D, open inventory with I, or quit with Q!");
                 }
+
+                if (Arrays.asList('w', 'a', 's', 'd').contains(key)) {
+                    Engine.removeCharactersFromBoard(board.getCharBoard());
+                    Engine.moveMobs(player);
+                }//TODO move mobs
             }
             isGameStarting = false;
-        }
-    }
-
-    private static void hasThisSpaceAnItem(Map<Coordinates, Item> itemMap, Player player) {
-        for (Coordinates actualCoordinates : itemMap.keySet()) {
-            if(actualCoordinates.getHorizontalCoordinate() == player.getCoordinates().getHorizontalCoordinate() &&
-                    actualCoordinates.getVerticalCoordinate() == player.getCoordinates().getVerticalCoordinate()){
-                player.addToInventory(itemMap.get(actualCoordinates));
-            }
         }
     }
 }
