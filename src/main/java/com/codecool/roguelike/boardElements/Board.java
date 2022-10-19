@@ -89,7 +89,12 @@ public class Board {
 
     private void placeVerticalWallOnBoard(int lengthOfWall, int increment, int y, int x) {
         for (int i = y + increment; i != y + increment * (lengthOfWall); i += increment) {
-            if (charBoard[i + increment][x] == ' ' && charBoard[i + increment][x + 1] == ' ' && charBoard[i + increment][x - 1] == ' ') {
+            if (charBoard[i + increment][x] == ' ' &&
+                    charBoard[i + increment][x + 1] == ' ' &&
+                    charBoard[i + increment][x - 1] == ' ' &&
+                    charBoard[i + 2 * increment][x] == ' ' &&
+                    charBoard[i + 2 * increment][x + 1] == ' ' &&
+                    charBoard[i + 2 * increment][x - 1] == ' ') {
                 charBoard[i][x] = wallIcon;
                 walls.add(new Wall(new Coordinates(x, i)));
             }
@@ -98,7 +103,12 @@ public class Board {
 
     private void placeHorizontalWallOnBoard(int lengthOfWall, int increment, int y, int x) {
         for (int i = x + increment; i != x + increment * (lengthOfWall); i += increment) {
-            if (charBoard[y][i + increment] == ' ' && charBoard[y + 1][i + increment] == ' ' && charBoard[y - 1][i + increment] == ' ') {
+            if (charBoard[y][i + increment] == ' ' &&
+                    charBoard[y + 1][i + increment] == ' ' &&
+                    charBoard[y - 1][i + increment] == ' ' &&
+                    charBoard[y][i + 2 * increment] == ' ' &&
+                    charBoard[y + 1][i + 2 * increment] == ' ' &&
+                    charBoard[y - 1][i + 2 * increment] == ' ') {
                 charBoard[y][i] = wallIcon;
                 walls.add(new Wall(new Coordinates(i, y)));
             }
