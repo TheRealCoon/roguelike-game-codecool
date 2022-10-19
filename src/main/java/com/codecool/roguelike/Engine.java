@@ -105,6 +105,15 @@ public class Engine {
 
     public static void placePlayerNextToAGate(Player player) {
         Gate gate = actualBoard.getGates().get(0);
+        for (Board board : Board.getBoards()) {
+            for (Gate localGate : board.getGates()) {
+                if (localGate.getPreviousBoard() == null) continue;
+                if (localGate.getPreviousBoard().equals(actualBoard)) {
+                    gate = localGate;
+                    break;
+                }
+            }
+        }
         if (gate.getGateIcon() == Gate.getDefaultHorizontalIcon()) {
             if (gate.getCoordinates().getVerticalCoordinate() == 0) {
                 player.setCoordinates(gate.getCoordinates().getHorizontalCoordinate(), gate.getCoordinates().getVerticalCoordinate() + 1);
@@ -192,16 +201,18 @@ public class Engine {
 
 
     public static void moveToNextBord(Gate gate) {
-//        width, height, wallIcon, numberOfGates, numberOfInnerWalls, gateIconHorizontal, gateIconVertical
         //Board.getBoards().get(0) == starting board
+        gate.setPreviousBoard(actualBoard);
         actualBoard = new Board(actualBoard.getWidth(), actualBoard.getHeight(), Wall.getDefaultIcon(),
                 2, 20, Gate.getDefaultHorizontalIcon(), Gate.getDefaultVerticalIcon());
-        gate.addConnectingBoards(actualBoard);
+        gate.setActualBoard(actualBoard);
         Engine.placePlayerNextToAGate(player);
     }
 
-    public static void moveToSpecificBoard(Board board) {
+    public static void moveToSpecificBoard(Board board, Gate gate) {
+        gate.setPreviousBoard(actualBoard);
         actualBoard = board;
+        gate.setActualBoard(actualBoard);
         Engine.placePlayerNextToAGate(player);
     }
 

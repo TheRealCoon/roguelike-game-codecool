@@ -14,20 +14,32 @@ public class Gate implements Interactable {
     private static List<Gate> gates = new ArrayList<>();
     private char gateIcon;
     private Coordinates coordinates;
-    private Board board;
-    private List<Board> connectingBoards = new ArrayList<>();
+    private Board actualBoard;
+    private Board previousBoard;
 
-    public Gate(Coordinates coordinates, Board board) {
+    public Gate(Coordinates coordinates, Board actualBoard, Board previousBoard) {
         this.coordinates = coordinates;
-        this.board = board;
-        connectingBoards.add(board);
+        this.actualBoard = actualBoard;
+        this.previousBoard = previousBoard;
         int y = coordinates.getVerticalCoordinate();
-        if (y == 0 || y == board.getHeight() - 1) {
+        if (y == 0 || y == actualBoard.getHeight() - 1) {
             gateIcon = defaultHorizontalIcon;
         } else {
             gateIcon = defaultVerticalIcon;
         }
         gates.add(this);
+    }
+
+    public void setActualBoard(Board actualBoard) {
+        this.actualBoard = actualBoard;
+    }
+
+    public void setPreviousBoard(Board previousBoard) {
+        this.previousBoard = previousBoard;
+    }
+
+    public Board getActualBoard() {
+        return actualBoard;
     }
 
     public static List<Gate> getGates() {
@@ -61,16 +73,13 @@ public class Gate implements Interactable {
     @Override
     public void interact(Player player) {
         //if(player.getInventory().contains(Item o instanceof Key))
-        for (Board board : Board.getBoards()) {
-            if (connectingBoards.contains(board)) {
-                if (!board.equals(this.board)) {
-                    Engine.moveToSpecificBoard(board);
-                    return;
-                }
-            }
+        if (previousBoard != null) {
+            Engine.moveToSpecificBoard(previousBoard, this);
+            return;
         }
         Engine.moveToNextBord(this);
     }
+
 
     public Coordinates getCoordinates() {
         return coordinates;
@@ -80,7 +89,7 @@ public class Gate implements Interactable {
         this.coordinates = coordinates;
     }
 
-    public void addConnectingBoards(Board board) {
-        this.connectingBoards.add(board);
+    public Board getPreviousBoard() {
+        return previousBoard;
     }
 }
