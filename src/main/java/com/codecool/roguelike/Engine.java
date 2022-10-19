@@ -55,7 +55,7 @@ public class Engine {
         if (board[y][x] == ' ' || board[y][x] == gameCharacter.getCharacterIcon()) {
             board[y][x] = gameCharacter.getCharacterIcon();
         } else {
-            throw new CoordinateIsAlreadyOccupiedException("There is already a(n) '" + board[y][x] + "' on that coordinate!");
+            throw new CoordinateIsAlreadyOccupiedException("There is already a(n) '" + board[y][x] + "' on that coordinate (x= " + x + ", y= " + y + "!");
         }
     }
 
@@ -196,6 +196,7 @@ public class Engine {
                 2, 20, Gate.getDefaultHorizontalIcon(), Gate.getDefaultVerticalIcon());
         Engine.placePlayerNextToAGate(board, player);
     }
+
     public static void putItemsOnBoard(char[][] board, Item item) {
         int y = item.getCoordinates().getVerticalCoordinate();
         int x = item.getCoordinates().getHorizontalCoordinate();
