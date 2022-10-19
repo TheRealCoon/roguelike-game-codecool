@@ -90,7 +90,8 @@ public class Board {
 
     private void placeVerticalWallOnBoard(int lengthOfWall, int increment, int y, int x) {
         for (int i = y + increment; i != y + increment * (lengthOfWall); i += increment) {
-            if (charBoard[i + increment][x] == ' ' &&
+            if (charBoard[y][x] == wallIcon &&
+                    charBoard[i + increment][x] == ' ' &&
                     charBoard[i + increment][x + 1] == ' ' &&
                     charBoard[i + increment][x - 1] == ' ' &&
                     charBoard[i + 2 * increment][x] == ' ' &&
@@ -104,7 +105,8 @@ public class Board {
 
     private void placeHorizontalWallOnBoard(int lengthOfWall, int increment, int y, int x) {
         for (int i = x + increment; i != x + increment * (lengthOfWall); i += increment) {
-            if (charBoard[y][i + increment] == ' ' &&
+            if (charBoard[y][x] == wallIcon &&
+                    charBoard[y][i + increment] == ' ' &&
                     charBoard[y + 1][i + increment] == ' ' &&
                     charBoard[y - 1][i + increment] == ' ' &&
                     charBoard[y][i + 2 * increment] == ' ' &&

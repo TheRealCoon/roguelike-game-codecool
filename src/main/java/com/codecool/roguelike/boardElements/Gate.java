@@ -19,11 +19,12 @@ public class Gate implements Interactable {
 
     public Gate(Coordinates coordinates, Board board) {
         this.coordinates = coordinates;
-        this.board =  board;
+        this.board = board;
+        connectingBoards.add(board);
         int y = coordinates.getVerticalCoordinate();
         if (y == 0 || y == board.getHeight() - 1) {
             gateIcon = defaultHorizontalIcon;
-        } else{
+        } else {
             gateIcon = defaultVerticalIcon;
         }
         gates.add(this);
@@ -60,10 +61,12 @@ public class Gate implements Interactable {
     @Override
     public void interact(Player player) {
         //if(player.getInventory().contains(Item o instanceof Key))
-        for (Board board: Board.getBoards()) {
-            if(connectingBoards.contains(board)){
-                Engine.moveToSpecificBoard(board);
-                return;
+        for (Board board : Board.getBoards()) {
+            if (connectingBoards.contains(board)) {
+                if (!board.equals(this.board)) {
+                    Engine.moveToSpecificBoard(board);
+                    return;
+                }
             }
         }
         Engine.moveToNextBord(this);
