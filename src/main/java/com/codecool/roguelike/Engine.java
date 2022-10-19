@@ -128,7 +128,7 @@ public class Engine {
         }
     }
 
-    public static void fighting(Player player, GameCharacter enemy) {//TODO single key press, also add boss with weakpoint which isn't a single press fight, also add loot to player or maybe just drop loot?
+    public static void mobFight(Player player, GameCharacter enemy) {//TODO single key press, also add boss with weakpoint which isn't a single press fight, also add loot to player or maybe just drop loot?
         while (player.getHealth() > 0 && enemy.getHealth() > 0) {
 
             if (player.getHitChance() <= Util.getRandomIntFromRange(0, 100)) { //player hits enemy
@@ -161,7 +161,7 @@ public class Engine {
             return;
     }
 
-    public static boolean isEmpty(Coordinates coordinates) {
+    public static boolean isEmpty(Coordinates coordinates) { //TODO rewrite! shouldn't check board char instead check Interactable list?
         int y = coordinates.getVerticalCoordinate();
         int x = coordinates.getHorizontalCoordinate();
 
@@ -172,5 +172,28 @@ public class Engine {
         for(Mob m:mobs){
             m.move(player);
         }
+    }
+
+    public static void bossFight(Player player, Boss boss) {
+        boolean isWeakPointHit = player.getAttackCoordinates().equals(boss.getWeakPoint());
+
+        if (player.getHitChance() <= Util.getRandomIntFromRange(0, 100)) { //player hits enemy
+            int damage = player.getDamage() - boss.getArmor() > 0 ? player.getDamage() - boss.getArmor() : 1;
+            damage *= isWeakPointHit ? 2 : 1;
+            boss.setHealth(boss.getHealth() - damage);
+            Util.messageWithWaitTime(String.format("You hit %s with %d damage, enemy now has %d health!", boss.getName(), damage, boss.getHealth()));
+        } else {
+            Util.messageWithWaitTime("You missed!");
+        }
+
+        if (boss.getHitChance() <= Util.getRandomIntFromRange(0, 100)) { //enemy hits player
+            int damage = boss.getDamage() - player.getArmor() > 0 ? boss.getDamage() - player.getArmor() : 1;
+            player.setHealth(player.getHealth() - damage);
+            Util.messageWithWaitTime(String.format("%s hit you with %d damage, you now have %d health!", boss.getName(), damage, player.getHealth()));
+        } else {
+            Util.messageWithWaitTime("Enemy has missed!");
+        }
+
+
     }
 }
