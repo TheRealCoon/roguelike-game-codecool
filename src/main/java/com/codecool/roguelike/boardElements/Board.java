@@ -62,11 +62,13 @@ public class Board {
 
     }
 
-    private void placeRandomWall() {
+    protected void placeRandomWall() {
         int lengthOfWall;
         int maxWallLength;
         int increment;
-        Coordinates beginningCoordinate = walls.get(Util.getRandomIntFromRange(0, getBorderWallsNoCorners().size())).getCoordinates();
+        List<Wall> wallsNoCorners = getWallsNoCorners();
+        if (wallsNoCorners.size() < 1) return;
+        Coordinates beginningCoordinate = walls.get(Util.getRandomIntFromRange(0, wallsNoCorners.size())).getCoordinates();
         int y = beginningCoordinate.getVerticalCoordinate();
         int x = beginningCoordinate.getHorizontalCoordinate();
 
@@ -82,10 +84,11 @@ public class Board {
             placeHorizontalWallOnBoard(lengthOfWall, increment, y, x);
         }
         walls.remove(Wall.getWallByCoordinates(beginningCoordinate));
+
     }
 
     private void placeVerticalWallOnBoard(int lengthOfWall, int increment, int y, int x) {
-        for (int i = y + increment; i != y + increment * (lengthOfWall + 1); i += increment) {
+        for (int i = y + increment; i != y + increment * (lengthOfWall); i += increment) {
             if (charBoard[i + increment][x] == ' ' && charBoard[i + increment][x + 1] == ' ' && charBoard[i + increment][x - 1] == ' ') {
                 charBoard[i][x] = wallIcon;
                 walls.add(new Wall(new Coordinates(x, i)));
@@ -94,7 +97,7 @@ public class Board {
     }
 
     private void placeHorizontalWallOnBoard(int lengthOfWall, int increment, int y, int x) {
-        for (int i = x + increment; i != x + increment * (lengthOfWall + 1); i += increment) {
+        for (int i = x + increment; i != x + increment * (lengthOfWall); i += increment) {
             if (charBoard[y][i + increment] == ' ' && charBoard[y + 1][i + increment] == ' ' && charBoard[y - 1][i + increment] == ' ') {
                 charBoard[y][i] = wallIcon;
                 walls.add(new Wall(new Coordinates(i, y)));
@@ -131,8 +134,8 @@ public class Board {
         int x = coordinate.getHorizontalCoordinate();
         if (y == 0 || y == height - 1) return true;
         if (x != 0 && x != width - 1) {
-            return (charBoard[y][x + 1] == wallIcon) ||
-                    (charBoard[y][x - 1] == wallIcon);
+            return (charBoard[y][x + 1] != ' ' &&
+                    charBoard[y][x - 1] != ' ');
         }
         return false;
     }
@@ -142,13 +145,13 @@ public class Board {
         int x = coordinate.getHorizontalCoordinate();
         if (x == 0 || x == width - 1) return true;
         if (y != 0 && y != height - 1) {
-            return (charBoard[y + 1][x] == wallIcon) ||
-                    (charBoard[y - 1][x] == wallIcon);
+            return (charBoard[y + 1][x] != ' ' ||
+                    charBoard[y - 1][x] != ' ');
         }
         return false;
     }
 
-    private void placeRandomGateOnBorder() {
+    protected void placeRandomGateOnBorder() {
         int gateIndex;
         int y = -1, x = -1;
         char gateIcon = '¤';
@@ -176,11 +179,17 @@ public class Board {
                 y = gateIndex;
                 x = 0;
                 gateIcon = gateIconVertical;
-                charBoard[gateIndex][0] = gateIconVertical;
             }
+        }
+        if (charBoard[y][x] == gateIcon) {
+            placeRandomGateOnBorder();
+            return;
         }
         charBoard[y][x] = gateIcon;
         Gate gate = new Gate(new Coordinates(x, y), this);
+        Wall wall = Wall.getWallByCoordinates(new Coordinates(x, y));
+        walls.remove(wall);
+        Wall.deleteWall(wall);
         gates.add(gate);
     }
 
@@ -197,17 +206,17 @@ public class Board {
         return c == Gate.getDefaultHorizontalIcon() || c == Gate.getDefaultVerticalIcon();
     }
 
-    private List<Wall> getBorderWallsNoCorners() {
-        List<Wall> borderWallsNoCorners = new ArrayList<>();
+    private List<Wall> getWallsNoCorners() {
+        List<Wall> wallsNoCorners = new ArrayList<>();
         for (Wall wall : walls) {
             int x = wall.getCoordinates().getHorizontalCoordinate();
             int y = wall.getCoordinates().getVerticalCoordinate();
             if ((y > 1 && y < height - 2) && (x == 0 || x == width - 1) ||
                     (x > 1 && x < width - 2) && (y == 0 || y == height - 1)) {
-                borderWallsNoCorners.add(wall);
+                wallsNoCorners.add(wall);
             }
         }
-        return borderWallsNoCorners;
+        return wallsNoCorners;
     }
 
     public char[][] getCharBoard() {
