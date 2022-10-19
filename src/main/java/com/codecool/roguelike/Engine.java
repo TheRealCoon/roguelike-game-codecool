@@ -4,6 +4,8 @@ import com.codecool.roguelike.boardElements.Board;
 import com.codecool.roguelike.exceptions.CoordinateIsAlreadyOccupiedException;
 import com.codecool.roguelike.exceptions.TooManyGatesException;
 
+import java.awt.*;
+
 public class Engine {
 
     /**
@@ -82,4 +84,7 @@ public class Engine {
         item.setCoordinates(new Coordinates(x, y));
         putItemsOnBoard(board, item);
     }
+
+
+
 }

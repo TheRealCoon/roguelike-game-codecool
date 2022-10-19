@@ -8,7 +8,7 @@ public abstract class GameCharacter {
     protected String name;
     protected int health = 100;
     protected int damage = 10;
-    protected int armor = 10;
+    protected int defence = 10;
     protected int hitChance = 50;
     protected Coordinates coordinates;
     protected char characterIcon;
@@ -45,12 +45,12 @@ public abstract class GameCharacter {
         this.damage = damage;
     }
 
-    public int getArmor() {
-        return armor;
+    public int getDefence() {
+        return defence;
     }
 
-    public void setArmor(int armor) {
-        this.armor = armor;
+    public void setDefence(int defence) {
+        this.defence = defence;
     }
 
     public int getHitChance() {

@@ -9,6 +9,9 @@ import com.codecool.roguelike.ui.console.ConsoleUI;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class App {
 
@@ -57,8 +60,9 @@ public class App {
         Item armor = new Armor("Shield", ItemType.ARMOR, itemRandomCoordinates, 'A');
         Item food = new Food("Bread", ItemType.FOOD, itemRandomCoordinates, 'F');
         Item weapon = new Weapon("Sword", ItemType.WEAPON, itemRandomCoordinates, 'W');
-        Item key = new Key("Key", ItemType.KEY, itemRandomCoordinates, 'K');
+        Item keyy = new Key("Key", ItemType.KEY, itemRandomCoordinates, 'K');
 
+        Map<Coordinates, Item> itemMap = new HashMap<>();
 
         char[][] board;
         try {
@@ -81,7 +85,7 @@ public class App {
             if (isGameStarting) {
                 Engine.putPlayerOnBoardRandomly(board, player);
                 Engine.putItemsOnBoardRandomly(board, armor);
-                Engine.putItemsOnBoardRandomly(board, key);
+                Engine.putItemsOnBoardRandomly(board, keyy);
                 Engine.putItemsOnBoardRandomly(board, weapon);
 
             } else {
@@ -101,26 +105,43 @@ public class App {
                     case 'w' -> {
                         Engine.removePlayerFromBoard(board, player);
                         player.moveUp();
+
+                        hasThisSpaceAnItem(itemMap, player);
                     }
                     case 's' -> {
                         Engine.removePlayerFromBoard(board, player);
                         player.moveDown();
+
+                        hasThisSpaceAnItem(itemMap, player);
                     }
                     case 'a' -> {
                         Engine.removePlayerFromBoard(board, player);
                         player.moveLeft();
+
+                        hasThisSpaceAnItem(itemMap, player);
                     }
                     case 'd' -> {
                         Engine.removePlayerFromBoard(board, player);
                         player.moveRight();
+
+                        hasThisSpaceAnItem(itemMap, player);
                     }
                     case 'i' -> {
-                        player.displayInventory();
+                        //call inventory
                     }
                     default -> System.out.println("Move with W,A,S,D, open inventory with I, or quit with Q!");
                 }
             }
             isGameStarting = false;
+        }
+    }
+
+    private static void hasThisSpaceAnItem(Map<Coordinates, Item> itemMap, Player player) {
+        for (Coordinates actualCoordinates : itemMap.keySet()) {
+            if(actualCoordinates.getHorizontalCoordinate() == player.getCoordinates().getHorizontalCoordinate() &&
+                    actualCoordinates.getVerticalCoordinate() == player.getCoordinates().getVerticalCoordinate()){
+                player.addToInventory(itemMap.get(actualCoordinates));
+            }
         }
     }
 }

@@ -9,8 +9,4 @@ public class Key extends Item{
     public void setItemType(Key key){
         this.itemType = ItemType.KEY;
     }
-
-    public void openNewLevel(GameCharacter gameCharacter){
-        if(gameCharacter.coordinates == )
-    }
 }

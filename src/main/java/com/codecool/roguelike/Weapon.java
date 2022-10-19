@@ -1,8 +1,7 @@
 package com.codecool.roguelike;
 
 public class Weapon extends Item{
-
-    private Object weapon;
+    public int addedDamage = 5;
 
     public Weapon(String name, ItemType itemType, Coordinates coordinates, char itemIcon) {
         super(name, itemType, coordinates, itemIcon);
@@ -13,9 +12,11 @@ public class Weapon extends Item{
         this.itemType = ItemType.WEAPON;
     }
 
-    public void increaseDamage(GameCharacter gameCharacter){
-        if(gameCharacter.getInventory().contains(weapon)){
-            gameCharacter.setDamage(gameCharacter.getDamage() + 5);
-        }
+    public int getAddedDamage() {
+        return addedDamage;
+    }
+
+    public void setAddedDamage(int addedDamage) {
+        this.addedDamage = addedDamage;
     }
 }

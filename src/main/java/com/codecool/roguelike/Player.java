@@ -63,17 +63,17 @@ public class Player extends GameCharacter {
         if (item instanceof Key) {
             hasKey = true;
         } else if (item instanceof Weapon weapon) {
-            if (damage < weapon.getDamage()) {
-                damage = weapon.getDamage();
-                System.out.println("You equipped the " + item.getName + "!");
+            if (damage < weapon.getAddedDamage()) {
+                damage = damage + weapon.getAddedDamage();
+                System.out.println("You equipped the " + item.getName() + "!");
             }
         } else if (item instanceof Armor armor) {
-            if (armor < armor.getArmor()) {
-                armor = armor.getArmor();
-                System.out.println("You equipped the " + item.getName + "!");
+            if (defence < armor.getAddedArmor()) {
+                defence = defence + armor.getAddedArmor();
+                System.out.println("You equipped the " + item.getName() + "!");
             }
         } else if (item instanceof Food food) {
-            health += food.getHealth();
+            health = health + food.getAddedHealth();
             inventory.remove(item);
         }
     }
