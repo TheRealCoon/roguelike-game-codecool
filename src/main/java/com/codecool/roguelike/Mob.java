@@ -2,12 +2,11 @@ package com.codecool.roguelike;
 
 import java.util.Random;
 
-public class Mob extends GameCharacter implements  Interactable{
+public class Mob extends GameCharacter implements Interactable {
 
     private MobType type;
-    private final double modifier = type.getStatMultiplier();
+    private final double modifier;
     private final int SIZE = MobType.values().length;
-    private final Random RANDOM = new Random();
 
     private static final char ICON = 'E';
 
@@ -18,11 +17,12 @@ public class Mob extends GameCharacter implements  Interactable{
         super(name, startCoordinates, ICON);
         this.moveType = moveType;
         this.type = randomType();
+        modifier = type.getStatMultiplier();
         modifyBaseStats();
     }
 
     private MobType randomType() {
-        return MobType.values()[RANDOM.nextInt(SIZE)];
+        return MobType.values()[Util.getRandomIntFromRange(0, SIZE)];
     }
 
     private void modifyBaseStats() {
@@ -31,46 +31,51 @@ public class Mob extends GameCharacter implements  Interactable{
         armor = (int) (armor * modifier);
     }
 
-    private void move(){
-        if(moveType.equals(MoveType.TOPLAYER)){
-            moveToPlayer();
-        }else{
+    public void move(Player player) {
+        if (moveType.equals(MoveType.TOPLAYER)) {
+            moveToPlayer(player);
+        } else {
             moveRandom();
         }
 
     }
-    private void moveRandom() {
-        int distanceToMove = RANDOM.nextInt(-1, 1);
-        int newHorizonCord = coordinates.getHorizontalCoordinate() + distanceToMove;
-        int newVerticalCord = coordinates.getVerticalCoordinate() + distanceToMove;
-        Coordinates newCoordinates = new Coordinates(newHorizonCord,newVerticalCord);
 
-        if(Engine.isEmpty(newCoordinates)) {
+    private void moveRandom() {
+        int distanceHorizontal = Util.getRandomIntFromRange(-1, 2);
+        int distanceVertical = Util.getRandomIntFromRange(-1, 2);
+        int newHorizonCord = coordinates.getHorizontalCoordinate() + distanceHorizontal;
+        int newVerticalCord = coordinates.getVerticalCoordinate() + distanceVertical;
+        Coordinates newCoordinates = new Coordinates(newHorizonCord, newVerticalCord);
+
+        if (Engine.isEmpty(newCoordinates)) {
             setCoordinates(newCoordinates);
-        }else{
+        } else {
             moveRandom();
         }
     }//TODO test
 
-    private void moveToPlayer() {
-       Coordinates targetCoordinates = Engine.getPlayerCoordinates();
-       int distanceHorizontal = coordinates.getHorizontalCoordinate()- (targetCoordinates.getHorizontalCoordinate() - coordinates.getHorizontalCoordinate());
-       int distanceVertical = coordinates.getVerticalCoordinate() - (targetCoordinates.getVerticalCoordinate() - coordinates.getVerticalCoordinate());
-       int directionHorizontal = distanceHorizontal / Math.abs(distanceHorizontal);
-       int directionVertical = distanceVertical / Math.abs(distanceVertical);
-       Coordinates newCoordinates = new Coordinates(directionHorizontal, directionVertical);
+    private void moveToPlayer(Player player) {
+        Coordinates targetCoordinates = player.getCoordinates();
+        int distanceHorizontal = (targetCoordinates.getHorizontalCoordinate() - coordinates.getHorizontalCoordinate());
+        int distanceVertical = (targetCoordinates.getVerticalCoordinate() - coordinates.getVerticalCoordinate());
+        int directionHorizontal = distanceHorizontal != 0 ? distanceHorizontal / Math.abs(distanceHorizontal) : distanceHorizontal;
+        int directionVertical = distanceVertical != 0 ? distanceVertical / Math.abs(distanceVertical) : distanceVertical;
+        int nextHorizontal = coordinates.getHorizontalCoordinate() + directionHorizontal;
+        int nextVertical = coordinates.getVerticalCoordinate() + directionVertical;
+        Coordinates newCoordinates = new Coordinates(nextHorizontal, nextVertical);
 
-       if(Engine.isEmpty(newCoordinates)){
-           setCoordinates(newCoordinates);
-       }
+        if (Engine.isEmpty(newCoordinates)) {
+            setCoordinates(newCoordinates);
+        }
 
     }//TODO test, also it doesn't move, until it "sees" the player
 
-    private void addRandomItem() {}//TODO
+    private void addRandomItem() {
+    }//TODO
 
-    public void interact(Player player){
+    public void interact(Player player) {
         Engine.fighting(player, this);
     }
-    
+
 
 }
