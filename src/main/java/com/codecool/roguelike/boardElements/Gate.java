@@ -1,11 +1,14 @@
 package com.codecool.roguelike.boardElements;
 
 import com.codecool.roguelike.Coordinates;
+import com.codecool.roguelike.Engine;
+import com.codecool.roguelike.Interactable;
+import com.codecool.roguelike.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Gate {
+public class Gate implements Interactable {
     private static char defaultHorizontalIcon = '=';
     private static char defaultVerticalIcon = '"';
     private static List<Gate> gates = new ArrayList<>();
@@ -50,6 +53,12 @@ public class Gate {
 
     public void setGateIcon(char gateIcon) {
         this.gateIcon = gateIcon;
+    }
+
+    @Override
+    public void interact(Player player) {
+        //if(player.getInventory().contains(Item o instanceof Key))
+        Engine.moveToNextBord();
     }
 
     public Coordinates getCoordinates() {

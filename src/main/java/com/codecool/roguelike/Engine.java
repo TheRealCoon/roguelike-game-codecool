@@ -175,4 +175,8 @@ public class Engine {
             m.move(player);
         }
     }
+
+    public static void moveToNextBord() {
+
+    }
 }
