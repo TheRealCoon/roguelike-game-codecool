@@ -10,6 +10,7 @@ import java.util.List;
 public class Player extends GameCharacter {
     private Race RACE;
     private static final char playerIcon = '@';
+    private Coordinates attackCoordinates;
 
     public Player(String name, Race race, Coordinates coordinates) {
         super(name, coordinates, playerIcon);
@@ -22,6 +23,7 @@ public class Player extends GameCharacter {
             coordinates = nextCoordinates;
         } else {
             Engine.tryToInteract(this, nextCoordinates);
+            attackCoordinates = nextCoordinates;
         }
     }
 
@@ -31,6 +33,7 @@ public class Player extends GameCharacter {
             coordinates = nextCoordinates;
         } else {
             Engine.tryToInteract(this, nextCoordinates);
+            attackCoordinates = nextCoordinates;
         }
     }
 
@@ -41,6 +44,7 @@ public class Player extends GameCharacter {
            coordinates = nextCoordinates;
        } else {
            Engine.tryToInteract(this, nextCoordinates);
+           attackCoordinates = nextCoordinates;
        }
     }
 
@@ -50,6 +54,7 @@ public class Player extends GameCharacter {
             coordinates = nextCoordinates;
         } else {
             Engine.tryToInteract(this, nextCoordinates);
+            attackCoordinates = nextCoordinates;
         }
     }
 
@@ -84,5 +89,9 @@ public class Player extends GameCharacter {
         if (isDead()) {
             System.out.println("You died");
         }
+    }
+
+    public Coordinates getAttackCoordinates() {
+        return attackCoordinates;
     }
 }
