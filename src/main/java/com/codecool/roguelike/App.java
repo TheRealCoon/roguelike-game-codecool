@@ -72,7 +72,7 @@ public class App {
         boolean isGameStarting = true;
         while (isRunning) {
             if (isGameStarting) {
-                Engine.placePlayerNextToAGate(board,player);
+                Engine.placePlayerNextToAGate(board, player);
                 Engine.createNpc(board.getCharBoard());
                 Engine.createMobs(board.getCharBoard());
             } else {
@@ -112,7 +112,7 @@ public class App {
                     default -> System.out.println("Move with W,A,S,D, open inventory with I, or quit with Q!");
                 }
 
-                if(Arrays.asList('w','a','s','d').contains(key)){
+                if (Arrays.asList('w', 'a', 's', 'd').contains(key)) {
                     Engine.removeCharactersFromBoard(board.getCharBoard());
                     Engine.moveMobs(player);
                 }//TODO move mobs
