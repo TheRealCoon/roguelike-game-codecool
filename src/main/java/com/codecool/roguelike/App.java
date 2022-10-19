@@ -81,8 +81,8 @@ public class App {
             ui.displayBoard(board.getCharBoard());
             ((ConsoleUI) ui).displayCharacterStats(player);
 
-            char key = Util.getKeyStroke(reader, 1500);
-            //char key = Util.getInputChar();
+            //char key = Util.getKeyStroke(reader, 1500);
+            char key = Util.getInputChar();
 
             if (key == 'q') {
                 isRunning = false;

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Engine {
 
-    private static final List<Interactable> interactables = new ArrayList<>();
+    public static final List<Interactable> interactables = new ArrayList<>();
     private static final List<Mob> mobs = new ArrayList<>();
     private static final List<GameCharacter> characters = new ArrayList<>();
     private static Board board;
@@ -40,7 +40,7 @@ public class Engine {
     public static Player createPlayer(String playerName, Race playerRace, Coordinates playerStartingCoordinates) {
         Player player = new Player(playerName, playerRace, playerStartingCoordinates);
         Engine.player = player;
-        return  player;
+        return player;
     }
 
     /**
@@ -146,25 +146,27 @@ public class Engine {
                 int damage = player.getDamage() - enemy.getArmor() > 0 ? player.getDamage() - enemy.getArmor() : 1;
                 damage *= isWeakPointHit ? 2 : 1;
                 enemy.setHealth(enemy.getHealth() - damage);
-                Util.messageWithWaitTime(String.format("You hit %s with %d damage, enemy now has %d health!", enemy.getName(), damage, enemy.getHealth()));
+                // Util.messageWithWaitTime(String.format("You hit %s with %d damage, enemy now has %d health!", enemy.getName(), damage, enemy.getHealth()));
             } else {
-                Util.messageWithWaitTime("You missed!");
+                // Util.messageWithWaitTime("You missed!");
             }
 
             if (enemy.getHitChance() <= Util.getRandomIntFromRange(0, 100)) { //enemy hits player
                 int damage = enemy.getDamage() - player.getArmor() > 0 ? enemy.getDamage() - player.getArmor() : 1;
                 player.setHealth(player.getHealth() - damage);
-                Util.messageWithWaitTime(String.format("%s hit you with %d damage, you now have %d health!", enemy.getName(), damage, player.getHealth()));
+                // Util.messageWithWaitTime(String.format("%s hit you with %d damage, you now have %d health!", enemy.getName(), damage, player.getHealth()));
             } else {
-                Util.messageWithWaitTime("Enemy has missed!");
+                // Util.messageWithWaitTime("Enemy has missed!");
             }
         } while (player.getHealth() > 0 && enemy.getHealth() > 0 && enemy instanceof Mob);
     }
 
     public static void tryToInteract(Player player, Coordinates coordinates) {
         for (Interactable i : interactables) {
-            if (i.getCoordinates().equals(coordinates))
+            if (i.getCoordinates().equals(coordinates)) {
                 i.interact(player);
+                break;
+            }
         }
     }
 
@@ -188,6 +190,7 @@ public class Engine {
 
     public static void moveToNextBord() {
 //        width, height, wallIcon, numberOfGates, numberOfInnerWalls, gateIconHorizontal, gateIconVertical
+        //Board.getBoards().get(0) == starting board
         board = new Board(board.getWidth(), board.getHeight(), Wall.getDefaultIcon(),
                 2, 20, Gate.getDefaultHorizontalIcon(), Gate.getDefaultVerticalIcon());
         Engine.placePlayerNextToAGate(board, player);

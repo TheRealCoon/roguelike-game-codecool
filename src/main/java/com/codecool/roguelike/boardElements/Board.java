@@ -1,6 +1,7 @@
 package com.codecool.roguelike.boardElements;
 
 import com.codecool.roguelike.Coordinates;
+import com.codecool.roguelike.Engine;
 import com.codecool.roguelike.Util;
 import com.codecool.roguelike.exceptions.TooManyGatesException;
 
@@ -201,6 +202,7 @@ public class Board {
         walls.remove(wall);
         Wall.deleteWall(wall);
         gates.add(gate);
+        Engine.interactables.add(gate);
     }
 
     private int randomizeIndexOfGate(int maxIndexExclusive, char c) {
