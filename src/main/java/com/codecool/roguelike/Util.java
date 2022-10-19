@@ -77,4 +77,17 @@ public class Util {
 
         return key;
     }
+
+    public static void messageWithWaitTime(String message){
+        long waitTime = 1000;
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(waitTime);
+                System.out.print(message);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
+    }
 }

@@ -7,9 +7,8 @@ import com.codecool.roguelike.ui.GameUI;
 import com.codecool.roguelike.ui.console.ConsoleGameInputReader;
 import com.codecool.roguelike.ui.console.ConsoleUI;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class App {
 
@@ -73,10 +72,12 @@ public class App {
         boolean isGameStarting = true;
         while (isRunning) {
             if (isGameStarting) {
-                Engine.placePlayerNextToAGate(board,player);
-                //Engine.putPlayerOnBoardRandomly(board, player);
+                Engine.placePlayerNextToAGate(board, player);
+                Engine.createNpc(board.getCharBoard());
+                Engine.createMobs(board.getCharBoard());
             } else {
-                Engine.putPlayerOnBoard(board.getCharBoard(), player);
+                Engine.putCharacterOnBoard(board.getCharBoard(), player);
+                Engine.putCharactersOnBoard(board.getCharBoard());
             }
 
             ui.displayBoard(board.getCharBoard());
@@ -90,19 +91,19 @@ public class App {
             } else {
                 switch (key) {
                     case 'w' -> {
-                        Engine.removePlayerFromBoard(board.getCharBoard(), player);
+                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveUp();
                     }
                     case 's' -> {
-                        Engine.removePlayerFromBoard(board.getCharBoard(), player);
+                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveDown();
                     }
                     case 'a' -> {
-                        Engine.removePlayerFromBoard(board.getCharBoard(), player);
+                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveLeft();
                     }
                     case 'd' -> {
-                        Engine.removePlayerFromBoard(board.getCharBoard(), player);
+                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveRight();
                     }
                     case 'i' -> {
@@ -110,6 +111,11 @@ public class App {
                     }
                     default -> System.out.println("Move with W,A,S,D, open inventory with I, or quit with Q!");
                 }
+
+                if (Arrays.asList('w', 'a', 's', 'd').contains(key)) {
+                    Engine.removeCharactersFromBoard(board.getCharBoard());
+                    Engine.moveMobs(player);
+                }//TODO move mobs
             }
             isGameStarting = false;
         }
