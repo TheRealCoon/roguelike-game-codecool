@@ -1,7 +1,5 @@
 package com.codecool.roguelike;
 
-import java.util.Random;
-
 public class Mob extends GameCharacter implements Interactable {
 
     private MobType type;
@@ -74,7 +72,7 @@ public class Mob extends GameCharacter implements Interactable {
     }//TODO
 
     public void interact(Player player) {
-        Engine.fighting(player, this);
+        Engine.mobFight(player, this);
     }
 
 
