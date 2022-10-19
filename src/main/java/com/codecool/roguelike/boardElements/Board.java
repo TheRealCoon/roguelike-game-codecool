@@ -247,6 +247,14 @@ public class Board {
     public List<Gate> getGates() {
         return gates;
     }
+
+    public static List<Board> getBoards() {
+        return boards;
+    }
+
+    public char getWallIcon() {
+        return wallIcon;
+    }
 }
 
 

@@ -53,7 +53,13 @@ public class Engine {
         if (actualBoard.getCharBoard()[y][x] == ' ' || actualBoard.getCharBoard()[y][x] == gameCharacter.getCharacterIcon()) {
             actualBoard.getCharBoard()[y][x] = gameCharacter.getCharacterIcon();
         } else {
-           throw new CoordinateIsAlreadyOccupiedException(gameCharacter.getClass().getSimpleName()+ " \n" + actualBoard.getCharBoard()[y][x] + "' on that coordinate (x= " + x + ", y= " + y + ")!", actualBoard.getCharBoard());
+            if (actualBoard.getCharBoard()[y][x] == actualBoard.getWallIcon()) {
+                Wall wall = Wall.getWallByCoordinates(new Coordinates(x, y));
+                Wall.deleteWall(wall);
+                actualBoard.getCharBoard()[y][x] = ' ';
+            } else {
+                throw new CoordinateIsAlreadyOccupiedException(gameCharacter.getClass().getSimpleName() + " \n" + actualBoard.getCharBoard()[y][x] + "' on that coordinate (x= " + x + ", y= " + y + ")!", actualBoard.getCharBoard());
+            }
         }
     }
 
@@ -97,9 +103,8 @@ public class Engine {
         putCharacterOnBoard(gameCharacter);
     }
 
-    public static void placePlayerNextToAGate(Board board, Player player) {
-        char[][] charBoard = board.getCharBoard();
-        Gate gate = board.getGates().get(0);
+    public static void placePlayerNextToAGate(Player player) {
+        Gate gate = actualBoard.getGates().get(0);
         if (gate.getGateIcon() == Gate.getDefaultHorizontalIcon()) {
             if (gate.getCoordinates().getVerticalCoordinate() == 0) {
                 player.setCoordinates(gate.getCoordinates().getHorizontalCoordinate(), gate.getCoordinates().getVerticalCoordinate() + 1);
@@ -186,12 +191,18 @@ public class Engine {
     }
 
 
-    public static void moveToNextBord() {
+    public static void moveToNextBord(Gate gate) {
 //        width, height, wallIcon, numberOfGates, numberOfInnerWalls, gateIconHorizontal, gateIconVertical
         //Board.getBoards().get(0) == starting board
         actualBoard = new Board(actualBoard.getWidth(), actualBoard.getHeight(), Wall.getDefaultIcon(),
                 2, 20, Gate.getDefaultHorizontalIcon(), Gate.getDefaultVerticalIcon());
-        Engine.placePlayerNextToAGate(actualBoard, player);
+        gate.addConnectingBoards(actualBoard);
+        Engine.placePlayerNextToAGate(player);
+    }
+
+    public static void moveToSpecificBoard(Board board) {
+        actualBoard = board;
+        Engine.placePlayerNextToAGate(player);
     }
 
     public static void putItemsOnBoard(char[][] board, Item item) {

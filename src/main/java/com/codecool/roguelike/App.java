@@ -77,7 +77,7 @@ public class App {
         boolean isGameStarting = true;
         while (isRunning) {
             if (isGameStarting) {
-                Engine.placePlayerNextToAGate(board, player);
+                Engine.placePlayerNextToAGate(player);
                 Engine.createNpc(board.getCharBoard());
                 Engine.createMobs(board.getCharBoard());
                 Engine.putItemsOnBoardRandomly(board.getCharBoard(), armor);
