@@ -11,6 +11,8 @@ import java.util.List;
 public class Engine {
 
     private static final List<Interactable> interactables = new ArrayList<>();
+    private static final List<Mob> mobs = new ArrayList<>();
+    private static final List<GameCharacter> characters = new ArrayList<>();
     private static Board board;
     private static Npc npc;
 
@@ -47,6 +49,12 @@ public class Engine {
         }
     }
 
+    public static void putCharactersOnBoard(char[][] board){
+        for(GameCharacter gc:characters){
+            putCharacterOnBoard(board, gc);
+        }
+    }
+
     public static void createMobs(char[][] board) {
         Mob mob1 = new Mob("Elenor", new Coordinates(0, 0), MoveType.TOPLAYER);
         Mob mob2 = new Mob("Rocky", new Coordinates(0, 0), MoveType.RANDOM);
@@ -56,6 +64,10 @@ public class Engine {
 
         interactables.add(mob1);
         interactables.add(mob2);
+        mobs.add(mob1);
+        mobs.add(mob2);
+        characters.add(mob1);
+        characters.add(mob2);
     }
 
     public static void createNpc(char[][] board) {
@@ -64,6 +76,7 @@ public class Engine {
         putCharacterOnBoardRandomly(board, npc);
 
         interactables.add(npc);
+        characters.add(npc);
     }
 
     public static void putCharacterOnBoardRandomly(char[][] board, GameCharacter gameCharacter) {
@@ -99,13 +112,19 @@ public class Engine {
      * Modifies the game board by removing the player icon from its coordinates
      *
      * @param board  The game board
-     * @param player The player information containing the coordinates
+     * @param gameCharacter The player information containing the coordinates
      */
-    public static void removePlayerFromBoard(char[][] board, Player player) {
-        int y = player.getCoordinates().getVerticalCoordinate();
-        int x = player.getCoordinates().getHorizontalCoordinate();
-        if (board[y][x] == player.getCharacterIcon()) {
+    public static void removeCharacterFromBoard(char[][] board, GameCharacter gameCharacter) {
+        int y = gameCharacter.getCoordinates().getVerticalCoordinate();
+        int x = gameCharacter.getCoordinates().getHorizontalCoordinate();
+        if (board[y][x] == gameCharacter.getCharacterIcon()) {
             board[y][x] = ' ';
+        }
+    }
+
+    public static void removeCharactersFromBoard(char[][] board){
+        for(GameCharacter gc:mobs){
+            removeCharacterFromBoard(board, gc);
         }
     }
 
@@ -140,14 +159,18 @@ public class Engine {
     public static void checkIfQuestDone(){
         if(npc.getActiveQuest().equals(null))
             return;
-
     }
 
     public static boolean isEmpty(Coordinates coordinates) {
-        return false; //TODO maybe already done by Ádám
+        int y = coordinates.getVerticalCoordinate();
+        int x = coordinates.getHorizontalCoordinate();
+
+        return board.getCharBoard()[y][x] == ' ';
     }
 
-    public static Coordinates getPlayerCoordinates() {
-        return new Coordinates(0, 0); //TODO
+    public static void moveMobs(Player player) {
+        for(Mob m:mobs){
+            m.move(player);
+        }
     }
 }

@@ -74,8 +74,10 @@ public class App {
             if (isGameStarting) {
                 Engine.placePlayerNextToAGate(board,player);
                 Engine.createNpc(board.getCharBoard());
+                Engine.createMobs(board.getCharBoard());
             } else {
                 Engine.putCharacterOnBoard(board.getCharBoard(), player);
+                Engine.putCharactersOnBoard(board.getCharBoard());
             }
 
             ui.displayBoard(board.getCharBoard());
@@ -89,19 +91,19 @@ public class App {
             } else {
                 switch (key) {
                     case 'w' -> {
-                        Engine.removePlayerFromBoard(board.getCharBoard(), player);
+                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveUp();
                     }
                     case 's' -> {
-                        Engine.removePlayerFromBoard(board.getCharBoard(), player);
+                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveDown();
                     }
                     case 'a' -> {
-                        Engine.removePlayerFromBoard(board.getCharBoard(), player);
+                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveLeft();
                     }
                     case 'd' -> {
-                        Engine.removePlayerFromBoard(board.getCharBoard(), player);
+                        Engine.removeCharacterFromBoard(board.getCharBoard(), player);
                         player.moveRight();
                     }
                     case 'i' -> {
@@ -110,7 +112,10 @@ public class App {
                     default -> System.out.println("Move with W,A,S,D, open inventory with I, or quit with Q!");
                 }
 
-                if(Arrays.asList('w','a','s','d').contains(key)){}//TODO move mobs
+                if(Arrays.asList('w','a','s','d').contains(key)){
+                    Engine.removeCharactersFromBoard(board.getCharBoard());
+                    Engine.moveMobs(player);
+                }//TODO move mobs
             }
             isGameStarting = false;
         }
