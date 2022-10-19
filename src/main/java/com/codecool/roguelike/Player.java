@@ -75,4 +75,14 @@ public class Player extends GameCharacter {
             System.out.println(item);
         }
     }
+
+    public boolean isDead() {
+        return health <= 0;
+    }
+
+    public void die() {
+        if (isDead()) {
+            System.out.println("You died");
+        }
+    }
 }
