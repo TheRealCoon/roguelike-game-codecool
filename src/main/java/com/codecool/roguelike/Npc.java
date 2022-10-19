@@ -17,7 +17,7 @@ public class Npc extends GameCharacter implements Interactable {
         quests.add(new Quest("Kill them all!",
                 "Hi fellow traveller! I have a quest for you! You shall kill all enemies in this room and I can give you THE KEY!",
                 "Kill (2) enemies",
-                new Item()));
+                new Item("asd", ItemType.KEY, new Coordinates(0,0), 'K'))); //TODO
     }
 
     public void interact(Player player) {

@@ -50,7 +50,14 @@ public class App {
         }
 
         Coordinates playerStartingCoordinates = new Coordinates(playerStartX, playerStartY);
+
         Player player = Engine.createPlayer(playerName, playerRace, playerStartingCoordinates);
+        Item armor = new Armor("Shield", ItemType.ARMOR, new Coordinates(0, 0), 'A');
+        Item food = new Food("Bread", ItemType.FOOD, new Coordinates(0, 0), 'F');
+        Item weapon = new Weapon("Sword", ItemType.WEAPON, new Coordinates(0, 0), 'W');
+        Item itemKey = new Key("Key", ItemType.KEY, new Coordinates(0, 0), 'K');
+
+
         Board board;
         try {
             board = Engine.createBoard(boardWidth, boardHeight, wallIcon, numberOfGates, numberOfInnerWalls,
@@ -73,6 +80,9 @@ public class App {
                 Engine.placePlayerNextToAGate(board, player);
                 Engine.createNpc(board.getCharBoard());
                 Engine.createMobs(board.getCharBoard());
+                Engine.putItemsOnBoardRandomly(board.getCharBoard(), armor);
+                Engine.putItemsOnBoardRandomly(board.getCharBoard(), itemKey);
+                Engine.putItemsOnBoardRandomly(board.getCharBoard(), weapon);
             } else {
                 Engine.putCharacterOnBoard(board.getCharBoard(), player);
                 Engine.putCharactersOnBoard(board.getCharBoard());

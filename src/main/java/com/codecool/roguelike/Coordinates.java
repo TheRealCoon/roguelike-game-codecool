@@ -40,4 +40,15 @@ public class Coordinates {
         return horizontalCoordinate == coordinates.horizontalCoordinate &&
                 verticalCoordinate == coordinates.verticalCoordinate;
     }
+
+
+    public static double generateRandomHorizontal(){
+        return Math.random() * (20 - 1) + 1;
+    }
+
+    public static double generateRandomVertical(){
+        return Math.random() * (10 - 1) + 1;
+    }
+
+
 }

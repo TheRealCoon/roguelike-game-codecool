@@ -1,7 +1,6 @@
 package com.codecool.roguelike;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.security.Key;
 
 /*
  * This class keeps all the necessary information about the player i.e. player icon, player position
@@ -11,10 +10,12 @@ public class Player extends GameCharacter {
     private Race RACE;
     private static final char playerIcon = '@';
     private Coordinates attackCoordinates;
+    private boolean hasKey;
 
     public Player(String name, Race race, Coordinates coordinates) {
         super(name, coordinates, playerIcon);
         this.RACE = race;
+        hasKey = false;
     }
 
     public void moveUp() {
@@ -78,6 +79,26 @@ public class Player extends GameCharacter {
     public void displayInventory() {
         for (Item item : inventory) {
             System.out.println(item);
+        }
+    }
+
+    public void pickUp(Item item) {
+        inventory.add(item);
+        if (item instanceof Key) {
+            hasKey = true;
+        } else if (item instanceof Weapon weapon) {
+            if (damage < weapon.getAddedDamage()) {
+                damage += weapon.getAddedDamage();
+                System.out.println("You equipped the " + item.getName() + "!");
+            }
+        } else if (item instanceof Armor armor) {
+            if (this.armor < armor.getAddedArmor()) {
+                this.armor += armor.getAddedArmor();
+                System.out.println("You equipped the " + item.getName() + "!");
+            }
+        } else if (item instanceof Food food) {
+            health += food.getAddedHealth();
+            inventory.remove(item);
         }
     }
 

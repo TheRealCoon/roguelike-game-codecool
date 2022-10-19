@@ -43,7 +43,7 @@ public class Mob extends GameCharacter implements Interactable {
         int distanceVertical = Util.getRandomIntFromRange(-1, 2);
         int newHorizonCord = coordinates.getHorizontalCoordinate() + distanceHorizontal;
         int newVerticalCord = coordinates.getVerticalCoordinate() + distanceVertical;
-        Coordinates newCoordinates = new Coordinates(newHorizonCord, newVerticalCord);
+        Coordinates newCoordinates = new Coordinates(newHorizonCord, newVerticalCord); //TODO too much garbage?
 
         if (Engine.isEmpty(newCoordinates)) {
             setCoordinates(newCoordinates);
