@@ -72,7 +72,7 @@ public class Mob extends GameCharacter implements Interactable {
     }//TODO
 
     public void interact(Player player) {
-        Engine.mobFight(player, this);
+        Engine.fight(player, this);
     }
 
 

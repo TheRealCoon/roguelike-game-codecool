@@ -49,8 +49,8 @@ public class Engine {
         }
     }
 
-    public static void putCharactersOnBoard(char[][] board){
-        for(GameCharacter gc:characters){
+    public static void putCharactersOnBoard(char[][] board) {
+        for (GameCharacter gc : characters) {
             putCharacterOnBoard(board, gc);
         }
     }
@@ -111,7 +111,7 @@ public class Engine {
     /**
      * Modifies the game board by removing the player icon from its coordinates
      *
-     * @param board  The game board
+     * @param board         The game board
      * @param gameCharacter The player information containing the coordinates
      */
     public static void removeCharacterFromBoard(char[][] board, GameCharacter gameCharacter) {
@@ -122,17 +122,19 @@ public class Engine {
         }
     }
 
-    public static void removeCharactersFromBoard(char[][] board){
-        for(GameCharacter gc:mobs){
+    public static void removeCharactersFromBoard(char[][] board) {
+        for (GameCharacter gc : mobs) {
             removeCharacterFromBoard(board, gc);
         }
     }
 
-    public static void mobFight(Player player, GameCharacter enemy) {//TODO single key press, also add boss with weakpoint which isn't a single press fight, also add loot to player or maybe just drop loot?
-        while (player.getHealth() > 0 && enemy.getHealth() > 0) {
+    public static void fight(Player player, GameCharacter enemy) {//TODO single key press, also add boss with weakpoint which isn't a single press fight, also add loot to player or maybe just drop loot?
+        boolean isWeakPointHit = enemy instanceof Boss boss ? player.getAttackCoordinates().equals(boss.getWeakPoint()) : false;
 
+        do {
             if (player.getHitChance() <= Util.getRandomIntFromRange(0, 100)) { //player hits enemy
-                int damage = player.getDamage() - enemy.getArmor();
+                int damage = player.getDamage() - enemy.getArmor() > 0 ? player.getDamage() - enemy.getArmor() : 1;
+                damage *= isWeakPointHit ? 2 : 1;
                 enemy.setHealth(enemy.getHealth() - damage);
                 Util.messageWithWaitTime(String.format("You hit %s with %d damage, enemy now has %d health!", enemy.getName(), damage, enemy.getHealth()));
             } else {
@@ -140,13 +142,13 @@ public class Engine {
             }
 
             if (enemy.getHitChance() <= Util.getRandomIntFromRange(0, 100)) { //enemy hits player
-                int damage = player.getDamage() - enemy.getArmor();
+                int damage = enemy.getDamage() - player.getArmor() > 0 ? enemy.getDamage() - player.getArmor() : 1;
                 player.setHealth(player.getHealth() - damage);
                 Util.messageWithWaitTime(String.format("%s hit you with %d damage, you now have %d health!", enemy.getName(), damage, player.getHealth()));
             } else {
                 Util.messageWithWaitTime("Enemy has missed!");
             }
-        }
+        } while (player.getHealth() > 0 && enemy.getHealth() > 0 && enemy instanceof Mob);
     }
 
     public static void tryToInteract(Player player, Coordinates coordinates) {
@@ -156,44 +158,21 @@ public class Engine {
         }
     }
 
-    public static void checkIfQuestDone(){
-        if(npc.getActiveQuest().equals(null))
+    public static void checkIfQuestDone() {
+        if (npc.getActiveQuest().equals(null))
             return;
     }
 
-    public static boolean isEmpty(Coordinates coordinates) { //TODO rewrite! shouldn't check board char instead check Interactable list?
+    public static boolean isEmpty(Coordinates coordinates) { //TODO rewrite! shouldn't check board char instead check Interactable list? [should check both actually] *should work now
         int y = coordinates.getVerticalCoordinate();
         int x = coordinates.getHorizontalCoordinate();
 
-        return board.getCharBoard()[y][x] == ' ';
+        return board.getCharBoard()[y][x] == ' ' && !interactables.stream().anyMatch(i -> i.getCoordinates().equals(coordinates));
     }
 
     public static void moveMobs(Player player) {
-        for(Mob m:mobs){
+        for (Mob m : mobs) {
             m.move(player);
         }
-    }
-
-    public static void bossFight(Player player, Boss boss) {
-        boolean isWeakPointHit = player.getAttackCoordinates().equals(boss.getWeakPoint());
-
-        if (player.getHitChance() <= Util.getRandomIntFromRange(0, 100)) { //player hits enemy
-            int damage = player.getDamage() - boss.getArmor() > 0 ? player.getDamage() - boss.getArmor() : 1;
-            damage *= isWeakPointHit ? 2 : 1;
-            boss.setHealth(boss.getHealth() - damage);
-            Util.messageWithWaitTime(String.format("You hit %s with %d damage, enemy now has %d health!", boss.getName(), damage, boss.getHealth()));
-        } else {
-            Util.messageWithWaitTime("You missed!");
-        }
-
-        if (boss.getHitChance() <= Util.getRandomIntFromRange(0, 100)) { //enemy hits player
-            int damage = boss.getDamage() - player.getArmor() > 0 ? boss.getDamage() - player.getArmor() : 1;
-            player.setHealth(player.getHealth() - damage);
-            Util.messageWithWaitTime(String.format("%s hit you with %d damage, you now have %d health!", boss.getName(), damage, player.getHealth()));
-        } else {
-            Util.messageWithWaitTime("Enemy has missed!");
-        }
-
-
     }
 }

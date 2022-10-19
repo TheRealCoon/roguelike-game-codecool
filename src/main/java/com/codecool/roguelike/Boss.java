@@ -67,7 +67,7 @@ public class Boss extends GameCharacter implements Interactable{
 
     @Override
     public void interact(Player player) {
-        Engine.bossFight(player, this);
+        Engine.fight(player, this);
     }
 
     @Override
