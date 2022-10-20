@@ -84,11 +84,11 @@ public class Player extends GameCharacter {
     public void displayInventory() {
         for (Item item : inventory) {
             System.out.println(item);
-            try {
-                Util.getInputChar();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        }
+        try {
+            Util.getInputChar();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
