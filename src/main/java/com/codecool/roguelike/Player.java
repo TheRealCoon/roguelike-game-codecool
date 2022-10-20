@@ -16,7 +16,7 @@ public class Player extends GameCharacter {
     public Player(String name, Race race, Coordinates coordinates) {
         super(name, coordinates, playerIcon);
         this.RACE = race;
-        hasKey = false;
+        hasKey = false; //TODO
         this.armor += 40;
         this.damage += 50;
         this.hitChance = 90;

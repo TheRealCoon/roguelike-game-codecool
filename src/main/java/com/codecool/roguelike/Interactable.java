@@ -6,4 +6,6 @@ public interface Interactable {
 
     public Coordinates getCoordinates();
 
+    public String getName();
+
 }

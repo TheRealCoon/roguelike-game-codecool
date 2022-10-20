@@ -79,4 +79,6 @@ public class Gate implements Interactable {
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
+
+    public String getName(){return "gate";}
 }

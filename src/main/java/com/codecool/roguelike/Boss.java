@@ -3,11 +3,10 @@ package com.codecool.roguelike;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Boss extends GameCharacter implements Interactable{
+public class Boss extends GameCharacter implements Interactable {
 
     private List<Coordinates> square = new ArrayList<>();
     private Coordinates weakPoint;
-
 
 
     public Boss(String name, Coordinates coordinates, char characterIcon) {
@@ -16,7 +15,7 @@ public class Boss extends GameCharacter implements Interactable{
         this.setCoordinates(coordinates);
     }
 
-    private List<Coordinates> generatePerimeter(Coordinates coordinates){
+    private List<Coordinates> generatePerimeter(Coordinates coordinates) {
         List<Coordinates> perimeter = new ArrayList<>();
         int baseY = coordinates.getVerticalCoordinate();
         int baseX = coordinates.getHorizontalCoordinate();
@@ -42,14 +41,14 @@ public class Boss extends GameCharacter implements Interactable{
         return perimeter;
     }
 
-    private List<Coordinates> generateSquare(Coordinates coordinates){
+    private List<Coordinates> generateSquare(Coordinates coordinates) {
         List<Coordinates> square = new ArrayList<>();
         int upperLeftX = coordinates.getHorizontalCoordinate();
         int upperLeftY = coordinates.getVerticalCoordinate();
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                square.add(new Coordinates(i + upperLeftX,j + upperLeftY));
+                square.add(new Coordinates(i + upperLeftX, j + upperLeftY));
             }
         }
 
@@ -57,26 +56,30 @@ public class Boss extends GameCharacter implements Interactable{
     }
 
 
-    public void move(){
+    public void move() {
         int x = Util.getRandomIntFromRange(-1, 2);
         //int y = Util.getRandomIntFromRange(-1, 2);
         Coordinates nextCoordinates = new Coordinates(coordinates.getHorizontalCoordinate() + x, coordinates.getVerticalCoordinate());
 
-        //if(isPerimeterFreeToMove(nextCoordinates)){
+        if (isFreeToMove(nextCoordinates))
             setCoordinates(nextCoordinates);
-       // }else{
-       //     move();
-       // }
+            // }else{
+            //     move();
+            // }
     }
 
-    public boolean isPerimeterFreeToMove(Coordinates nextCoordinates){
-        List<Coordinates> newPerimeter = generateSquare(nextCoordinates);
+    private boolean isFreeToMove(Coordinates nextCoordinates) {
+        boolean isToLeft = nextCoordinates.getHorizontalCoordinate() < coordinates.getHorizontalCoordinate();
+        int distance = nextCoordinates.getHorizontalCoordinate() - coordinates.getHorizontalCoordinate();
 
-        for(Coordinates c:newPerimeter){
-            if(Engine.isEmpty(c) == false)
-                return false;
+        for (Coordinates c : square) {
+            if ((isToLeft && c.getHorizontalCoordinate() == this.coordinates.getHorizontalCoordinate() - 2)
+                    || (!isToLeft && c.getHorizontalCoordinate() == this.coordinates.getHorizontalCoordinate() + 2)) {
+                int nextX = c.getHorizontalCoordinate() + distance;
+                if (!Engine.isEmpty(new Coordinates(nextX, c.getVerticalCoordinate())))
+                    return false;
+            }
         }
-
         return true;
     }
 

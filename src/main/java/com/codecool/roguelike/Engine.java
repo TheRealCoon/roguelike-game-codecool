@@ -104,6 +104,7 @@ public class Engine {
     private static void createBoss() {
         boss = new Boss("Belzebos", new Coordinates(7, 2),'*');
 
+        interactables.add(boss);
         putBossOnBoard();
     }
 
@@ -272,8 +273,8 @@ public class Engine {
             if (i.getCoordinates().equals(coordinates)) {
                 i.interact(player);
                 break;
-            }else if(i instanceof Boss boss && boss.getSquare().contains(coordinates)){
-                boss.interact(player);
+            }else if(i.getClass().getSimpleName().toLowerCase().contains("boss") && boss.getSquare().contains(coordinates)){
+                i.interact(player);
                 break;
             }
         }
