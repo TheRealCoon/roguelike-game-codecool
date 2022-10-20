@@ -16,7 +16,7 @@ public class App {
         final int boardWidth = 20;
         final int boardHeight = 10;
         final char wallIcon = '#';
-        final int numberOfGates = 2;
+        final int numberOfGates = 1;
         final int numberOfInnerWalls = 20;
         final char gateIconHorizontal = '=';
         final char gateIconVertical = '"';
@@ -74,8 +74,10 @@ public class App {
         boolean isGameStarting = true;
         while (isRunning) {
             if (isGameStarting) {
-                Engine.placePlayerNextToAGate(board, player);
+
+                Engine.placePlayerNextToAGate(player);
                 Engine.initBoard();
+
             } else {
                 Engine.putCharacterOnBoard(player);
                 Engine.putCharactersOnBoard();

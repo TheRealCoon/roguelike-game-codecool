@@ -53,7 +53,13 @@ public class Engine {
         if (actualBoard.getCharBoard()[y][x] == ' ' || actualBoard.getCharBoard()[y][x] == gameCharacter.getCharacterIcon()) {
             actualBoard.getCharBoard()[y][x] = gameCharacter.getCharacterIcon();
         } else {
-           throw new CoordinateIsAlreadyOccupiedException(gameCharacter.getClass().getSimpleName()+ " \n" + actualBoard.getCharBoard()[y][x] + "' on that coordinate (x= " + x + ", y= " + y + ")!", actualBoard.getCharBoard());
+            if (actualBoard.getCharBoard()[y][x] == actualBoard.getWallIcon()) {
+                Wall wall = Wall.getWallByCoordinates(new Coordinates(x, y));
+                Wall.deleteWall(wall);
+                actualBoard.getCharBoard()[y][x] = ' ';
+            } else {
+                throw new CoordinateIsAlreadyOccupiedException(gameCharacter.getClass().getSimpleName() + " \n" + actualBoard.getCharBoard()[y][x] + "' on that coordinate (x= " + x + ", y= " + y + ")!", actualBoard.getCharBoard());
+            }
         }
     }
 
@@ -140,9 +146,17 @@ public class Engine {
         putCharacterOnBoard(gameCharacter);
     }
 
-    public static void placePlayerNextToAGate(Board board, Player player) {
-        char[][] charBoard = board.getCharBoard();
-        Gate gate = board.getGates().get(0);
+    public static void placePlayerNextToAGate(Player player) {
+        Gate gate = actualBoard.getGates().get(0);
+        for (Board board : Board.getBoards()) {
+            for (Gate localGate : board.getGates()) {
+                if (localGate.getPreviousBoard() == null) continue;
+                if (localGate.getPreviousBoard().equals(actualBoard)) {
+                    gate = localGate;
+                    break;
+                }
+            }
+        }
         if (gate.getGateIcon() == Gate.getDefaultHorizontalIcon()) {
             if (gate.getCoordinates().getVerticalCoordinate() == 0) {
                 player.setCoordinates(gate.getCoordinates().getHorizontalCoordinate(), gate.getCoordinates().getVerticalCoordinate() + 1);
@@ -234,12 +248,21 @@ public class Engine {
         }
     }
 
-    public static void moveToNextBord() {
-//        width, height, wallIcon, numberOfGates, numberOfInnerWalls, gateIconHorizontal, gateIconVertical
-        //Board.getBoards().get(0) == starting board
+
+
+    public static void moveToNextBord(Gate gate) {
+        gate.setPreviousBoard(actualBoard);
         actualBoard = new Board(actualBoard.getWidth(), actualBoard.getHeight(), Wall.getDefaultIcon(),
                 2, 20, Gate.getDefaultHorizontalIcon(), Gate.getDefaultVerticalIcon());
-        Engine.placePlayerNextToAGate(actualBoard, player);
+        gate.setActualBoard(actualBoard);
+        Engine.placePlayerNextToAGate(player);
+    }
+
+    public static void moveToSpecificBoard(Board board, Gate gate) {
+        gate.setPreviousBoard(actualBoard);
+        actualBoard = board;
+        gate.setActualBoard(actualBoard);
+        Engine.placePlayerNextToAGate(player);
     }
 
     public static void putItemOnBoard(char[][] board, Item item) {

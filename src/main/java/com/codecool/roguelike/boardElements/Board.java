@@ -90,7 +90,8 @@ public class Board {
 
     private void placeVerticalWallOnBoard(int lengthOfWall, int increment, int y, int x) {
         for (int i = y + increment; i != y + increment * (lengthOfWall); i += increment) {
-            if (charBoard[i + increment][x] == ' ' &&
+            if (charBoard[y][x] == wallIcon &&
+                    charBoard[i + increment][x] == ' ' &&
                     charBoard[i + increment][x + 1] == ' ' &&
                     charBoard[i + increment][x - 1] == ' ' &&
                     charBoard[i + 2 * increment][x] == ' ' &&
@@ -104,7 +105,8 @@ public class Board {
 
     private void placeHorizontalWallOnBoard(int lengthOfWall, int increment, int y, int x) {
         for (int i = x + increment; i != x + increment * (lengthOfWall); i += increment) {
-            if (charBoard[y][i + increment] == ' ' &&
+            if (charBoard[y][x] == wallIcon &&
+                    charBoard[y][i + increment] == ' ' &&
                     charBoard[y + 1][i + increment] == ' ' &&
                     charBoard[y - 1][i + increment] == ' ' &&
                     charBoard[y][i + 2 * increment] == ' ' &&
@@ -197,7 +199,16 @@ public class Board {
             return;
         }
         charBoard[y][x] = gateIcon;
-        Gate gate = new Gate(new Coordinates(x, y), this);
+        if (boards.size() > 1) {
+
+        }
+        Gate gate;
+        if (boards.size() > 1 && gates.size() < 2) {
+            gate = new Gate(new Coordinates(x, y), this, boards.get(boards.size() - 2));
+        } else {
+            gate = new Gate(new Coordinates(x, y), this, null);
+        }
+
         Wall wall = Wall.getWallByCoordinates(new Coordinates(x, y));
         walls.remove(wall);
         Wall.deleteWall(wall);
@@ -246,6 +257,14 @@ public class Board {
 
     public List<Gate> getGates() {
         return gates;
+    }
+
+    public static List<Board> getBoards() {
+        return boards;
+    }
+
+    public char getWallIcon() {
+        return wallIcon;
     }
 }
 
