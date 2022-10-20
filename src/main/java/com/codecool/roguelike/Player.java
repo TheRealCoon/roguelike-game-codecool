@@ -118,6 +118,9 @@ public class Player extends GameCharacter {
             System.out.println("You died");
         }
     }
+    public boolean isHasKey() {
+        return hasKey;
+    }
 
     public Coordinates getAttackCoordinates() {
         return attackCoordinates;

@@ -57,11 +57,12 @@ public class Gate implements Interactable {
 
     @Override
     public void interact(Player player) {
-        //if(player.getInventory().contains(Item o instanceof Key))
-        if (Board.getBoards().size() < 2) {
-            Engine.moveToNextBoard();
-        } else {
-            Engine.moveToBossBoard();
+        if(player.isHasKey()) {
+            if (Board.getBoards().size() < 2) {
+                Engine.moveToNextBoard();
+            } else {
+                Engine.moveToBossBoard();
+            }
         }
     }
 
