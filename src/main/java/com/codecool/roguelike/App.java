@@ -89,9 +89,6 @@ public class App {
             //char key = Util.getKeyStroke(reader, 1500);
             char key = Util.getInputChar();
 
-            if (Arrays.asList('w', 'a', 's', 'd').contains(key))
-                Engine.moveBoss();
-
             if (key == 'q') {
                 isRunning = false;
             } else {
@@ -119,6 +116,7 @@ public class App {
                     Engine.removeCharactersFromBoard();
                     Engine.moveMobs(player);
                     Engine.checkIfQuestDone();
+                    Engine.moveBoss();
                 }//TODO move mobs
             }
             isGameStarting = false;
