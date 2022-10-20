@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Boss extends GameCharacter implements Interactable{
 
-    private List<Coordinates> perimeter = new ArrayList<>();
+    private List<Coordinates> square = new ArrayList<>();
     private Coordinates weakPoint;
 
 
@@ -13,6 +13,7 @@ public class Boss extends GameCharacter implements Interactable{
     public Boss(String name, Coordinates coordinates, char characterIcon) {
         super(name, coordinates, characterIcon);
         this.health = 2000;
+        this.setCoordinates(coordinates);
     }
 
     private List<Coordinates> generatePerimeter(Coordinates coordinates){
@@ -25,8 +26,6 @@ public class Boss extends GameCharacter implements Interactable{
 
         perimeter.add(new Coordinates(baseX, topY));
         perimeter.add(new Coordinates(baseX, bottomY));
-
-        Coordinates bottom = new Coordinates(baseX, baseY + 2);
 
         for (int i = 1; i < 2; i++) {
 
@@ -43,10 +42,25 @@ public class Boss extends GameCharacter implements Interactable{
         return perimeter;
     }
 
+    private List<Coordinates> generateSquare(Coordinates coordinates){
+        List<Coordinates> square = new ArrayList<>();
+        int upperLeftX = coordinates.getHorizontalCoordinate();
+        int upperLeftY = coordinates.getVerticalCoordinate();
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                square.add(new Coordinates(i + upperLeftX,j + upperLeftY));
+            }
+        }
+
+        return square;
+    }
+
+
     public void move(){
         int x = Util.getRandomIntFromRange(-1, 2);
         int y = Util.getRandomIntFromRange(-1, 2);
-        Coordinates nextCoordinates = new Coordinates(x, y);
+        Coordinates nextCoordinates = new Coordinates(coordinates.getHorizontalCoordinate() + x, coordinates.getVerticalCoordinate() + y);
 
         if(isPerimeterFreeToMove(nextCoordinates)){
             setCoordinates(nextCoordinates);
@@ -56,7 +70,7 @@ public class Boss extends GameCharacter implements Interactable{
     }
 
     public boolean isPerimeterFreeToMove(Coordinates nextCoordinates){
-        List<Coordinates> newPerimeter = generatePerimeter(nextCoordinates);
+        List<Coordinates> newPerimeter = generateSquare(nextCoordinates);
 
         for(Coordinates c:newPerimeter){
             if(Engine.isEmpty(c) == false)
@@ -74,13 +88,13 @@ public class Boss extends GameCharacter implements Interactable{
     @Override
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
-        this.perimeter = generatePerimeter(coordinates);
-        this.weakPoint = perimeter.get(5); //should be the left down one
+        this.square = generateSquare(coordinates);
+        this.weakPoint = square.get(24);
     }
 
 
-    public List<Coordinates> getPerimeter() {
-        return perimeter;
+    public List<Coordinates> getSquare() {
+        return square;
     }
 
     public Coordinates getWeakPoint() {

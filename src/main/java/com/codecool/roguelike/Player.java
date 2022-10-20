@@ -1,7 +1,5 @@
 package com.codecool.roguelike;
 
-import java.security.Key;
-
 /*
  * This class keeps all the necessary information about the player i.e. player icon, player position
  * Feel free to extend it!
@@ -11,18 +9,15 @@ public class Player extends GameCharacter {
     private static final char playerIcon = '@';
     private Coordinates attackCoordinates;
 
-    public boolean isHasKey() {
-        return hasKey;
-    }
-
     private boolean hasKey;
 
     public Player(String name, Race race, Coordinates coordinates) {
         super(name, coordinates, playerIcon);
         this.RACE = race;
-        hasKey = false;
+        hasKey = true;
         this.armor += 40;
         this.damage += 50;
+        this.hitChance = 90;
     }
 
     public void moveUp() {
@@ -78,6 +73,7 @@ public class Player extends GameCharacter {
     public String toString() {
         return  name +
                 "\n    HP " + health +
+                " / Armor " + armor +
                 " / Damage " + damage +
                 " / Coords " + coordinates +
                 " / Inventory [" + inventory.size() + "]";
@@ -91,20 +87,17 @@ public class Player extends GameCharacter {
 
     public void pickUp(Item item) {
         inventory.add(item);
-        if (item instanceof Key) {
+        if (item.getType().equals(ItemType.KEY)) {
             hasKey = true;
         } else if (item instanceof Weapon weapon) {
             if (damage < weapon.getAddedDamage()) {
                 damage += weapon.getAddedDamage();
                 System.out.println("You equipped the " + item.getName() + "!");
-
             }
         } else if (item instanceof Armor armor) {
             if (this.armor < armor.getAddedArmor()) {
                 this.armor += armor.getAddedArmor();
                 System.out.println("You equipped the " + item.getName() + "!");
-
-
             }
         } else if (item instanceof Food food) {
             health = health + food.getAddedHealth() > 100 ? 100 : health + food.getAddedHealth();
@@ -123,11 +116,12 @@ public class Player extends GameCharacter {
             System.out.println("You died");
         }
     }
-    public boolean isHasKey() {
-        return hasKey;
-    }
 
     public Coordinates getAttackCoordinates() {
         return attackCoordinates;
+    }
+
+    public boolean isHasKey() {
+        return hasKey;
     }
 }

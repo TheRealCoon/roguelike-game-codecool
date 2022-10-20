@@ -62,7 +62,7 @@ public class Item implements Interactable{
     @Override
     public String toString() {
         //todo
-        return "Not implemented";
+        return this.getClass().getSimpleName();
     }
 
     @Override

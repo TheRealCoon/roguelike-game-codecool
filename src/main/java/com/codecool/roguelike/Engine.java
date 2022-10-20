@@ -70,7 +70,7 @@ public class Engine {
     public static void putCharacterOnBoard(char c, Coordinates coordinates) {
         int y = coordinates.getVerticalCoordinate();
         int x = coordinates.getHorizontalCoordinate();
-        if (actualBoard.getCharBoard()[y][x] == ' ' || actualBoard.getCharBoard()[y][x] == c) {
+        if (true){      //actualBoard.getCharBoard()[y][x] == ' ' || actualBoard.getCharBoard()[y][x] == c) {
             actualBoard.getCharBoard()[y][x] = c;
         } else {
             if (actualBoard.getCharBoard()[y][x] == actualBoard.getWallIcon()) {
@@ -78,7 +78,9 @@ public class Engine {
                 Wall.deleteWall(wall);
                 actualBoard.getCharBoard()[y][x] = ' ';
             } else {
-                throw new CoordinateIsAlreadyOccupiedException("I have no idea what happens here.");
+                throw new CoordinateIsAlreadyOccupiedException("The Boss" + " \n" +
+                        actualBoard.getCharBoard()[y][x] +
+                        "' on that coordinate (x= " + x + ", y= " + y + ")!", actualBoard.getCharBoard());
             }
         }
     }
@@ -100,13 +102,13 @@ public class Engine {
     }
 
     private static void createBoss() {
-        boss = new Boss("Belzebos", new Coordinates(9, 5),'*');
+        boss = new Boss("Belzebos", new Coordinates(7, 2),'*');
 
         putBossOnBoard();
     }
 
     private static void putBossOnBoard(){
-        for(Coordinates coords : boss.getPerimeter()){
+        for(Coordinates coords : boss.getSquare()){
             putCharacterOnBoard(' ', coords);
             putCharacterOnBoard('*', coords);
         }
@@ -115,8 +117,10 @@ public class Engine {
     }
 
     public static void moveBoss(){
-        boss.move();
-        putBossOnBoard();
+        if(boss != null){
+            boss.move();
+            putBossOnBoard();
+        }
     }
 
     public static void createMobs(char[][] board) {
@@ -126,8 +130,6 @@ public class Engine {
         putCharacterOnBoardRandomly(board, mob1);
         putCharacterOnBoardRandomly(board, mob2);
 
-        mobs.add(mob1);
-        mobs.add(mob2);
         interactables.add(mob1);
         interactables.add(mob2);
         mobs.add(mob1);
@@ -233,7 +235,7 @@ public class Engine {
         boolean isWeakPointHit = enemy instanceof Boss boss ? player.getAttackCoordinates().equals(boss.getWeakPoint()) : false;
 
         do {
-            if (player.getHitChance() <= Util.getRandomIntFromRange(0, 100)) { //player hits enemy
+            if (player.getHitChance() >= Util.getRandomIntFromRange(0, 100)) { //player hits enemy
                 int damage = player.getDamage() - enemy.getArmor() > 0 ? player.getDamage() - enemy.getArmor() : 1;
                 damage *= isWeakPointHit ? 2 : 1;
                 enemy.setHealth(enemy.getHealth() - damage);
@@ -242,7 +244,7 @@ public class Engine {
                 Util.messageWithWaitTime("You missed!");
             }
 
-            if (enemy.getHitChance() <= Util.getRandomIntFromRange(0, 100)) { //enemy hits player
+            if (enemy.getHitChance() >= Util.getRandomIntFromRange(0, 100)) { //enemy hits player
                 int damage = enemy.getDamage() - player.getArmor() > 0 ? enemy.getDamage() - player.getArmor() : 1;
                 player.setHealth(player.getHealth() - damage);
                 Util.messageWithWaitTime(String.format("%s hit you with %d damage, you now have %d health!", enemy.getName(), damage, player.getHealth()));
@@ -263,7 +265,7 @@ public class Engine {
             if (i.getCoordinates().equals(coordinates)) {
                 i.interact(player);
                 break;
-            }else if(i instanceof Boss boss && boss.getPerimeter().contains(coordinates)){
+            }else if(i instanceof Boss boss && boss.getSquare().contains(coordinates)){
                 boss.interact(player);
                 break;
             }
@@ -271,11 +273,11 @@ public class Engine {
     }
 
     public static void checkIfQuestDone() {
-        if (!npc.getActiveQuest().equals(null) && mobs.size() == 0) {
+        if (!player.isHasKey() && npc.getActiveQuest() != (null) && mobs.size() <= 1) {
             System.out.println("You completed the quest!\nNow you can move to the next room!");
-            player.pickUp(new Key());
+            Item key = new Key("key", ItemType.KEY, new Coordinates(0,0), 'K');
+            player.pickUp(key);
         }
-
     }
 
     public static boolean isEmpty(Coordinates coordinates) { //TODO rewrite! shouldn't check board char instead check Interactable list? [should check both actually] *should work now
@@ -296,14 +298,16 @@ public class Engine {
     public static void moveToNextBoard() {
         actualBoard = new Board(actualBoard.getWidth(), actualBoard.getHeight(), Wall.getDefaultIcon(),
                 2, 20, Gate.getDefaultHorizontalIcon(), Gate.getDefaultVerticalIcon());
-        Engine.placePlayerNextToAGate();
+        placePlayerNextToAGate();
+        initBoard();
     }
 
     public static void moveToBossBoard() {
         Board b = actualBoard;
         actualBoard = new Board(b.getWidth(),b.getHeight(), b.getWallIcon(),1,0,
                 Gate.getDefaultHorizontalIcon(),Gate.getDefaultVerticalIcon());
-        placePlayerNextToAGate();
+        player.setCoordinates(1,8);
+        initBoard();
     }
 
     public static void moveToSpecificBoard(Board board) {
@@ -337,7 +341,8 @@ public class Engine {
     }
 
     public static void deleteCharacter(GameCharacter gameCharacter) {
-        mobs.remove(gameCharacter);
+        Mob mob = gameCharacter instanceof Mob mobi ? mobi : new Mob("asda",new Coordinates(0,0), MoveType.RANDOM);
+        mobs.remove(mob);
         characters.remove(gameCharacter);
         interactables.remove(gameCharacter);
         removeCharacterFromBoard(gameCharacter);
@@ -349,5 +354,17 @@ public class Engine {
         if (actualBoard.getCharBoard()[y][x] == item.getItemIcon()) {
             actualBoard.getCharBoard()[y][x] = ' ';
         }
+    }
+
+    public static void clearBoard(){
+        for (Interactable i: interactables) {
+            int x = i.getCoordinates().getHorizontalCoordinate();
+            int y = i.getCoordinates().getVerticalCoordinate();
+            actualBoard.getCharBoard()[y][x] = ' ';
+        }
+
+        interactables.clear();
+        mobs.clear();
+        characters.clear();
     }
 }
