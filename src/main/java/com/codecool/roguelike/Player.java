@@ -10,6 +10,11 @@ public class Player extends GameCharacter {
     private Race RACE;
     private static final char playerIcon = '@';
     private Coordinates attackCoordinates;
+
+    public boolean isHasKey() {
+        return hasKey;
+    }
+
     private boolean hasKey;
 
     public Player(String name, Race race, Coordinates coordinates) {

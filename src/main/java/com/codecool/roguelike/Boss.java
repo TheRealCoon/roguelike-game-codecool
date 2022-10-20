@@ -12,6 +12,7 @@ public class Boss extends GameCharacter implements Interactable{
 
     public Boss(String name, Coordinates coordinates, char characterIcon) {
         super(name, coordinates, characterIcon);
+        this.health = 2000;
     }
 
     private List<Coordinates> generatePerimeter(Coordinates coordinates){

@@ -17,6 +17,7 @@ public class Engine {
     public static Board actualBoard;
     private static Npc npc;
     private static Player player;
+    private static Boss boss;
 
 
     /**
@@ -66,15 +67,56 @@ public class Engine {
         }
     }
 
+    public static void putCharacterOnBoard(char c, Coordinates coordinates) {
+        int y = coordinates.getVerticalCoordinate();
+        int x = coordinates.getHorizontalCoordinate();
+        if (actualBoard.getCharBoard()[y][x] == ' ' || actualBoard.getCharBoard()[y][x] == c) {
+            actualBoard.getCharBoard()[y][x] = c;
+        } else {
+            if (actualBoard.getCharBoard()[y][x] == actualBoard.getWallIcon()) {
+                Wall wall = Wall.getWallByCoordinates(new Coordinates(x, y));
+                Wall.deleteWall(wall);
+                actualBoard.getCharBoard()[y][x] = ' ';
+            } else {
+                throw new CoordinateIsAlreadyOccupiedException("I have no idea what happens here.");
+            }
+        }
+    }
+
     public static void putCharactersOnBoard() {
         for (GameCharacter gc : characters) {
             putCharacterOnBoard(gc);
         }
     }
+
     public static void initBoard() {
-        createNpc(actualBoard.getCharBoard());
-        createMobs(actualBoard.getCharBoard());
-        createItems(actualBoard.getCharBoard());
+        if (Board.getBoards().size() < 3) {
+            createNpc(actualBoard.getCharBoard());
+            createMobs(actualBoard.getCharBoard());
+            createItems(actualBoard.getCharBoard());
+        } else {
+            createBoss();
+        }
+    }
+
+    private static void createBoss() {
+        boss = new Boss("Belzebos", new Coordinates(9, 5),'*');
+
+        putBossOnBoard();
+    }
+
+    private static void putBossOnBoard(){
+        for(Coordinates coords : boss.getPerimeter()){
+            putCharacterOnBoard(' ', coords);
+            putCharacterOnBoard('*', coords);
+        }
+
+        putCharacterOnBoard('x', boss.getWeakPoint());
+    }
+
+    public static void moveBoss(){
+        boss.move();
+        putBossOnBoard();
     }
 
     public static void createMobs(char[][] board) {
@@ -102,43 +144,43 @@ public class Engine {
         interactables.add(npc);
         characters.add(npc);
     }
-        public static void createItems(char[][] board){
-            Item armor = new Armor("Shield", ItemType.ARMOR, new Coordinates(0, 0), 'A');
-            Item food = new Food("Bread", ItemType.FOOD, new Coordinates(0, 0), 'F');
-            Item weapon = new Weapon("Sword", ItemType.WEAPON, new Coordinates(0, 0), 'W');
-            // Item itemKey = new Key("Key", ItemType.KEY, new Coordinates(0, 0), 'K');
 
-            putItemOnBoardRandomly(board, armor);
-            putItemOnBoardRandomly(board, food);
-            putItemOnBoardRandomly(board, weapon);
+    public static void createItems(char[][] board) {
+        Item armor = new Armor("Shield", ItemType.ARMOR, new Coordinates(0, 0), 'A');
+        Item food = new Food("Bread", ItemType.FOOD, new Coordinates(0, 0), 'F');
+        Item weapon = new Weapon("Sword", ItemType.WEAPON, new Coordinates(0, 0), 'W');
+        // Item itemKey = new Key("Key", ItemType.KEY, new Coordinates(0, 0), 'K');
 
-            interactables.add(armor);
-            interactables.add(food);
-            interactables.add(weapon);
+        putItemOnBoardRandomly(board, armor);
+        putItemOnBoardRandomly(board, food);
+        putItemOnBoardRandomly(board, weapon);
+
+        interactables.add(armor);
+        interactables.add(food);
+        interactables.add(weapon);
+    }
+
+    /**
+     * Modifies the game actualBoard by placing the player icon at its coordinates
+     *
+     * @param board         The game actualBoard
+     * @param gameCharacter The player information containing the icon and coordinates
+     */
+    public static void putCharacterOnBoard(char[][] board, GameCharacter gameCharacter) {
+        int y = gameCharacter.getCoordinates().getVerticalCoordinate();
+        int x = gameCharacter.getCoordinates().getHorizontalCoordinate();
+        if (board[y][x] == ' ' || board[y][x] == gameCharacter.getCharacterIcon()) {
+            board[y][x] = gameCharacter.getCharacterIcon();
+        } else {
+            throw new CoordinateIsAlreadyOccupiedException("There is already a(n) '" + board[y][x] + "' on that coordinate (x= " + x + ", y= " + y + "!", board);
         }
+    }
 
-        /**
-         * Modifies the game actualBoard by placing the player icon at its coordinates
-         *
-         * @param board         The game actualBoard
-         * @param gameCharacter The player information containing the icon and coordinates
-         */
-        public static void putCharacterOnBoard(char[][] board, GameCharacter gameCharacter) {
-            int y = gameCharacter.getCoordinates().getVerticalCoordinate();
-            int x = gameCharacter.getCoordinates().getHorizontalCoordinate();
-            if (board[y][x] == ' ' || board[y][x] == gameCharacter.getCharacterIcon()) {
-                board[y][x] = gameCharacter.getCharacterIcon();
-            } else {
-                throw new CoordinateIsAlreadyOccupiedException("There is already a(n) '" + board[y][x] +
-                        "' on that coordinate (x= " + x + ", y= " + y + "!", board);
-            }
+    public static void putCharactersOnBoard(char[][] board) {
+        for (GameCharacter gc : mobs) {
+            putCharacterOnBoard(board, gc);
         }
-
-        public static void putCharactersOnBoard(char[][] board) {
-            for (GameCharacter gc :  mobs) {
-                putCharacterOnBoard(board, gc);
-            }
-        }
+    }
 
     public static void putCharacterOnBoardRandomly(char[][] board, GameCharacter gameCharacter) {
         int x, y;
@@ -209,10 +251,10 @@ public class Engine {
             }
         } while (player.getHealth() > 0 && enemy.getHealth() > 0 && enemy instanceof Mob);
 
-        if(enemy.getHealth() <= 0)
+        if (enemy.getHealth() <= 0)
             deleteCharacter(enemy);
 
-        if(player.getHealth() <= 0)
+        if (player.getHealth() <= 0)
             player.die();
     }
 
@@ -221,13 +263,19 @@ public class Engine {
             if (i.getCoordinates().equals(coordinates)) {
                 i.interact(player);
                 break;
+            }else if(i instanceof Boss boss && boss.getPerimeter().contains(coordinates)){
+                boss.interact(player);
+                break;
             }
         }
     }
 
     public static void checkIfQuestDone() {
-        if (npc.getActiveQuest().equals(null))
-            return;
+        if (!npc.getActiveQuest().equals(null) && mobs.size() == 0) {
+            System.out.println("You completed the quest!\nNow you can move to the next room!");
+            player.pickUp(new Key());
+        }
+
     }
 
     public static boolean isEmpty(Coordinates coordinates) { //TODO rewrite! shouldn't check board char instead check Interactable list? [should check both actually] *should work now
@@ -283,12 +331,12 @@ public class Engine {
         putItemOnBoard(board, item);
     }
 
-    public static void deleteItem(Item item){
+    public static void deleteItem(Item item) {
         interactables.remove(item);
         removeItemFromBoard(item);
     }
 
-    public static void deleteCharacter(GameCharacter gameCharacter){
+    public static void deleteCharacter(GameCharacter gameCharacter) {
         mobs.remove(gameCharacter);
         characters.remove(gameCharacter);
         interactables.remove(gameCharacter);

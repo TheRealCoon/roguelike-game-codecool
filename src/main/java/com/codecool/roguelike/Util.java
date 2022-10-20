@@ -80,12 +80,16 @@ public class Util {
     }
 
     public static void messageWithWaitTime(String message){
+        sleep(500);
+
+        System.out.println(message);
+    }
+
+    public static void sleep(long waitTime){
         try {
-            TimeUnit.MILLISECONDS.sleep(500);
+            TimeUnit.MILLISECONDS.sleep(waitTime);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-        System.out.println(message);
     }
 }

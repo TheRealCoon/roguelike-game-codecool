@@ -115,6 +115,8 @@ public class App {
                 if (Arrays.asList('w', 'a', 's', 'd').contains(key)) {
                     Engine.removeCharactersFromBoard();
                     Engine.moveMobs(player);
+                    Engine.checkIfQuestDone();
+                    Engine.moveBoss();
                 }//TODO move mobs
             }
             isGameStarting = false;
