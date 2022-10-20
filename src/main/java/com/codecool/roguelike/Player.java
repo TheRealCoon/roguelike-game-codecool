@@ -1,5 +1,7 @@
 package com.codecool.roguelike;
 
+import java.io.IOException;
+
 /*
  * This class keeps all the necessary information about the player i.e. player icon, player position
  * Feel free to extend it!
@@ -82,6 +84,11 @@ public class Player extends GameCharacter {
     public void displayInventory() {
         for (Item item : inventory) {
             System.out.println(item);
+            try {
+                Util.getInputChar();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -89,16 +96,15 @@ public class Player extends GameCharacter {
         inventory.add(item);
         if (item.getType().equals(ItemType.KEY)) {
             hasKey = true;
+
         } else if (item instanceof Weapon weapon) {
-            if (damage < weapon.getAddedDamage()) {
                 damage += weapon.getAddedDamage();
                 System.out.println("You equipped the " + item.getName() + "!");
-            }
+
         } else if (item instanceof Armor armor) {
-            if (this.armor < armor.getAddedArmor()) {
                 this.armor += armor.getAddedArmor();
                 System.out.println("You equipped the " + item.getName() + "!");
-            }
+
         } else if (item instanceof Food food) {
             health = health + food.getAddedHealth() > 100 ? 100 : health + food.getAddedHealth();
             inventory.remove(item);
