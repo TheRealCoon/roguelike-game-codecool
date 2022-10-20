@@ -58,7 +58,7 @@ public class Gate implements Interactable {
     @Override
     public void interact(Player player) {
         if(player.isHasKey()) {
-            Engine.clearBoard();
+            Engine.clearEngine();
 
             if (Board.getBoards().size() < 2) {
                 Engine.moveToNextBoard();

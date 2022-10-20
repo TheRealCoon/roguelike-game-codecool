@@ -118,8 +118,15 @@ public class Engine {
 
     public static void moveBoss(){
         if(boss != null){
+            removeBoss();
             boss.move();
             putBossOnBoard();
+        }
+    }
+
+    private static void removeBoss() {
+        for(Coordinates c : boss.getSquare()){
+            actualBoard.getCharBoard()[c.getVerticalCoordinate()][c.getHorizontalCoordinate()] = ' ';
         }
     }
 
@@ -273,7 +280,7 @@ public class Engine {
     }
 
     public static void checkIfQuestDone() {
-        if (!player.isHasKey() && npc.getActiveQuest() != (null) && mobs.size() <= 1) {
+        if (!player.isHasKey() && npc.getActiveQuest() != (null) && mobs.size() == 0) {
             System.out.println("You completed the quest!\nNow you can move to the next room!");
             Item key = new Key("key", ItemType.KEY, new Coordinates(0,0), 'K');
             player.pickUp(key);
@@ -356,7 +363,7 @@ public class Engine {
         }
     }
 
-    public static void clearBoard(){
+    public static void clearEngine(){
         for (Interactable i: interactables) {
             int x = i.getCoordinates().getHorizontalCoordinate();
             int y = i.getCoordinates().getVerticalCoordinate();

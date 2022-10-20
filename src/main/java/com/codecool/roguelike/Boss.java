@@ -59,14 +59,14 @@ public class Boss extends GameCharacter implements Interactable{
 
     public void move(){
         int x = Util.getRandomIntFromRange(-1, 2);
-        int y = Util.getRandomIntFromRange(-1, 2);
-        Coordinates nextCoordinates = new Coordinates(coordinates.getHorizontalCoordinate() + x, coordinates.getVerticalCoordinate() + y);
+        //int y = Util.getRandomIntFromRange(-1, 2);
+        Coordinates nextCoordinates = new Coordinates(coordinates.getHorizontalCoordinate() + x, coordinates.getVerticalCoordinate());
 
-        if(isPerimeterFreeToMove(nextCoordinates)){
+        //if(isPerimeterFreeToMove(nextCoordinates)){
             setCoordinates(nextCoordinates);
-        }else{
-            move();
-        }
+       // }else{
+       //     move();
+       // }
     }
 
     public boolean isPerimeterFreeToMove(Coordinates nextCoordinates){
