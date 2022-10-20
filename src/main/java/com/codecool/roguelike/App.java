@@ -75,7 +75,7 @@ public class App {
         while (isRunning) {
             if (isGameStarting) {
 
-                Engine.placePlayerNextToAGate(player);
+                Engine.placePlayerNextToAGate();
                 Engine.initBoard();
 
             } else {

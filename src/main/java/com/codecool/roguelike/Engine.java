@@ -58,7 +58,10 @@ public class Engine {
                 Wall.deleteWall(wall);
                 actualBoard.getCharBoard()[y][x] = ' ';
             } else {
-                throw new CoordinateIsAlreadyOccupiedException(gameCharacter.getClass().getSimpleName() + " \n" + actualBoard.getCharBoard()[y][x] + "' on that coordinate (x= " + x + ", y= " + y + ")!", actualBoard.getCharBoard());
+                throw new CoordinateIsAlreadyOccupiedException(
+                        gameCharacter.getClass().getSimpleName() + " \n" +
+                                actualBoard.getCharBoard()[y][x] +
+                                "' on that coordinate (x= " + x + ", y= " + y + ")!", actualBoard.getCharBoard());
             }
         }
     }
@@ -126,7 +129,8 @@ public class Engine {
             if (board[y][x] == ' ' || board[y][x] == gameCharacter.getCharacterIcon()) {
                 board[y][x] = gameCharacter.getCharacterIcon();
             } else {
-                throw new CoordinateIsAlreadyOccupiedException("There is already a(n) '" + board[y][x] + "' on that coordinate (x= " + x + ", y= " + y + "!", board);
+                throw new CoordinateIsAlreadyOccupiedException("There is already a(n) '" + board[y][x] +
+                        "' on that coordinate (x= " + x + ", y= " + y + "!", board);
             }
         }
 
@@ -146,17 +150,8 @@ public class Engine {
         putCharacterOnBoard(gameCharacter);
     }
 
-    public static void placePlayerNextToAGate(Player player) {
+    public static void placePlayerNextToAGate() {
         Gate gate = actualBoard.getGates().get(0);
-        for (Board board : Board.getBoards()) {
-            for (Gate localGate : board.getGates()) {
-                if (localGate.getPreviousBoard() == null) continue;
-                if (localGate.getPreviousBoard().equals(actualBoard)) {
-                    gate = localGate;
-                    break;
-                }
-            }
-        }
         if (gate.getGateIcon() == Gate.getDefaultHorizontalIcon()) {
             if (gate.getCoordinates().getVerticalCoordinate() == 0) {
                 player.setCoordinates(gate.getCoordinates().getHorizontalCoordinate(), gate.getCoordinates().getVerticalCoordinate() + 1);
@@ -250,19 +245,22 @@ public class Engine {
 
 
 
-    public static void moveToNextBord(Gate gate) {
-        gate.setPreviousBoard(actualBoard);
+    public static void moveToNextBoard() {
         actualBoard = new Board(actualBoard.getWidth(), actualBoard.getHeight(), Wall.getDefaultIcon(),
                 2, 20, Gate.getDefaultHorizontalIcon(), Gate.getDefaultVerticalIcon());
-        gate.setActualBoard(actualBoard);
-        Engine.placePlayerNextToAGate(player);
+        Engine.placePlayerNextToAGate();
     }
 
-    public static void moveToSpecificBoard(Board board, Gate gate) {
-        gate.setPreviousBoard(actualBoard);
+    public static void moveToBossBoard() {
+        Board b = actualBoard;
+        actualBoard = new Board(b.getWidth(),b.getHeight(), b.getWallIcon(),1,0,
+                Gate.getDefaultHorizontalIcon(),Gate.getDefaultVerticalIcon());
+        placePlayerNextToAGate();
+    }
+
+    public static void moveToSpecificBoard(Board board) {
         actualBoard = board;
-        gate.setActualBoard(actualBoard);
-        Engine.placePlayerNextToAGate(player);
+        Engine.placePlayerNextToAGate();
     }
 
     public static void putItemOnBoard(char[][] board, Item item) {

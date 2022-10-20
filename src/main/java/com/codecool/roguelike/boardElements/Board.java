@@ -202,13 +202,7 @@ public class Board {
         if (boards.size() > 1) {
 
         }
-        Gate gate;
-        if (boards.size() > 1 && gates.size() < 2) {
-            gate = new Gate(new Coordinates(x, y), this, boards.get(boards.size() - 2));
-        } else {
-            gate = new Gate(new Coordinates(x, y), this, null);
-        }
-
+        Gate gate = new Gate(new Coordinates(x, y), this);
         Wall wall = Wall.getWallByCoordinates(new Coordinates(x, y));
         walls.remove(wall);
         Wall.deleteWall(wall);
