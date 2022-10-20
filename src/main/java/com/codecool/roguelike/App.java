@@ -22,7 +22,6 @@ public class App {
         final char gateIconVertical = '"';
         final int playerStartX = 3;
         final int playerStartY = 3;
-        final char playerIcon = '@';
 
         System.out.println("Choose a name for your hero!");
         String playerName = Util.getInputString();
@@ -55,9 +54,9 @@ public class App {
 
 
 
-        Board board;
+
         try {
-            board = Engine.createBoard(boardWidth, boardHeight, wallIcon, numberOfGates, numberOfInnerWalls,
+            Engine.createBoard(boardWidth, boardHeight, wallIcon, numberOfGates, numberOfInnerWalls,
                     gateIconHorizontal,
                     gateIconVertical);
         } catch (TooManyGatesException e) {
@@ -68,7 +67,6 @@ public class App {
         Util.clearScreen();
 
         GameUI ui = new ConsoleUI();
-        GameInputReader reader = new ConsoleGameInputReader();
 
         boolean isRunning = true;
         boolean isGameStarting = true;
@@ -86,7 +84,6 @@ public class App {
             ui.displayBoard(Engine.actualBoard.getCharBoard());
             ((ConsoleUI) ui).displayCharacterStats(player);
 
-            //char key = Util.getKeyStroke(reader, 1500);
             char key = Util.getInputChar();
 
             if (key == 'q') {

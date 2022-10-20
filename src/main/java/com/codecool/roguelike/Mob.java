@@ -39,19 +39,18 @@ public class Mob extends GameCharacter implements Interactable {
     }
 
     private void moveRandom() {
-        int counter = 0;
         int distanceHorizontal = Util.getRandomIntFromRange(-1, 2);
         int distanceVertical = Util.getRandomIntFromRange(-1, 2);
         int newHorizonCord = coordinates.getHorizontalCoordinate() + distanceHorizontal;
         int newVerticalCord = coordinates.getVerticalCoordinate() + distanceVertical;
-        Coordinates newCoordinates = new Coordinates(newHorizonCord, newVerticalCord); //TODO too much garbage?
+        Coordinates newCoordinates = new Coordinates(newHorizonCord, newVerticalCord);
 
         if (Engine.isEmpty(newCoordinates)) {
             setCoordinates(newCoordinates);
         } else {
             moveRandom();
         }
-    }//TODO test
+    }
 
     private void moveToPlayer(Player player) {
         Coordinates targetCoordinates = player.getCoordinates();
@@ -67,10 +66,7 @@ public class Mob extends GameCharacter implements Interactable {
             setCoordinates(newCoordinates);
         }
 
-    }//TODO test, also it doesn't move, until it "sees" the player
-
-    private void addRandomItem() {
-    }//TODO
+    }
 
     public void interact(Player player) {
         Engine.fight(player, this);

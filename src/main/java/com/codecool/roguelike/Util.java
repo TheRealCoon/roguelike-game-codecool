@@ -34,7 +34,7 @@ public class Util {
         return line.charAt(0);
     }
 
-    public static String getInputString() throws IOException {
+    public static String getInputString() {
         String userInput = "";
         while (userInput.equals("")) {
             Scanner scanner = new Scanner(System.in);
@@ -55,28 +55,6 @@ public class Util {
             }
         }
         return userInput;
-    }
-
-    public static char getKeyStroke(GameInputReader reader, long waitTime) throws IOException {
-        char key;
-        final int COUNT = 1;
-        do {
-            Thread thread = new Thread(() -> {
-                try {
-                    Robot robot = new Robot();
-                    Thread.sleep(waitTime);
-                    robot.keyPress(KeyEvent.VK_ENTER);
-                    System.out.print(String.format("\033[%dA",COUNT)); // Move up 1 line in console
-                } catch (AWTException | InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            thread.start();
-            key = reader.getInputChar();
-            thread.interrupt();
-        } while (key == 0);
-
-        return key;
     }
 
     public static void messageWithWaitTime(String message){

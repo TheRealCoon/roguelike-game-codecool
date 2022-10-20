@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Npc extends GameCharacter implements Interactable {
 
-    private String message;
     private List<Quest> quests = new ArrayList<>();
 
     private static final char icon = 'N';
@@ -42,7 +41,6 @@ public class Npc extends GameCharacter implements Interactable {
             if (q.isActive())
                 return q;
         }
-
         return null;
     }
 

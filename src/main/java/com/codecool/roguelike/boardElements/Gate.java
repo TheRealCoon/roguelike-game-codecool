@@ -26,33 +26,16 @@ public class Gate implements Interactable {
         gates.add(this);
     }
 
-
-    public static List<Gate> getGates() {
-        return gates;
-    }
-
     public static char getDefaultHorizontalIcon() {
         return defaultHorizontalIcon;
-    }
-
-    public static void setDefaultHorizontalIcon(char defaultHorizontalIcon) {
-        Gate.defaultHorizontalIcon = defaultHorizontalIcon;
     }
 
     public static char getDefaultVerticalIcon() {
         return defaultVerticalIcon;
     }
 
-    public static void setDefaultVerticalIcon(char defaultVerticalIcon) {
-        Gate.defaultVerticalIcon = defaultVerticalIcon;
-    }
-
     public char getGateIcon() {
         return gateIcon;
-    }
-
-    public void setGateIcon(char gateIcon) {
-        this.gateIcon = gateIcon;
     }
 
     @Override

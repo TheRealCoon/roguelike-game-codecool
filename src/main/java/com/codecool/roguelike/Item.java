@@ -27,36 +27,12 @@ public class Item implements Interactable{
         return itemType;
     }
 
-    public void setType(ItemType type) {
-        this.itemType = type;
-    }
-
-    public int getHorizontalCoordinate() {
-        return horizontalCoordinate;
-    }
-
-    public void setHorizontalCoordinate(int horizontalCoordinate) {
-        this.horizontalCoordinate = horizontalCoordinate;
-    }
-
-    public int getVerticalCoordinate() {
-        return verticalCoordinate;
-    }
-
-    public void setVerticalCoordinate(int verticalCoordinate) {
-        this.verticalCoordinate = verticalCoordinate;
-    }
-
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
 
     public char getItemIcon() {
         return itemIcon;
-    }
-
-    public void setItemIcon(char itemIcon) {
-        this.itemIcon = itemIcon;
     }
 
     @Override

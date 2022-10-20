@@ -8,15 +8,8 @@ public class Food extends Item{
         this.itemIcon = 'F';
     }
 
-    public void setItemType(Food food){
-        this.itemType = ItemType.FOOD;
-    }
-
     public int getAddedHealth() {
         return addedHealth;
     }
 
-    public void setAddedHealth(int addedHealth) {
-        this.addedHealth = addedHealth;
-    }
 }

@@ -2,10 +2,10 @@ package com.codecool.roguelike;
 
 public interface Interactable {
 
-    public void interact(Player player);
+    void interact(Player player);
 
-    public Coordinates getCoordinates();
+    Coordinates getCoordinates();
 
-    public String getName();
+    String getName();
 
 }

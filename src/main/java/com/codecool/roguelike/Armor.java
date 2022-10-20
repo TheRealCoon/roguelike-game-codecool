@@ -13,11 +13,4 @@ public class Armor extends Item{
         return addedArmor;
     }
 
-    public void setArmor(int armor) {
-        this.addedArmor = armor;
-    }
-
-    public void setItemType(Armor armor){
-        this.itemType = ItemType.ARMOR;
-    }
 }

@@ -1,13 +1,13 @@
 package com.codecool.roguelike;
 
-public class Quest {// TODO a container to all killed enemies given to quest
+public class Quest {
 
     private String name;
     private String description;
-    private String objective;//TODO what type shall it be?
+    private String objective;
     private Item reward;
-    private String progress;//TODO what type shall it be?
-    private boolean isActive; //TODO to be cleared after done? or change map?
+    private String progress;
+    private boolean isActive;
 
     public Quest(String name, String description, String objective, Item reward) {
         this.name = name;
@@ -29,38 +29,6 @@ public class Quest {// TODO a container to all killed enemies given to quest
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getObjective() {
-        return objective;
-    }
-
-    public void setObjective(String objective) {
-        this.objective = objective;
-    }
-
-    public Item getReward() {
-        return reward;
-    }
-
-    public void setReward(Item reward) {
-        this.reward = reward;
-    }
-
-    public String getProgress() {
-        return progress;
-    }
-
-    public void setProgress(String progress) {
-        this.progress = progress;
     }
 
     public boolean isActive() {

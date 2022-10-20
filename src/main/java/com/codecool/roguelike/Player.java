@@ -2,10 +2,6 @@ package com.codecool.roguelike;
 
 import java.io.IOException;
 
-/*
- * This class keeps all the necessary information about the player i.e. player icon, player position
- * Feel free to extend it!
- */
 public class Player extends GameCharacter {
     private Race RACE;
     private static final char playerIcon = '@';
@@ -61,14 +57,6 @@ public class Player extends GameCharacter {
             Engine.tryToInteract(this, nextCoordinates);
             attackCoordinates = nextCoordinates;
         }
-    }
-
-    public Race getPlayerRace() {
-        return RACE;
-    }
-
-    public void setPlayerRace(Race race) {
-        this.RACE = race;
     }
 
     @Override

@@ -19,7 +19,6 @@ public class Engine {
     private static Player player;
     private static Boss boss;
 
-
     /**
      * Creates a new game board based on input parameters
      *
@@ -239,7 +238,7 @@ public class Engine {
         }
     }
 
-    public static void fight(Player player, GameCharacter enemy) {//TODO single key press, also add boss with weakpoint which isn't a single press fight, also add loot to player or maybe just drop loot?
+    public static void fight(Player player, GameCharacter enemy) {
         boolean isWeakPointHit = enemy instanceof Boss boss ? player.getAttackCoordinates().equals(boss.getWeakPoint()) : false;
 
         do {
@@ -288,7 +287,7 @@ public class Engine {
         }
     }
 
-    public static boolean isEmpty(Coordinates coordinates) { //TODO rewrite! shouldn't check board char instead check Interactable list? [should check both actually] *should work now
+    public static boolean isEmpty(Coordinates coordinates) {
         int y = coordinates.getVerticalCoordinate();
         int x = coordinates.getHorizontalCoordinate();
 
@@ -300,8 +299,6 @@ public class Engine {
             m.move(player);
         }
     }
-
-
 
     public static void moveToNextBoard() {
         actualBoard = new Board(actualBoard.getWidth(), actualBoard.getHeight(), Wall.getDefaultIcon(),
@@ -316,11 +313,6 @@ public class Engine {
                 Gate.getDefaultHorizontalIcon(),Gate.getDefaultVerticalIcon());
         player.setCoordinates(1,8);
         initBoard();
-    }
-
-    public static void moveToSpecificBoard(Board board) {
-        actualBoard = board;
-        Engine.placePlayerNextToAGate();
     }
 
     public static void putItemOnBoard(char[][] board, Item item) {

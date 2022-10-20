@@ -60,7 +60,6 @@ public class Board {
                 }
             }
         }
-
     }
 
     protected void placeRandomWall() {
@@ -72,7 +71,6 @@ public class Board {
         Coordinates beginningCoordinate = walls.get(Util.getRandomIntFromRange(0, wallsNoCorners.size())).getCoordinates();
         int y = beginningCoordinate.getVerticalCoordinate();
         int x = beginningCoordinate.getHorizontalCoordinate();
-
         if (isThereWallHorizontally(beginningCoordinate)) {
             increment = getIncrement(height, y);
             maxWallLength = getMaxWallLength(height, increment, y);
@@ -211,7 +209,6 @@ public class Board {
     }
 
     private int randomizeIndexOfGate(int maxIndexExclusive, char c) {
-        //TODO infinite cycle could happen if there are more gates than board.length-2 or board.
         int gateIndex;
         do {
             gateIndex = Util.getRandomIntFromRange(1, maxIndexExclusive);
@@ -223,7 +220,6 @@ public class Board {
         return c == Gate.getDefaultHorizontalIcon() || c == Gate.getDefaultVerticalIcon();
     }
 
-    //todo fix, wrong walls
     private List<Wall> getWallsNoCorners() {
         List<Wall> wallsNoCorners = new ArrayList<>();
         for (Wall wall : walls) {

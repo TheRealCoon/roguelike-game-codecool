@@ -41,24 +41,12 @@ public abstract class GameCharacter {
         return damage;
     }
 
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
     public int getArmor() {
         return armor;
     }
 
-    public void setArmor(int armor) {
-        this.armor = armor;
-    }
-
     public int getHitChance() {
         return hitChance;
-    }
-
-    public void setHitChance(int hitChance) {
-        this.hitChance = hitChance;
     }
 
     public Coordinates getCoordinates() {
@@ -78,19 +66,4 @@ public abstract class GameCharacter {
         return characterIcon;
     }
 
-    public void setCharacterIcon(char characterIcon) {
-        this.characterIcon = characterIcon;
-    }
-
-    public List<Item> getInventory() {
-        return inventory;
-    }
-
-    public void addToInventory(Item item) {
-        inventory.add(item);
-    }
-
-    public void setInventory(List<Item> inventory) {
-        this.inventory = inventory;
-    }
 }

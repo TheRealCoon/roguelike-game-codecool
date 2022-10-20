@@ -2,8 +2,7 @@ package com.codecool.roguelike.boardElements;
 
 import com.codecool.roguelike.Coordinates;
 import com.codecool.roguelike.ui.console.ConsoleUI;
-import org.junit.jupiter.api.*
-        ;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 

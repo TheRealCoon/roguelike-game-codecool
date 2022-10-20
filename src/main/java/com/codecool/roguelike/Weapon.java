@@ -8,15 +8,8 @@ public class Weapon extends Item{
         this.itemIcon = 'W';
     }
 
-    public void setItemType(Weapon weapon){
-        this.itemType = ItemType.WEAPON;
-    }
-
     public int getAddedDamage() {
         return addedDamage;
     }
 
-    public void setAddedDamage(int addedDamage) {
-        this.addedDamage = addedDamage;
-    }
 }

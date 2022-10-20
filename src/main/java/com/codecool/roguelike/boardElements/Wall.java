@@ -21,25 +21,11 @@ public class Wall {
         return coordinates;
     }
 
-    public char getWallIcon() {
-        return wallIcon;
-    }
-
-    public void setWallIcon(char wallIcon) {
-        this.wallIcon = wallIcon;
-    }
 
     public static char getDefaultIcon() {
         return defaultIcon;
     }
 
-    public static void setDefaultIcon(char defaultIcon) {
-        Wall.defaultIcon = defaultIcon;
-    }
-
-    public static List<Wall> getWalls() {
-        return walls;
-    }
 
     public static void deleteWall(Wall wall){
         wall.coordinates = null;

@@ -10,8 +10,4 @@ public class CoordinateIsAlreadyOccupiedException extends RuntimeException {
         System.out.println(msg);
         fillInStackTrace();
     }
-
-    public CoordinateIsAlreadyOccupiedException(String msg) {
-        System.out.println(msg);
-    }
 }

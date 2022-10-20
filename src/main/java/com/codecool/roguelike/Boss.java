@@ -15,31 +15,6 @@ public class Boss extends GameCharacter implements Interactable {
         this.setCoordinates(coordinates);
     }
 
-    private List<Coordinates> generatePerimeter(Coordinates coordinates) {
-        List<Coordinates> perimeter = new ArrayList<>();
-        int baseY = coordinates.getVerticalCoordinate();
-        int baseX = coordinates.getHorizontalCoordinate();
-
-        int topY = baseY - 2;
-        int bottomY = baseY + 2;
-
-        perimeter.add(new Coordinates(baseX, topY));
-        perimeter.add(new Coordinates(baseX, bottomY));
-
-        for (int i = 1; i < 2; i++) {
-
-            //right down
-            perimeter.add(new Coordinates(baseX + i, topY - i));
-            //left down
-            perimeter.add(new Coordinates(baseX - i, topY - i));
-            //right up
-            perimeter.add(new Coordinates(baseX + i, bottomY + i));
-            //left up
-            perimeter.add(new Coordinates(baseX - i, bottomY - i));
-        }
-
-        return perimeter;
-    }
 
     private List<Coordinates> generateSquare(Coordinates coordinates) {
         List<Coordinates> square = new ArrayList<>();
@@ -63,9 +38,6 @@ public class Boss extends GameCharacter implements Interactable {
 
         if (isFreeToMove(nextCoordinates))
             setCoordinates(nextCoordinates);
-            // }else{
-            //     move();
-            // }
     }
 
     private boolean isFreeToMove(Coordinates nextCoordinates) {
@@ -94,7 +66,6 @@ public class Boss extends GameCharacter implements Interactable {
         this.square = generateSquare(coordinates);
         this.weakPoint = square.get(24);
     }
-
 
     public List<Coordinates> getSquare() {
         return square;
