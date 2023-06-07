@@ -1,6 +1,6 @@
 package com.codecool.roguelike.ui.console;
 
-import com.codecool.roguelike.Player;
+import com.codecool.roguelike.gameEngine.gameCharacters.Player;
 import com.codecool.roguelike.ui.GameUI;
 
 public class ConsoleUI implements GameUI {

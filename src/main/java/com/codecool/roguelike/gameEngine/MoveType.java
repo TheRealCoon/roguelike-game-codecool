@@ -1,4 +1,4 @@
-package com.codecool.roguelike;
+package com.codecool.roguelike.gameEngine;
 
 public enum MoveType {
     RANDOM,

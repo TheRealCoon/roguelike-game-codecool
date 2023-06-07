@@ -2,6 +2,10 @@ package com.codecool.roguelike;
 
 import com.codecool.roguelike.boardElements.Board;
 import com.codecool.roguelike.exceptions.TooManyGatesException;
+import com.codecool.roguelike.gameEngine.gameCharacters.Player;
+import com.codecool.roguelike.gameEngine.gameCharacters.Race;
+import com.codecool.roguelike.gameEngine.Coordinates;
+import com.codecool.roguelike.gameEngine.Engine;
 import com.codecool.roguelike.ui.GameInputReader;
 import com.codecool.roguelike.ui.GameUI;
 import com.codecool.roguelike.ui.console.ConsoleGameInputReader;

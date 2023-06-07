@@ -1,6 +1,10 @@
-package com.codecool.roguelike;
+package com.codecool.roguelike.gameEngine.items;
 
-public class Item implements Interactable{
+import com.codecool.roguelike.gameEngine.Coordinates;
+import com.codecool.roguelike.gameEngine.Interactable;
+import com.codecool.roguelike.gameEngine.gameCharacters.Player;
+
+public class Item implements Interactable {
     public String name;
     public ItemType itemType;
     public int horizontalCoordinate;

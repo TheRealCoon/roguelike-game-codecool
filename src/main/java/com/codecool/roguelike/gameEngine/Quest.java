@@ -1,13 +1,15 @@
-package com.codecool.roguelike;
+package com.codecool.roguelike.gameEngine;
 
-public class Quest {// TODO a container to all killed enemies given to quest
+import com.codecool.roguelike.gameEngine.items.Item;
+
+public class Quest {
 
     private String name;
     private String description;
-    private String objective;//TODO what type shall it be?
+    private String objective;
     private Item reward;
-    private String progress;//TODO what type shall it be?
-    private boolean isActive; //TODO to be cleared after done? or change map?
+    private String progress;
+    private boolean isActive;
 
     public Quest(String name, String description, String objective, Item reward) {
         this.name = name;

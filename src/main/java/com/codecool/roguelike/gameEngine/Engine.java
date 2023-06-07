@@ -1,10 +1,15 @@
-package com.codecool.roguelike;
+package com.codecool.roguelike.gameEngine;
 
+import com.codecool.roguelike.Util;
 import com.codecool.roguelike.boardElements.Board;
 import com.codecool.roguelike.boardElements.Gate;
 import com.codecool.roguelike.boardElements.Wall;
 import com.codecool.roguelike.exceptions.CoordinateIsAlreadyOccupiedException;
 import com.codecool.roguelike.exceptions.TooManyGatesException;
+import com.codecool.roguelike.gameCharacters.*;
+import com.codecool.roguelike.gameEngine.gameCharacters.*;
+import com.codecool.roguelike.gameEngine.items.*;
+import com.codecool.roguelike.items.*;
 
 import java.util.ArrayList;
 import java.util.List;

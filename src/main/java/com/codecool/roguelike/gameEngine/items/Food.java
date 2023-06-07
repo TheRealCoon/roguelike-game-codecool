@@ -1,6 +1,8 @@
-package com.codecool.roguelike;
+package com.codecool.roguelike.gameEngine.items;
 
-public class Food extends Item{
+import com.codecool.roguelike.gameEngine.Coordinates;
+
+public class Food extends Item {
     public int addedHealth = 20;
 
     public Food(String name, ItemType itemType, Coordinates coordinates, char itemIcon) {

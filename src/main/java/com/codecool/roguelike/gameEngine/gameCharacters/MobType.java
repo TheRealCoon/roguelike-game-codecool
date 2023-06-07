@@ -1,4 +1,4 @@
-package com.codecool.roguelike;
+package com.codecool.roguelike.gameEngine.gameCharacters;
 
 public enum MobType {
     ORC(1.2),

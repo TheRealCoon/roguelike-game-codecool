@@ -1,6 +1,8 @@
-package com.codecool.roguelike;
+package com.codecool.roguelike.gameEngine.items;
 
-public class Armor extends Item{
+import com.codecool.roguelike.gameEngine.Coordinates;
+
+public class Armor extends Item {
     public int addedArmor = 10;
 
     public Armor(String name, ItemType itemType, Coordinates coordinates, char itemIcon) {

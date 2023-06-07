@@ -1,6 +1,8 @@
-package com.codecool.roguelike;
+package com.codecool.roguelike.gameEngine.items;
 
-public class Key extends Item{
+import com.codecool.roguelike.gameEngine.Coordinates;
+
+public class Key extends Item {
     public Key() {
         super("key", ItemType.KEY, new Coordinates(0,0), 'K');
     }

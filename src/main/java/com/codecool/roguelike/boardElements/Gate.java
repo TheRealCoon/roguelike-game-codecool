@@ -1,9 +1,9 @@
 package com.codecool.roguelike.boardElements;
 
-import com.codecool.roguelike.Coordinates;
-import com.codecool.roguelike.Engine;
-import com.codecool.roguelike.Interactable;
-import com.codecool.roguelike.Player;
+import com.codecool.roguelike.gameEngine.Coordinates;
+import com.codecool.roguelike.gameEngine.Engine;
+import com.codecool.roguelike.gameEngine.Interactable;
+import com.codecool.roguelike.gameEngine.gameCharacters.Player;
 
 import java.util.ArrayList;
 import java.util.List;

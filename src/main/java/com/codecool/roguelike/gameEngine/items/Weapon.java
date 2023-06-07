@@ -1,6 +1,8 @@
-package com.codecool.roguelike;
+package com.codecool.roguelike.gameEngine.items;
 
-public class Weapon extends Item{
+import com.codecool.roguelike.gameEngine.Coordinates;
+
+public class Weapon extends Item {
     public int addedDamage = 5;
 
     public Weapon(String name, ItemType itemType, Coordinates coordinates, char itemIcon) {

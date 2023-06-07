@@ -1,4 +1,10 @@
-package com.codecool.roguelike;
+package com.codecool.roguelike.gameEngine.gameCharacters;
+
+import com.codecool.roguelike.*;
+import com.codecool.roguelike.gameEngine.Coordinates;
+import com.codecool.roguelike.gameEngine.Engine;
+import com.codecool.roguelike.gameEngine.Interactable;
+import com.codecool.roguelike.gameEngine.MoveType;
 
 public class Mob extends GameCharacter implements Interactable {
 

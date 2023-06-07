@@ -1,4 +1,10 @@
-package com.codecool.roguelike;
+package com.codecool.roguelike.gameEngine.gameCharacters;
+
+import com.codecool.roguelike.*;
+import com.codecool.roguelike.gameEngine.Coordinates;
+import com.codecool.roguelike.gameEngine.Engine;
+import com.codecool.roguelike.gameEngine.items.*;
+import com.codecool.roguelike.items.*;
 
 import java.io.IOException;
 

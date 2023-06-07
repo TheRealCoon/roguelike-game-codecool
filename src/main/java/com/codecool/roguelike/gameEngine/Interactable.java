@@ -1,4 +1,6 @@
-package com.codecool.roguelike;
+package com.codecool.roguelike.gameEngine;
+
+import com.codecool.roguelike.gameEngine.gameCharacters.Player;
 
 public interface Interactable {
 

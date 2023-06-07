@@ -1,4 +1,4 @@
-package com.codecool.roguelike;
+package com.codecool.roguelike.gameEngine;
 
 public class Coordinates {
     private int horizontalCoordinate;

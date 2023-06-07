@@ -1,7 +1,7 @@
 package com.codecool.roguelike.boardElements;
 
-import com.codecool.roguelike.Coordinates;
-import com.codecool.roguelike.Engine;
+import com.codecool.roguelike.gameEngine.Coordinates;
+import com.codecool.roguelike.gameEngine.Engine;
 import com.codecool.roguelike.Util;
 import com.codecool.roguelike.exceptions.TooManyGatesException;
 

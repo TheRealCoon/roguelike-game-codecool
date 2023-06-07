@@ -1,6 +1,6 @@
 package com.codecool.roguelike.boardElements;
 
-import com.codecool.roguelike.Coordinates;
+import com.codecool.roguelike.gameEngine.Coordinates;
 
 import java.util.ArrayList;
 import java.util.List;
